@@ -115,19 +115,16 @@
         .slideshow-text {
             display: inline-block;
             opacity: 0;
-            /* Removed transform for horizontal movement */
             transition: opacity 0.5s ease-in-out; /* Only opacity transition */
             font-weight: 700; /* bold */
             font-style: italic; /* cursive effect */
-            /* Changed gradient colors to blue and violet */
             background: linear-gradient(90deg, #3b82f6, #8b5cf6); /* Blue-500 to Violet-500 */
             background-clip: text;
-            -webkit-background-clip: text; /* Corrected typo: webcit to webkit */
+            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .slideshow-text.active {
             opacity: 1;
-            /* Removed transform for horizontal movement */
         }
         /* Ensure the 'A proud' part doesn't move */
         .slideshow-bar span:first-child {
@@ -135,6 +132,41 @@
             color: inherit; /* Ensure it retains the body text color */
             font-weight: normal; /* Normal font weight as requested */
             font-style: normal; /* Normal font style as requested */
+        }
+
+        /* Styles for resume content within modal */
+        .resume-section h3 {
+            font-size: 1.5rem; /* Equivalent to text-2xl */
+            font-weight: 600; /* Equivalent to font-semibold */
+            margin-top: 1.5rem; /* Equivalent to mt-6 */
+            margin-bottom: 0.75rem; /* Equivalent to mb-3 */
+            color: #3b82f6; /* Blue-500 */
+        }
+        .resume-item {
+            margin-bottom: 1rem; /* Equivalent to mb-4 */
+        }
+        .resume-item h4 {
+            font-weight: 700; /* Equivalent to font-bold */
+            font-size: 1.125rem; /* Equivalent to text-lg */
+            color: #1a202c; /* Dark text */
+        }
+        .dark .resume-item h4 {
+            color: #e2e8f0; /* Light text for dark mode */
+        }
+        .resume-item p {
+            font-size: 0.875rem; /* Equivalent to text-sm */
+            color: #4a5568; /* Gray-700 */
+        }
+        .dark .resume-item p {
+            color: #cbd5e0; /* Gray-300 for dark mode */
+        }
+        .resume-list li {
+            margin-bottom: 0.5rem; /* Equivalent to mb-2 */
+        }
+
+        /* Enhanced smooth scrolling for modal content on touch devices */
+        .modal-content {
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS devices */
         }
     </style>
 </head>
@@ -189,6 +221,7 @@
 
         <!-- Buttons with enhanced hover effects -->
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 w-full justify-center">
+            <!-- About Me button -->
             <button id="aboutMeBtn" class="btn-primary py-3 px-8 rounded-full font-semibold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 <!-- User icon -->
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -196,22 +229,23 @@
                 </svg>
                 <span>About Me</span>
             </button>
-            <!-- Download Resume button on the main page -->
-            <a href="Assets/myresume.pdf" download="muktadir_resume.pdf" class="btn-primary py-3 px-8 rounded-full font-semibold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            <!-- View Resume button -->
+            <button id="viewResumeBtn" class="btn-primary py-3 px-8 rounded-full font-semibold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                <!-- Document icon for resume -->
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
-                <span>My Resume</span>
-            </a>
+                <span>View Resume</span>
+            </button>
         </div>
     </div>
 
-    <!-- About Me Modal -->
-    <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+    <!-- About Me -->
+    <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay overflow-y-auto">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('aboutMeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800">
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8">
             <button onclick="closeModal('aboutMeModal')" class="absolute top-4 right-4 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-100 transition duration-200">
-                <!-- Close icon (X) -->
+                <!-- Close -->
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -227,7 +261,71 @@
                 <p class="mb-6 leading-relaxed">
                     In my free time, I find immense joy in delving into new books, exploring diverse ideas, and working on fun and impactful projects.
                 </p>
-                <!-- Removed CV download link from here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume -->
+    <div id="resumeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay overflow-y-auto">
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('resumeModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8">
+            <button onclick="closeModal('resumeModal')" class="absolute top-4 right-4 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-100 transition duration-200">
+                <!-- Close -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 text-center">Muktadir Somio - Resume</h2>
+
+                <!-- Contact -->
+                <div class="flex flex-col sm:flex-row justify-center items-center sm:items-start text-center sm:text-left text-sm mb-6">
+                    <p class="mb-1 sm:mb-0 sm:mr-4">330, North Shahjahanpur, Dhaka, Bangladesh</p>
+                    <p class="mb-1 sm:mb-0 sm:mr-4">+8801715671188</p>
+                    <p>somiomuktadir@gmail.com</p>
+                </div>
+
+                <!-- Skills -->
+                <div class="resume-section border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                    <h3>Skills</h3>
+                    <ul class="list-disc list-inside resume-list flex flex-wrap gap-x-6">
+                        <li>Office Softwares</li>
+                        <li>C, Python, Julia</li>
+                        <li>Proficiency in English, Bengali & familiarity with Russian</li>
+                    </ul>
+                </div>
+
+                <!-- Experience -->
+                <div class="resume-section border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                    <h3>Experience</h3>
+                    <div class="resume-item">
+                        <h4>CEO - Hercules Org, Dhaka</h4>
+                        <p class="text-gray-600 dark:text-gray-400">JANUARY 2028 - Present</p>
+                        <ul class="list-disc list-inside resume-list mt-2">
+                            <li>Working on Web3, AI, and Cybersecurity projects</li>
+                            <li>Developing CDC (governance SLM & LLM models)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="resume-section border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                    <h3>Education</h3>
+                    <div class="resume-item">
+                        <h4>B.S in Data Science - Dhaka University</h4>
+                        <p class="text-gray-600 dark:text-gray-400">JULY 2025 - Present</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>H.S.C in Science - Notre Dame College, Dhaka</h4>
+                        <p class="text-gray-600 dark:text-gray-400">JANUARY 20XX - MONTH 20XX</p>
+                    </div>
+                </div>
+
+                <!-- Awards -->
+                <div class="resume-section">
+                    <h3>Awards</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac interdum nisi.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -235,12 +333,13 @@
     <script>
         const htmlElement = document.documentElement;
         const aboutMeBtn = document.getElementById('aboutMeBtn');
+        const viewResumeBtn = document.getElementById('viewResumeBtn');
         const aboutMeModal = document.getElementById('aboutMeModal');
+        const resumeModal = document.getElementById('resumeModal');
         const slideshowWords = document.getElementById('slideshow-words');
         const words = ['Learner', 'Activist', 'Entrepreneur'];
         let currentIndex = 0;
 
-        // Function to set theme based on preference
         function setTheme(theme) {
             if (theme === 'dark') {
                 htmlElement.classList.add('dark');
@@ -251,19 +350,18 @@
             }
         }
 
-        // Function to update the slideshow text
         function updateSlideshow() {
-            slideshowWords.classList.remove('active'); // Start fade out
+            slideshowWords.classList.remove('active'); 
             setTimeout(() => {
                 slideshowWords.textContent = words[currentIndex];
-                slideshowWords.classList.add('active'); // Fade in new text
+                slideshowWords.classList.add('active'); 
                 currentIndex = (currentIndex + 1) % words.length;
-            }, 500); // Wait for fade out to complete (0.5s transition) before changing text and fading in
+            }, 500); 
         }
 
-        // Initialize theme on page load and listen for system theme changes
+        
         window.onload = () => {
-            // Check for system preference
+            
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
             if (prefersDark) {
@@ -272,31 +370,31 @@
                 setTheme('light');
             }
 
-            // Listen for changes in system theme preference
+            
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                 setTheme(event.matches ? 'dark' : 'light');
             });
 
-            // Start the slideshow
-            updateSlideshow(); // Display first word immediately
-            setInterval(updateSlideshow, 2500); // Change word every 2 seconds (2000ms)
+    
+            updateSlideshow(); 
+            setInterval(updateSlideshow, 2500); 
         };
 
-        // Open modal function - now accepts modal ID
+        
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             const modalContent = modal.querySelector('.modal-content');
 
             modal.classList.remove('hidden');
-            // Trigger animation
+            
             setTimeout(() => {
                 modal.classList.add('modal-enter-active');
                 modalContent.classList.add('modal-content-enter-active');
                 modalContent.classList.remove('modal-content-enter-from');
-            }, 10); // Small delay for transition to kick in for smoother entry
+            }, 10); 
         }
 
-        // Close modal function - now accepts modal ID
+        
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             const modalContent = modal.querySelector('.modal-content');
@@ -305,7 +403,7 @@
             modalContent.classList.remove('modal-content-enter-active');
             modalContent.classList.add('modal-content-leave-to'); // Add for exit animation
 
-            // Hide after animation
+            
             modalContent.addEventListener('transitionend', function handler() {
                 modal.classList.add('hidden');
                 modalContent.classList.remove('modal-content-leave-to');
@@ -314,14 +412,20 @@
             });
         }
 
-        // Event listener for About Me button
+        
         aboutMeBtn.addEventListener('click', () => openModal('aboutMeModal'));
 
-        // Close any open modal on escape key
+        
+        viewResumeBtn.addEventListener('click', () => openModal('resumeModal'));
+
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (!aboutMeModal.classList.contains('hidden')) {
                     closeModal('aboutMeModal');
+                }
+                if (!resumeModal.classList.contains('hidden')) {
+                    closeModal('resumeModal');
                 }
             }
         });
