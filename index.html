@@ -167,6 +167,16 @@
         /* Enhanced smooth scrolling for modal content on touch devices */
         .modal-content {
             -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS devices */
+            overflow-y: auto; /* Ensures content inside the modal scrolls */
+            max-height: 90vh; /* Limits the modal content height to 90% of viewport height */
+            /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            /* Hide scrollbar for Firefox */
+            scrollbar-width: none;
+            /* Hide scrollbar for IE/Edge */
+            -ms-overflow-style: none;
         }
     </style>
 </head>
@@ -202,7 +212,7 @@
         <!-- Photo with improved fallback using SVG -->
         <div class="img-container w-48 h-48 rounded-full border-4 border-blue-100 mb-6 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-blue-700">
             <img
-                src="Assets/me.jpg"
+                src="https://placehold.co/192x192/CCCCCC/FFFFFF?text=Photo"
                 alt="Muktadir Somio's Photo"
                 onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
             >
@@ -240,12 +250,12 @@
         </div>
     </div>
 
-    <!-- About Me -->
-    <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay overflow-y-auto">
+    <!-- About Me Modal -->
+    <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('aboutMeModal')"></div>
         <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8">
             <button onclick="closeModal('aboutMeModal')" class="absolute top-4 right-4 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-100 transition duration-200">
-                <!-- Close -->
+                <!-- Close icon (X) -->
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -265,20 +275,20 @@
         </div>
     </div>
 
-    <!-- Resume -->
-    <div id="resumeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay overflow-y-auto">
+    <!-- Resume Modal -->
+    <div id="resumeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('resumeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8">
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8 overflow-y-auto max-h-[90vh]">
             <button onclick="closeModal('resumeModal')" class="absolute top-4 right-4 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-100 transition duration-200">
-                <!-- Close -->
+                <!-- Close icon (X) -->
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
             <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 text-center">Muktadir Somio - Resume</h2>
+                <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 text-center">Khondoker Muktadirul Islam - Resume</h2>
 
-                <!-- Contact -->
+                <!-- Contact Information -->
                 <div class="flex flex-col sm:flex-row justify-center items-center sm:items-start text-center sm:text-left text-sm mb-6">
                     <p class="mb-1 sm:mb-0 sm:mr-4">330, North Shahjahanpur, Dhaka, Bangladesh</p>
                     <p class="mb-1 sm:mb-0 sm:mr-4">+8801715671188</p>
@@ -321,7 +331,7 @@
                     </div>
                 </div>
 
-                <!-- Awards -->
+                <!-- Awards (example - feel free to populate) -->
                 <div class="resume-section">
                     <h3>Awards</h3>
                     <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac interdum nisi.</p>
@@ -340,6 +350,7 @@
         const words = ['Learner', 'Activist', 'Entrepreneur'];
         let currentIndex = 0;
 
+        // Function to set theme based on preference
         function setTheme(theme) {
             if (theme === 'dark') {
                 htmlElement.classList.add('dark');
@@ -350,18 +361,19 @@
             }
         }
 
+        // Function to update the slideshow text
         function updateSlideshow() {
-            slideshowWords.classList.remove('active'); 
+            slideshowWords.classList.remove('active'); // Start fade out
             setTimeout(() => {
                 slideshowWords.textContent = words[currentIndex];
-                slideshowWords.classList.add('active'); 
+                slideshowWords.classList.add('active'); // Fade in new text
                 currentIndex = (currentIndex + 1) % words.length;
-            }, 500); 
+            }, 500); // Wait for fade out to complete (0.5s transition) before changing text and fading in
         }
 
-        
+        // Initialize theme on page load and listen for system theme changes
         window.onload = () => {
-            
+            // Check for system preference
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
             if (prefersDark) {
@@ -370,31 +382,31 @@
                 setTheme('light');
             }
 
-            
+            // Listen for changes in system theme preference
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                 setTheme(event.matches ? 'dark' : 'light');
             });
 
-    
-            updateSlideshow(); 
-            setInterval(updateSlideshow, 2500); 
+            // Start the slideshow
+            updateSlideshow(); // Display first word immediately
+            setInterval(updateSlideshow, 2500); // Change word every 2 seconds (2000ms)
         };
 
-        
+        // Open modal function - now accepts modal ID
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             const modalContent = modal.querySelector('.modal-content');
 
             modal.classList.remove('hidden');
-            
+            // Trigger animation
             setTimeout(() => {
                 modal.classList.add('modal-enter-active');
                 modalContent.classList.add('modal-content-enter-active');
                 modalContent.classList.remove('modal-content-enter-from');
-            }, 10); 
+            }, 10); // Small delay for transition to kick in for smoother entry
         }
 
-        
+        // Close modal function - now accepts modal ID
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             const modalContent = modal.querySelector('.modal-content');
@@ -403,7 +415,7 @@
             modalContent.classList.remove('modal-content-enter-active');
             modalContent.classList.add('modal-content-leave-to'); // Add for exit animation
 
-            
+            // Hide after animation
             modalContent.addEventListener('transitionend', function handler() {
                 modal.classList.add('hidden');
                 modalContent.classList.remove('modal-content-leave-to');
@@ -412,13 +424,13 @@
             });
         }
 
-        
+        // Event listener for About Me button
         aboutMeBtn.addEventListener('click', () => openModal('aboutMeModal'));
 
-        
+        // Event listener for View Resume button
         viewResumeBtn.addEventListener('click', () => openModal('resumeModal'));
 
-        
+        // Close any open modal on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (!aboutMeModal.classList.contains('hidden')) {
