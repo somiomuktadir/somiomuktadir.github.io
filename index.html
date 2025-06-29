@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,45 +11,25 @@
             font-family: 'Comfortaa', cursive;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .light body {
+        body {
             background-color: #f8f8f8;
             color: #333333;
         }
-        .light .btn-primary {
+        .btn-primary {
             background-color: #4f46e5;
             color: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .light .btn-primary:hover {
+        .btn-primary:hover {
             background-color: #4338ca;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
-        .light .modal-content {
+        .modal-content {
             background-color: #ffffff;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        .light .modal-overlay {
+        .modal-overlay {
             background-color: rgba(0, 0, 0, 0.4);
-        }
-        .dark body {
-            background-color: #1f2937;
-            color: #d1d5db;
-        }
-        .dark .btn-primary {
-            background-color: #6366f1;
-            color: #1f2937;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-        }
-        .dark .btn-primary:hover {
-            background-color: #4f46e5;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-        }
-        .dark .modal-content {
-            background-color: #374151;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-        .dark .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.6);
         }
 
         .modal-enter-active, .modal-leave-active {
@@ -100,9 +80,6 @@
             -webkit-backdrop-filter: blur(10px);
             background-color: rgba(255, 255, 255, 0.15);
         }
-        .dark .navbar {
-            background-color: rgba(31, 41, 55, 0.3);
-        }
 
         .slideshow-text {
             display: inline-block;
@@ -140,15 +117,9 @@
             font-size: 1.25rem;
             color: #333333;
         }
-        .dark .resume-item h4 {
-            color: #e2e8f0;
-        }
         .resume-item p {
             font-size: 0.9375rem;
             color: #555555;
-        }
-        .dark .resume-item p {
-            color: #a0aec0;
         }
         .resume-list li {
             margin-bottom: 0.625rem;
@@ -164,77 +135,45 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
-        #themeToggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4f46e5; /* Primary color for the icon */
-            transition: color 0.3s ease;
-        }
-        #themeToggle:hover {
-            color: #3b82f6; /* Lighter blue on hover */
-        }
-        .dark #themeToggle {
-            color: #8b5cf6; /* Violet for dark mode icon */
-        }
-        .dark #themeToggle:hover {
-            color: #a78bfa; /* Lighter violet on hover */
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-12 px-6">
 
     <nav class="navbar fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 px-8 md:px-16 lg:px-24">
-        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 transition-colors duration-300 hover:text-indigo-600 dark:hover:text-purple-400">
+        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-indigo-600">
             Muktadir Somio
         </a>
         <div class="flex items-center space-x-6">
-            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-purple-400 transition-colors duration-300">
+            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.743.082-.729.082-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.106 24 17.617 24 12 24 5.373 18.627 0 12 0z"/>
                 </svg>
                 <span class="sr-only">GitHub Profile</span>
             </a>
-            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-purple-400 transition-colors duration-300">
+            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
                 <span class="sr-only">Email Me</span>
             </a>
-            <button id="themeToggle" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-purple-400 transition-colors duration-300">
-                <svg id="moonIcon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9 9 0 008.354-5.646z"></path>
-                </svg>
-                <svg id="sunIcon" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h1M4 12H3m15.354 3.354l-.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-                <span class="sr-only">Toggle Theme</span>
-            </button>
         </div>
     </nav>
 
     <div class="w-full max-w-5xl mx-auto text-center pt-32 pb-16 px-4 flex flex-col items-center">
-        <div class="img-container w-48 h-48 rounded-full border-4 border-indigo-200 mb-8 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl dark:border-purple-700">
+        <div class="img-container w-48 h-48 rounded-full border-4 border-indigo-200 mb-8 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
             <img
                 src="Assets/me.jpg"
                 alt="Muktadir Somio's Photo"
                 onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
             >
-            <svg class="fallback-svg hidden text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="fallback-svg hidden text-gray-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
             </svg>
         </div>
 
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900 dark:text-gray-50 leading-tight">
-            Muktadir Somio
-        </h1>
 
-        <div class="slideshow-bar text-3xl font-light text-gray-700 dark:text-gray-300 mb-10 flex items-center justify-center h-14">
+        <div class="slideshow-bar text-3xl font-light text-gray-700 mb-10 flex items-center justify-center h-14">
             <span>A Proud&nbsp;</span>
             <span id="slideshow-words" class="slideshow-text"></span>
         </div>
@@ -257,14 +196,14 @@
 
     <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('aboutMeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8">
-            <button onclick="closeModal('aboutMeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 dark:text-purple-300 dark:hover:text-purple-100 transition duration-200">
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from my-8">
+            <button onclick="closeModal('aboutMeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                <h2 class="text-3xl font-semibold mb-5 text-gray-900 dark:text-gray-50">Hello!</h2>
+            <div class="prose max-w-none text-gray-700">
+                <h2 class="text-3xl font-semibold mb-5 text-gray-900">Hello!</h2>
                 <p class="mb-4 leading-relaxed">
                     I'm Muktadir and am currently based in the vibrant city of Dhaka. My academic journey is currently focused on Applied Statistics & Data Science at ISRT, DU.
                 </p>
@@ -280,53 +219,48 @@
 
     <div id="resumeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('resumeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from dark:bg-gray-800 my-8 overflow-y-auto max-h-[90vh]">
-            <button onclick="closeModal('resumeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 dark:text-purple-300 dark:hover:text-purple-100 transition duration-200">
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from my-8 overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModal('resumeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                <h2 class="text-4xl font-bold mb-7 text-gray-900 dark:text-gray-50 text-center">Muktadir Somio - Resume</h2>
+            <div class="prose max-w-none text-gray-700">
+                <h2 class="text-4xl font-bold mb-7 text-gray-900 text-center">Muktadir Somio - Resume</h2>
 
-                <div class="flex flex-col sm:flex-row justify-center items-center sm:items-start text-center sm:text-left text-sm mb-6 text-gray-600 dark:text-gray-400">
+                <div class="flex flex-col sm:flex-row justify-center items-center sm:items-start text-center sm:text-left text-sm mb-6 text-gray-600">
                     <p class="mb-1 sm:mb-0 sm:mr-4">330, North Shahjahanpur, Dhaka, Bangladesh</p>
                     <p class="mb-1 sm:mb-0 sm:mr-4">+8801715671188</p>
                     <p>somiomuktadir@gmail.com</p>
                 </div>
 
-                <div class="resume-section border-b border-gray-200 dark:border-gray-700 pb-5 mb-5">
+                <div class="resume-section border-b border-gray-200 pb-5 mb-5">
                     <h3>Skills</h3>
                     <ul class="list-disc list-inside resume-list flex flex-wrap gap-x-8">
                         <li>Office Softwares</li>
-                        <li>C, Python, Julia</li>
-                        <li>Proficiency in English, Bengali & familiarity with Russian</li>
+                        <li>Learning C, Python, Julia</li>
+                        <li>Proficiency in English, Bengali & learning Russian</li>
                     </ul>
                 </div>
 
 
-                <div class="resume-section border-b border-gray-200 dark:border-gray-700 pb-5 mb-5">
+                <div class="resume-section border-b border-gray-200 pb-5 mb-5">
                     <h3>Education</h3>
                     <div class="resume-item">
                         <h4>B.S in Data Science - Dhaka University</h4>
-                        <p class="text-gray-600 dark:text-gray-400">JULY 2025 - Present</p>
+                        <p class="text-gray-600">JULY 2025 - Present</p>
                     </div>
                     <div class="resume-item">
                         <h4>H.S.C in Science - Notre Dame College, Dhaka</h4>
-                        <p class="text-gray-600 dark:text-gray-400">JANUARY 2023 - JUNE 2024</p>
+                        <p class="text-gray-600">JANUARY 2023 - JUNE 2024</p>
                     </div>
                 </div>
 
-                <div class="resume-section">
-                    <h3>Awards</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac interdum nisi.</p>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const htmlElement = document.documentElement;
         const aboutMeBtn = document.getElementById('aboutMeBtn');
         const viewResumeBtn = document.getElementById('viewResumeBtn');
         const aboutMeModal = document.getElementById('aboutMeModal');
@@ -334,25 +268,6 @@
         const slideshowWords = document.getElementById('slideshow-words');
         const words = ['Learner', 'Activist', 'Debater'];
         let currentIndex = 0;
-        const themeToggle = document.getElementById('themeToggle');
-        const moonIcon = document.getElementById('moonIcon');
-        const sunIcon = document.getElementById('sunIcon');
-
-        function setTheme(theme) {
-            if (theme === 'dark') {
-                htmlElement.classList.add('dark');
-                htmlElement.classList.remove('light');
-                moonIcon.classList.add('hidden');
-                sunIcon.classList.remove('hidden');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                htmlElement.classList.add('light');
-                htmlElement.classList.remove('dark');
-                moonIcon.classList.remove('hidden');
-                sunIcon.classList.add('hidden');
-                localStorage.setItem('theme', 'light');
-            }
-        }
 
         function updateSlideshow() {
             slideshowWords.classList.remove('active');
@@ -364,29 +279,9 @@
         }
 
         window.onload = () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else {
-                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                setTheme(prefersDark ? 'dark' : 'light');
-            }
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                setTheme(event.matches ? 'dark' : 'light');
-            });
-
             updateSlideshow();
             setInterval(updateSlideshow, 3000);
         };
-
-        themeToggle.addEventListener('click', () => {
-            if (htmlElement.classList.contains('dark')) {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
-        });
 
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
