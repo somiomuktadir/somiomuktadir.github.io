@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Muktadir Somio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comfortaa', cursive;
+            background-color: #f8f8f8;
+            color: #333333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .active-selection-btn {
+            background-color: #4338ca;
+            color: white;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+        }
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-enter-active, .modal-leave-active {
+            transition: opacity 0.4s ease-in-out;
+        }
+        .modal-enter-from, .modal-leave-to {
+            opacity: 0;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 0.75rem;
+            transform: translateY(-50px) scale(0.95);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+            max-height: 90vh;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-content-enter-active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .modal-content-leave-to {
+            transform: translateY(-50px) scale(0.95);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-12 px-6">
+
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 px-8 md:px-16 lg:px-24">
+        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-indigo-600">
+            Muktadir Somio
+        </a>
+        <div class="flex items-center space-x-6">
+            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.743.082-.729.082-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.106 24 17.617 24 12 24 5.373 18.627 0 12 0z"/>
+                </svg>
+                <span class="sr-only">GitHub Profile</span>
+            </a>
+            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span class="sr-only">Email Me</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="w-full max-w-5xl mx-auto text-center pt-32 pb-16 px-4 flex flex-col items-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-8">Resources</h1>
+
+        <div id="yearButtons" class="flex flex-wrap justify-center gap-4 mb-12">
+            <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="1">Year 1</button>
+            <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="2">Year 2</button>
+            <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="3">Year 3</button>
+            <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="4">Year 4</button>
+        </div>
+
+        <div id="resourcesDisplay" class="w-full max-w-5xl">
+            <div id="welcomeMessage" class="text-lg text-gray-600">
+                <p class="mb-4">Welcome to the resources section! Here you can find various materials like books and slides categorized by year.</p>
+                <p>Please select a year above to view the available resources.</p>
+            </div>
+
+            <div id="resourcesContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+            </div>
+        </div>
+    </div>
+
+    <div id="resourcesModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('resourcesModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto my-8">
+            <button onclick="closeModal('resourcesModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h2 id="modalResourceTitle" class="text-3xl font-semibold mb-6 text-gray-900 text-center"></h2>
+            <div id="individualResourceList" class="grid grid-cols-1 gap-4">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const yearButtons = document.querySelectorAll('.year-btn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const resourcesContent = document.getElementById('resourcesContent');
+        const resourcesModal = document.getElementById('resourcesModal');
+        const modalResourceTitle = document.getElementById('modalResourceTitle');
+        const individualResourceList = document.getElementById('individualResourceList');
+
+        let currentYear = null;
+
+        const resourcesData = {
+            1: [
+                {
+                    title: 'AST101: Introduction to Applied Statistics and Data Science Resources',
+                    resourceId: 'AST101_R',
+                    items: [
+                        { title: 'Book: Introductory Statistics', file: 'resources/year1/AST101_Book1.pdf' },
+                        { title: 'Slides: Week 1 Overview', file: 'resources/year1/AST101_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST102: Elements of Probability Resources',
+                    resourceId: 'AST102_R',
+                    items: [
+                        { title: 'Book: A First Course in Probability', file: 'resources/year1/AST102_Book1.pdf' },
+                        { title: 'Slides: Axioms of Probability', file: 'resources/year1/AST102_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH103: Foundations of Mathematics Resources',
+                    resourceId: 'MATH103_R',
+                    items: [
+                        { title: 'Book: Theory and Problems of Modern Algebra', file: 'resources/year1/MATH103_Book1.pdf' },
+                        { title: 'Slides: Theory of Numbers', file: 'resources/year1/MATH103_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH104: Differential Calculus Resources',
+                    resourceId: 'MATH104_R',
+                    items: [
+                        { title: 'Book: Calculus', file: 'resources/year1/MATH104_Book1.pdf' },
+                        { title: 'Slides: Functions and Graphs', file: 'resources/year1/MATH104_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH105: Integral Calculus Resources',
+                    resourceId: 'MATH105_R',
+                    items: [
+                        { title: 'Book: Integral Calculus', file: 'resources/year1/MATH105_Book1.pdf' },
+                        { title: 'Slides: Antiderivatives', file: 'resources/year1/MATH105_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH106: Linear Algebra Resources',
+                    resourceId: 'MATH106_R',
+                    items: [
+                        { title: 'Book: Elementary Linear Algebra', file: 'resources/year1/MATH106_Book1.pdf' },
+                        { title: 'Slides: Matrices and Vectors', file: 'resources/year1/MATH106_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'ECON107: Economics Resources',
+                    resourceId: 'ECON107_R',
+                    items: [
+                        { title: 'Book: Economics', file: 'resources/year1/ECON107_Book1.pdf' },
+                        { title: 'Slides: Definition and Scope', file: 'resources/year1/ECON107_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'ENG108: English Communication Skills Resources',
+                    resourceId: 'ENG108_R',
+                    items: [
+                        { title: 'Book: Academic Writing', file: 'resources/year1/ENG108_Book1.pdf' },
+                        { title: 'Slides: Reading Skills', file: 'resources/year1/ENG108_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE130: Programming with C/C++ Resources',
+                    resourceId: 'CSE130_R',
+                    items: [
+                        { title: 'Book: C How to Program', file: 'resources/year1/CSE130_Book1.pdf' },
+                        { title: 'Slides: Introduction to C', file: 'resources/year1/CSE130_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE131: SQL for Data Science Resources',
+                    resourceId: 'CSE131_R',
+                    items: [
+                        { title: 'Book: Learning SQL', file: 'resources/year1/CSE131_Book1.pdf' },
+                        { title: 'Slides: Introduction to SQL', file: 'resources/year1/CSE131_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST140: Oral I Resources',
+                    resourceId: 'AST140_R',
+                    items: [
+                        { title: 'Oral I Preparation Guide', file: 'resources/year1/AST140_P1.pdf' }
+                    ]
+                },
+            ],
+            2: [
+                {
+                    title: 'AST201: Sampling Distributions Resources',
+                    resourceId: 'AST201_R',
+                    items: [
+                        { title: 'Book: Probability Theory and Applications', file: 'resources/year2/AST201_Book1.pdf' },
+                        { title: 'Slides: Generating Functions', file: 'resources/year2/AST201_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST202: Actuarial Statistics Resources',
+                    resourceId: 'AST202_R',
+                    items: [
+                        { title: 'Book: The Theory of Interest', file: 'resources/year2/AST202_Book1.pdf' },
+                        { title: 'Slides: Actuarial Science Basics', file: 'resources/year2/AST202_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST203: Statistical Inference I Resources',
+                    resourceId: 'AST203_R',
+                    items: [
+                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year2/AST203_Book1.pdf' },
+                        { title: 'Slides: Basic Concepts', file: 'resources/year2/AST203_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST204: Design and Analysis of Experiments I Resources',
+                    resourceId: 'AST204_R',
+                    items: [
+                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year2/AST204_Book1.pdf' },
+                        { title: 'Slides: Intro to DOE', file: 'resources/year2/AST204_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST205: Demography Resources',
+                    resourceId: 'AST205_R',
+                    items: [
+                        { title: 'Book: The Methods and Materials of Demography', file: 'resources/year2/AST205_Book1.pdf' },
+                        { title: 'Slides: Demography Basics', file: 'resources/year2/AST205_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST206: Sampling Methods I Resources',
+                    resourceId: 'AST206_R',
+                    items: [
+                        { title: 'Book: Sampling', file: 'resources/year2/AST206_Book1.pdf' },
+                        { title: 'Slides: Sampling Concepts', file: 'resources/year2/AST206_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH207: Mathematical Methods Resources',
+                    resourceId: 'MATH207_R',
+                    items: [
+                        { title: 'Book: Numerical Analysis', file: 'resources/year2/MATH207_Book1.pdf' },
+                        { title: 'Slides: Interpolation', file: 'resources/year2/MATH207_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH208: Mathematical Analysis Resources',
+                    resourceId: 'MATH208_R',
+                    items: [
+                        { title: 'Book: Principles of Mathematical Analysis', file: 'resources/year2/MATH208_Book1.pdf' },
+                        { title: 'Slides: Real Number System', file: 'resources/year2/MATH208_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST230: R for Data Science Resources',
+                    resourceId: 'AST230_R',
+                    items: [
+                        { title: 'Book: R for Data Science', file: 'resources/year2/AST230_Book1.pdf' },
+                        { title: 'Slides: Introduction to R', file: 'resources/year2/AST230_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST231: Statistical Simulation Resources',
+                    resourceId: 'AST231_R',
+                    items: [
+                        { title: 'Book: Introduction to Scientific Programming and Simulation using R', file: 'resources/year2/AST231_Book1.pdf' },
+                        { title: 'Slides: Simulation Concepts', file: 'resources/year2/AST231_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST232: Statistical Computing I Resources',
+                    resourceId: 'AST232_R',
+                    items: [
+                        { title: 'Slides: Experimental Design Computing', file: 'resources/year2/AST232_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST240: Oral II Resources',
+                    resourceId: 'AST240_R',
+                    items: [
+                        { title: 'Oral II Preparation Guide', file: 'resources/year2/AST240_P1.pdf' }
+                    ]
+                },
+            ],
+            3: [
+                {
+                    title: 'AST301: Design and Analysis of Experiments II Resources',
+                    resourceId: 'AST301_R',
+                    items: [
+                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year3/AST301_Book1.pdf' },
+                        { title: 'Slides: Factorial Designs', file: 'resources/year3/AST301_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST302: Sampling Methods II Resources',
+                    resourceId: 'AST302_R',
+                    items: [
+                        { title: 'Book: Sampling Techniques', file: 'resources/year3/AST302_Book1.pdf' },
+                        { title: 'Slides: PPS Sampling', file: 'resources/year3/AST302_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST303: Linear Regression Analysis Resources',
+                    resourceId: 'AST303_R',
+                    items: [
+                        { title: 'Book: Applied Linear Regression', file: 'resources/year3/AST303_Book1.pdf' },
+                        { title: 'Slides: Simple Linear Regression', file: 'resources/year3/AST303_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST304: Epidemiology Resources',
+                    resourceId: 'AST304_R',
+                    items: [
+                        { title: 'Book: Statistics for Epidemiology', file: 'resources/year3/AST304_Book1.pdf' },
+                        { title: 'Slides: Intro to Epidemiology', file: 'resources/year3/AST304_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST305: Lifetime Data Analysis I Resources',
+                    resourceId: 'AST305_R',
+                    items: [
+                        { title: 'Book: Statistical Models and Methods for Lifetime Data', file: 'resources/year3/AST305_Book1.pdf' },
+                        { title: 'Slides: Basic Concepts', file: 'resources/year3/AST305_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST306: Statistical Inference II Resources',
+                    resourceId: 'AST306_R',
+                    items: [
+                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year3/AST306_Book1.pdf' },
+                        { title: 'Slides: Statistical Inference Methods', file: 'resources/year3/AST306_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST307: Multivariate Statistics I Resources',
+                    resourceId: 'AST307_R',
+                    items: [
+                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year3/AST307_Book1.pdf' },
+                        { title: 'Slides: Preliminaries', file: 'resources/year3/AST307_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST308: Research Methodology Resources',
+                    resourceId: 'AST308_R',
+                    items: [
+                        { title: 'Book: Research Methodology: Methods & Techniques', file: 'resources/year3/AST308_Book1.pdf' },
+                        { title: 'Slides: Foundations of Research', file: 'resources/year3/AST308_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST330: Stata for Data Science Resources',
+                    resourceId: 'AST330_R',
+                    items: [
+                        { title: 'Book: Statistics with Stata', file: 'resources/year3/AST330_Book1.pdf' },
+                        { title: 'Slides: Introduction to Stata', file: 'resources/year3/AST330_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE331: Python for Data Science Resources',
+                    resourceId: 'CSE331_R',
+                    items: [
+                        { title: 'Book: Python for data analysis', file: 'resources/year3/CSE331_Book1.pdf' },
+                        { title: 'Slides: Fundamentals of Python', file: 'resources/year3/CSE331_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST332: Statistical Computing II Resources',
+                    resourceId: 'AST332_R',
+                    items: [
+                        { title: 'Slides: GLMs Computing', file: 'resources/year3/AST332_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST333: Statistical Computing III Resources',
+                    resourceId: 'AST333_R',
+                    items: [
+                        { title: 'Slides: Regression Models Computing', file: 'resources/year3/AST333_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST340: Oral III Resources',
+                    resourceId: 'AST340_R',
+                    items: [
+                        { title: 'Oral III Preparation Guide', file: 'resources/year3/AST340_P1.pdf' }
+                    ]
+                },
+            ],
+            4: [
+                {
+                    title: 'AST401: Advanced Probability and Stochastic Processes Resources',
+                    resourceId: 'AST401_R',
+                    items: [
+                        { title: 'Book: Probability and Random Processes', file: 'resources/year4/AST401_Book1.pdf' },
+                        { title: 'Slides: Modern Probability', file: 'resources/year4/AST401_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST402: Statistics for AI and Machine Learning Resources',
+                    resourceId: 'AST402_R',
+                    items: [
+                        { title: 'Book: Artificial Intelligence: A Modern Approach', file: 'resources/year4/AST402_Book1.pdf' },
+                        { title: 'Slides: Intro to AI/ML', file: 'resources/year4/AST402_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST403: Multivariate Statistics II Resources',
+                    resourceId: 'AST403_R',
+                    items: [
+                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year4/AST403_Book1.pdf' },
+                        { title: 'Slides: Principal Components', file: 'resources/year4/AST403_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST404: Econometric Methods Resources',
+                    resourceId: 'AST404_R',
+                    items: [
+                        { title: 'Book: Econometric Analysis', file: 'resources/year4/AST404_Book1.pdf' },
+                        { title: 'Slides: Econometric Modeling', file: 'resources/year4/AST404_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST405: Lifetime Data Analysis II Resources',
+                    resourceId: 'AST405_R',
+                    items: [
+                        { title: 'Book: Statistical Models and Methods for Lifetime Data', file: 'resources/year4/AST405_Book1.pdf' },
+                        { title: 'Slides: Parametric Regression Models', file: 'resources/year4/AST405_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE406: Big Data Analytics Resources',
+                    resourceId: 'CSE406_R',
+                    items: [
+                        { title: 'Book: Big Data: Concepts, Technology, and Architecture', file: 'resources/year4/CSE406_Book1.pdf' },
+                        { title: 'Slides: Intro to Big Data', file: 'resources/year4/CSE406_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST407: Time Series Modelling Resources',
+                    resourceId: 'AST407_R',
+                    items: [
+                        { title: 'Book: Time Series Analysis - With Applications in R', file: 'resources/year4/AST407_Book1.pdf' },
+                        { title: 'Slides: Time Series Examples', file: 'resources/year4/AST407_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST408: Generalized Linear Models Resources',
+                    resourceId: 'AST408_R',
+                    items: [
+                        { title: 'Book: An Introduction to Generalized Linear Models', file: 'resources/year4/AST408_Book1.pdf' },
+                        { title: 'Slides: Exponential Family', file: 'resources/year4/AST408_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST409: Official Statistics Resources',
+                    resourceId: 'AST409_R',
+                    items: [
+                        { title: 'Book: Social Statistics: Managing Data, Conducting Analyses, Presenting Results', file: 'resources/year4/AST409_Book1.pdf' },
+                        { title: 'Slides: Domains of Official Statistics', file: 'resources/year4/AST409_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST430: Statistical Computing IV Resources',
+                    resourceId: 'AST430_R',
+                    items: [
+                        { title: 'Slides: Multivariate Computing', file: 'resources/year4/AST430_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST431: Statistical Computing V Resources',
+                    resourceId: 'AST431_R',
+                    items: [
+                        { title: 'Slides: Time Series Computing', file: 'resources/year4/AST431_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST432: Statistical Computing VI Resources',
+                    resourceId: 'AST432_R',
+                    items: [
+                        { title: 'Slides: GLMs and Survival Models Computing', file: 'resources/year4/AST432_Slides1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST440: Oral IV Resources',
+                    resourceId: 'AST440_R',
+                    items: [
+                        { title: 'Oral IV Preparation Guide', file: 'resources/year4/AST440_P1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST450: B.S. Capstone Project Resources',
+                    resourceId: 'AST450_R',
+                    items: [
+                        { title: 'Capstone Project Guidelines', file: 'resources/year4/AST450_P1.pdf' }
+                    ]
+                },
+            ]
+        };
+
+        function openResourcesModal(year, resourceId) {
+            const subjectData = resourcesData[year]?.find(s => s.resourceId === resourceId);
+
+            if (!subjectData) {
+                console.error('Resource data not found for:', { year, resourceId });
+                return;
+            }
+
+            modalResourceTitle.textContent = subjectData.title;
+            individualResourceList.innerHTML = '';
+
+            if (subjectData.items && subjectData.items.length > 0) {
+                subjectData.items.forEach(item => {
+                    const resourceItem = document.createElement('div');
+                    resourceItem.classList.add('card', 'p-4', 'flex', 'flex-col', 'md:flex-row', 'justify-between', 'items-center', 'space-y-2', 'md:space-y-0', 'md:space-x-4');
+                    
+                    resourceItem.innerHTML = `
+                        <h4 class="text-lg font-medium text-gray-700 text-center md:text-left flex-grow">${item.title}</h4>
+                        <div class="flex space-x-3">
+                            <button onclick="viewPdf('${item.file}')" class="btn-primary py-2 px-5 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
+                                View
+                            </button>
+                            <a href="${item.file}" download class="btn-primary py-2 px-5 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
+                                Download
+                            </a>
+                        </div>
+                    `;
+                    individualResourceList.appendChild(resourceItem);
+                });
+            } else {
+                individualResourceList.innerHTML = `<p class="text-md text-gray-500 text-center">No individual resources available for this subject.</p>`;
+            }
+
+            openModal('resourcesModal');
+        }
+
+        function displayResources(year) {
+            resourcesContent.innerHTML = '';
+            welcomeMessage.classList.add('hidden');
+            resourcesContent.classList.remove('hidden');
+
+            const selectedResources = resourcesData[year];
+
+            if (selectedResources && selectedResources.length > 0) {
+                selectedResources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.classList.add('card', 'p-6', 'rounded-xl', 'flex', 'flex-col', 'justify-between', 'items-center', 'text-center', 'space-y-4');
+                    
+                    card.innerHTML = `
+                        <h3 class="text-xl font-semibold text-gray-800">${resource.title}</h3>
+                        <div class="flex space-x-4">
+                            <button onclick="openResourcesModal('${year}', '${resource.resourceId}')" class="btn-primary py-2 px-6 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
+                                View Resources
+                            </button>
+                        </div>
+                    `;
+                    resourcesContent.appendChild(card);
+                });
+            } else {
+                resourcesContent.innerHTML = `<p class="text-lg text-gray-600 text-center">No resources available for Year ${year}.</p>`;
+            }
+        }
+
+        function viewPdf(pdfUrl) {
+            window.open(pdfUrl, '_blank');
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const modalContent = modal.querySelector('.modal-content');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('modal-enter-active');
+                modalContent.classList.add('modal-content-enter-active');
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const modalContent = modal.querySelector('.modal-content');
+
+            modal.classList.remove('modal-enter-active');
+            modalContent.classList.remove('modal-content-enter-active');
+            modalContent.classList.add('modal-content-leave-to');
+
+            modalContent.addEventListener('transitionend', function handler() {
+                modal.classList.add('hidden');
+                modalContent.classList.remove('modal-content-leave-to');
+                modalContent.removeEventListener('transitionend', handler);
+            });
+        }
+
+        yearButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                yearButtons.forEach(btn => btn.classList.remove('active-selection-btn'));
+                button.classList.add('active-selection-btn');
+                currentYear = button.dataset.year;
+                displayResources(currentYear);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!resourcesModal.classList.contains('hidden')) {
+                    closeModal('resourcesModal');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
