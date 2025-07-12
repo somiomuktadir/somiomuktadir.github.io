@@ -32,6 +32,9 @@
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -112,7 +115,7 @@
 
         <div id="resourcesDisplay" class="w-full max-w-5xl">
             <div id="welcomeMessage" class="text-lg text-gray-600">
-                <p class="mb-4">Welcome to the resources section! Here you can find various materials like reference books, questions, and a toolbox, categorized by year.</p>
+                <p class="mb-4">Welcome to the resources section! Here you can find various materials like reference books and questions, categorized by year.</p>
                 <p>Please select a year above to view the available resources.</p>
             </div>
 
@@ -146,416 +149,674 @@
         let currentYear = null;
 
         const resourcesData = {
-            1: [
-                {
-                    title: 'AST101: Introduction to Applied Statistics and Data Science Reference Books',
-                    resourceId: 'AST101_R',
-                    items: [
-                        { title: 'Book: Introductory Statistics', file: 'resources/year1/AST101_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST102: Elements of Probability Reference Books',
-                    resourceId: 'AST102_R',
-                    items: [
-                        { title: 'Book: A First Course in Probability', file: 'https://drive.google.com/file/d/1OSz_TvPdJRQfeTlMa_EPPgfn4XjlhSwW/view?usp=drive_link' },
-                    ]
-                },
-                {
-                    title: 'MATH103: Foundations of Mathematics Reference Books',
-                    resourceId: 'MATH103_R',
-                    items: [
-                        { title: 'Book: Theory and Problems of Modern Algebra', file: 'resources/year1/MATH103_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'MATH104: Differential Calculus Reference Books',
-                    resourceId: 'MATH104_R',
-                    items: [
-                        { title: 'Book: Calculus', file: 'resources/year1/MATH104_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'MATH105: Integral Calculus Reference Books',
-                    resourceId: 'MATH105_R',
-                    items: [
-                        { title: 'Book: Integral Calculus', file: 'resources/year1/MATH105_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'MATH106: Linear Algebra Reference Books',
-                    resourceId: 'MATH106_R',
-                    items: [
-                        { title: 'Book: Elementary Linear Algebra', file: 'resources/year1/MATH106_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'ECON107: Economics Reference Books',
-                    resourceId: 'ECON107_R',
-                    items: [
-                        { title: 'Book: Economics', file: 'resources/year1/ECON107_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'ENG108: English Communication Skills Reference Books',
-                    resourceId: 'ENG108_R',
-                    items: [
-                        { title: 'Book: Academic Writing', file: 'resources/year1/ENG108_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'CSE130: Programming with C/C++ Reference Books',
-                    resourceId: 'CSE130_R',
-                    items: [
-                        { title: 'Book: C How to Program', file: 'resources/year1/CSE130_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'CSE131: SQL for Data Science Reference Books',
-                    resourceId: 'CSE131_R',
-                    items: [
-                        { title: 'Book: Learning SQL', file: 'resources/year1/CSE131_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST140: Oral I Reference Books',
-                    resourceId: 'AST140_R',
-                    items: [
-                        { title: 'Oral I Preparation Guide', file: 'resources/year1/AST140_P1.pdf' }
-                    ]
-                },
-                {
-                    title: 'Year 1 Questions',
-                    resourceId: 'Y1_Q',
-                    items: []
-                },
-                {
-                    title: 'Year 1 Toolbox',
-                    resourceId: 'Y1_T',
-                    items: []
-                }
-            ],
-            2: [
-                {
-                    title: 'AST201: Sampling Distributions Reference Books',
-                    resourceId: 'AST201_R',
-                    items: [
-                        { title: 'Book: Probability Theory and Applications', file: 'resources/year2/AST201_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST202: Actuarial Statistics Reference Books',
-                    resourceId: 'AST202_R',
-                    items: [
-                        { title: 'Book: The Theory of Interest', file: 'resources/year2/AST202_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST203: Statistical Inference I Reference Books',
-                    resourceId: 'AST203_R',
-                    items: [
-                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year2/AST203_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST204: Design and Analysis of Experiments I Reference Books',
-                    resourceId: 'AST204_R',
-                    items: [
-                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year2/AST204_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST205: Demography Reference Books',
-                    resourceId: 'AST205_R',
-                    items: [
-                        { title: 'Book: The Methods and Materials of Demography', file: 'resources/year2/AST205_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST206: Sampling Methods I Reference Books',
-                    resourceId: 'AST206_R',
-                    items: [
-                        { title: 'Book: Sampling', file: 'resources/year2/AST206_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'MATH207: Mathematical Methods Reference Books',
-                    resourceId: 'MATH207_R',
-                    items: [
-                        { title: 'Book: Numerical Analysis', file: 'resources/year2/MATH207_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'MATH208: Mathematical Analysis Reference Books',
-                    resourceId: 'MATH208_R',
-                    items: [
-                        { title: 'Book: Principles of Mathematical Analysis', file: 'resources/year2/MATH208_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST230: R for Data Science Reference Books',
-                    resourceId: 'AST230_R',
-                    items: [
-                        { title: 'Book: R for Data Science', file: 'resources/year2/AST230_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST231: Statistical Simulation Reference Books',
-                    resourceId: 'AST231_R',
-                    items: [
-                        { title: 'Book: Simulation', file: 'resources/year2/AST231_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST232: Statistical Computing I Reference Books',
-                    resourceId: 'AST232_R',
-                    items: [
-                        { title: 'Book: Statistical Computing with R', file: 'resources/year2/AST232_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST240: Oral II Reference Books',
-                    resourceId: 'AST240_R',
-                    items: [
-                        { title: 'Oral II Preparation Guide', file: 'resources/year2/AST240_P1.pdf' }
-                    ]
-                },
-                {
-                    title: 'Year 2 Questions',
-                    resourceId: 'Y2_Q',
-                    items: []
-                },
-                {
-                    title: 'Year 2 Toolbox',
-                    resourceId: 'Y2_T',
-                    items: []
-                }
-            ],
-            3: [
-                {
-                    title: 'AST301: Statistical Inference II Reference Books',
-                    resourceId: 'AST301_R',
-                    items: [
-                        { title: 'Book: Statistical Inference', file: 'resources/year3/AST301_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST302: Regression Analysis Reference Books',
-                    resourceId: 'AST302_R',
-                    items: [
-                        { title: 'Book: Applied Linear Regression Models', file: 'resources/year3/AST302_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST303: Design and Analysis of Experiments II Reference Books',
-                    resourceId: 'AST303_R',
-                    items: [
-                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year3/AST303_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST304: Non-parametric Statistics Reference Books',
-                    resourceId: 'AST304_R',
-                    items: [
-                        { title: 'Book: Nonparametric Statistical Methods', file: 'resources/year3/AST304_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST305: Econometrics Reference Books',
-                    resourceId: 'AST305_R',
-                    items: [
-                        { title: 'Book: Basic Econometrics', file: 'resources/year3/AST305_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST306: Biostatistics Reference Books',
-                    resourceId: 'AST306_R',
-                    items: [
-                        { title: 'Book: Biostatistics: A Foundation for Analysis in the Health Sciences', file: 'resources/year3/AST306_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST307: Population Studies Reference Books',
-                    resourceId: 'AST307_R',
-                    items: [
-                        { title: 'Book: Population and Society', file: 'resources/year3/AST307_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST308: Statistical Quality Control Reference Books',
-                    resourceId: 'AST308_R',
-                    items: [
-                        { title: 'Book: Introduction to Statistical Quality Control', file: 'resources/year3/AST308_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST330: Statistical Computing II Reference Books',
-                    resourceId: 'AST330_R',
-                    items: [
-                        { title: 'Book: Computational Statistics', file: 'resources/year3/AST330_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST331: Data Science with Python Reference Books',
-                    resourceId: 'AST331_R',
-                    items: [
-                        { title: 'Book: Python for Data Analysis', file: 'resources/year3/AST331_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST340: Oral III Reference Books',
-                    resourceId: 'AST340_R',
-                    items: [
-                        { title: 'Oral III Preparation Guide', file: 'resources/year3/AST340_P1.pdf' }
-                    ]
-                },
-                {
-                    title: 'Year 3 Questions',
-                    resourceId: 'Y3_Q',
-                    items: []
-                },
-                {
-                    title: 'Year 3 Toolbox',
-                    resourceId: 'Y3_T',
-                    items: []
-                }
-            ],
-            4: [
-                {
-                    title: 'AST401: Multivariate Analysis Reference Books',
-                    resourceId: 'AST401_R',
-                    items: [
-                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year4/AST401_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST402: Time Series Analysis Reference Books',
-                    resourceId: 'AST402_R',
-                    items: [
-                        { title: 'Book: Time Series Analysis and Its Applications', file: 'resources/year4/AST402_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST403: Categorical Data Analysis and Generalized Linear Models Reference Books',
-                    resourceId: 'AST403_R',
-                    items: [
-                        { title: 'Book: An Introduction to Generalized Linear Models', file: 'resources/year4/AST403_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST404: Survival Analysis Reference Books',
-                    resourceId: 'AST404_R',
-                    items: [
-                        { title: 'Book: Applied Survival Analysis', file: 'resources/year4/AST404_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST405: Bayesian Statistics Reference Books',
-                    resourceId: 'AST405_R',
-                    items: [
-                        { title: 'Book: Bayesian Data Analysis', file: 'resources/year4/AST405_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST406: Environmental Statistics Reference Books',
-                    resourceId: 'AST406_R',
-                    items: [
-                        { title: 'Book: Environmental Statistics with S-Plus', file: 'resources/year4/AST406_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST407: Machine Learning Reference Books',
-                    resourceId: 'AST407_R',
-                    items: [
-                        { title: 'Book: An Introduction to Statistical Learning', file: 'resources/year4/AST407_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST408: Data Mining Reference Books',
-                    resourceId: 'AST408_R',
-                    items: [
-                        { title: 'Book: Data Mining: Concepts and Techniques', file: 'resources/year4/AST408_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST430: Big Data Analytics Reference Books',
-                    resourceId: 'AST430_R',
-                    items: [
-                        { title: 'Book: Big Data Analytics: A Practitioner\'s Guide to Using R and Python for Transforming Big Data into Insight', file: 'resources/year4/AST430_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST431: Deep Learning Reference Books',
-                    resourceId: 'AST431_R',
-                    items: [
-                        { title: 'Book: Deep Learning', file: 'resources/year4/AST431_Book1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST440: Oral IV Reference Books',
-                    resourceId: 'AST440_R',
-                    items: [
-                        { title: 'Oral IV Preparation Guide', file: 'resources/year4/AST440_P1.pdf' }
-                    ]
-                },
-                {
-                    title: 'Year 4 Questions',
-                    resourceId: 'Y4_Q',
-                    items: []
-                },
-                {
-                    title: 'Year 4 Toolbox',
-                    resourceId: 'Y4_T',
-                    items: []
-                }
-            ]
+            subjects: {
+                1: [
+                    {
+                        title: 'AST101: Introduction to Applied Statistics and Data Science',
+                        resourceId: 'AST101',
+                        books: [
+                            { title: 'Weiss N (2007). Introductory Statistics, 7th edition. Addison Wesley.' },
+                            { title: 'Mann PS (2020). Introduction to Statistics, 10th edition. John Wiley & Sons Inc.' },
+                            { title: 'Newbold P (2004). Statistics for Business and Economics, 3rd edition. Prentice-Hall.' },
+                            { title: 'Witten IH, Frank E, and Hall MA (2016). Data Science: An Introduction. John Wiley & Sons Inc.' },
+                            { title: 'Freeman D, Pisani R, and Purves R (2007). Statistics, 4th edition. W.W. Norton and Company.' }
+                        ],
+                        questions: [
+                            { title: 'AST101 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST102: Elements of Probability',
+                        resourceId: 'AST102',
+                        books: [
+                            { title: 'Ross SM (2009). A First Course in Probability, 8th edition. Prentice-Hall.' },
+                            { title: 'Stirzaker D (2003). Elementary Probability, 2nd edition. Cambridge.' },
+                            { title: 'Bertsekas DP and Tsitsiklis JN (2008). Introduction to Probability, 2nd edition. Athena Scientific.' },
+                            { title: 'Blitzstein JK and Hwang J (2019). Introduction to Probability, 2nd edition. Springer.' }
+                        ],
+                        questions: [
+                            { title: 'AST102 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH103: Foundations of Mathematics',
+                        resourceId: 'MATH103',
+                        books: [
+                            { title: 'Ayres F (1995). Theory and Problems of Modern Algebra. McGraw-Hill.' },
+                            { title: 'Ross SL (1980). Introduction to Ordinary Differential Equations, 4th edition. Wiley.' },
+                            { title: 'Rosen KH (2018). Discrete Mathematics and Its Applications, 8th Edition. McGraw Hill.' },
+                            { title: 'Linda Gilbert (2009). Elements of Modern Algebra, 8th Edition. Brooks/Cole.' },
+                            { title: 'Stanley J. Farlow (2007). An Introduction to Differential Equations and Their Applications. Dover Publications.' }
+                        ],
+                        questions: [
+                            { title: 'MATH103 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH104: Differential Calculus',
+                        resourceId: 'MATH104',
+                        books: [
+                            { title: 'Anton H, Bivens I, and Davis S (2012). Calculus, 10th edition. Laurie Rosatone.' },
+                            { title: 'Stewart J (2015). Calculus: Early Transcendentals, 9th edition. Cengage Learning' },
+                            { title: 'Swokowski E, Olinick M, and Pence DD (1996). Calculus, 6th edition. Brooks Cole.' }
+                        ],
+                        questions: [
+                            { title: 'MATH104 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH105: Integral Calculus',
+                        resourceId: 'MATH105',
+                        books: [
+                            { title: 'Anton H, Bivens I, and Davis S (2012). Calculus, 10th edition. Laurie Rosatone.' },
+                            { title: 'Stewart J (2015). Calculus: Early Transcendentals, 9th edition. Cengage Learning' },
+                            { title: 'Swokowski E, Olinick M, and Pence DD (1996). Calculus, 6th edition. Brooks Cole.' }
+                        ],
+                        questions: [
+                            { title: 'MATH105 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH106: Linear Algebra',
+                        resourceId: 'MATH106',
+                        books: [
+                            { title: 'Anton H and Rorres C (2013). Elementary Linear Algebra, 11th edition. Wiley.' },
+                            { title: 'Strang G (2023). Introduction to Linear Algebra, 4th edition. Wellesley-Cambridge.' },
+                            { title: 'Banerjee S and Roy A (2014). Linear Algebra and Matrix Analysis for Statistics. Chapman and Hall/CRC' }
+                        ],
+                        questions: [
+                            { title: 'MATH106 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'ECON107: Economics',
+                        resourceId: 'ECON107',
+                        books: [
+                            { title: 'Samuelson PA and Nordhaus WD (2009). Economics, 19th edition. McGraw Hill.' },
+                            { title: 'Mankiw NG (2015). Principles of Economics, 7th edition. Cengage Learning.' },
+                            { title: 'Dowling ET (2011). Introduction to Mathematical Economics, 3rd edition. McGraw Hill Education.' },
+                            { title: 'Newbold P, Carlson W and Thorne B (2012). Statistics for Business and Economics, 8th edition. Pearson.' }
+                        ],
+                        questions: [
+                            { title: 'ECON107 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'ENG108: English Communication Skills',
+                        resourceId: 'ENG108',
+                        books: [
+                            { title: 'Bailey S (2003). Academic Writing: A Handbook for International Students. Routledge.' },
+                            { title: 'Soars L and Soars J (2003). Headway Intermediate. Oxford University Press.' },
+                            { title: 'Langan J (1984). College Writing Skills with Readings. Connect.' },
+                            { title: 'Roach P (2009). English Phonetics and Phonology: A Practical Course, 4th edition. Cambridge University Press.' },
+                            { title: 'O’Connor JD (1980). Better English Pronunciation. Cambridge University Press.' },
+                            { title: 'Cambridge IELTS' }
+                        ],
+                        questions: [
+                            { title: 'ENG108 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'CSE130: Programming with C/C++',
+                        resourceId: 'CSE130',
+                        books: [
+                            { title: 'Dietel PJ and Deitel HM (2010). C How to Program, 7th edition. Pearson.' },
+                            { title: 'Perry G and Miller D (2014). C Programming Absolute Beginner’s Guide, 3rd Edition. Que.', file: '#' }
+                        ],
+                        questions: [
+                            { title: 'CSE130 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'CSE131: SQL for Data Science',
+                        resourceId: 'CSE131',
+                        books: [
+                            { title: 'Beaulieu A. (2020). Learning SQL: Generate, manipulate, and retrieve data, 3rd edition. O’Reilly.' },
+                            { title: 'Teate RM (2021). SQL for data scientists: A beginner’s guide for building datasets for analysis. Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'CSE131 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST140: Oral I',
+                        resourceId: 'AST140',
+                        books: [
+                            { title: 'Oral I Preparation Guide' }
+                        ],
+                        questions: [
+                            { title: 'AST140 Previous Year Questions', file: '#' }
+                        ]
+                    }
+                ],
+                2: [
+                    {
+                        title: 'AST201: Sampling Distributions',
+                        resourceId: 'AST201',
+                        books: [
+                            { title: 'Robinson EA (2011). Probability Theory and Applications. Springer.' },
+                            { title: 'Zehna PW (1970). Probability Distributions and Statistics. Allyn and Bacon.' },
+                            { title: 'Jones O, Maillardet R and Robinson A (2009). Introduction to Scientific Programming and Simulation using R. Chapman & Hall/CRC.' },
+                            { title: 'Arnold BC, Balakrishnan N and Nagaraja HN (2008). A First Course in Order Statistics. Society for Industrial and Applied Mathematics.' }
+                        ],
+                        questions: [
+                            { title: 'AST201 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST202: Actuarial Statistics',
+                        resourceId: 'AST202',
+                        books: [
+                            { title: 'Kellison SG (1991). The Theory of Interest, 2nd edition. McGraw-Hill/Irwin.' },
+                            { title: 'Promislow SD (2011). Fundamentals of Actuarial Mathematics, 2nd edition. John Wiley & Sons.' },
+                            { title: 'Shailaja R. Deshmukh (2010). Actuarial Statistics: An Introduction Using R, 3rd edition. Orient Blackswan.' }
+                        ],
+                        questions: [
+                            { title: 'AST202 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST203: Statistical Inference I',
+                        resourceId: 'AST203',
+                        books: [
+                            { title: 'Hogg RV, Tanis EA and Zimmerman DL (2015). Probability and Statistical Inference, 9th edition. Pearson.' },
+                            { title: 'Casella G and Berger RL (2001). Statistical Inference, 2nd edition. Cengage Learning.' },
+                            { title: 'Hogg RV, McKean J and Craig AT (2010). Introduction to Mathematical Statistics, 7th edition. Pearson.' },
+                            { title: 'Mood AF, Graybill FA. and Boes DC (1973). Introduction to the Theory of Statistics, 3rd edition. McGraw-Hill.' }
+                        ],
+                        questions: [
+                            { title: 'AST203 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST204: Design and Analysis of Experiments I',
+                        resourceId: 'AST204',
+                        books: [
+                            { title: 'Montgomery DC (2019). Design and Analysis of Experiments, 10th edition. Wiley.' },
+                            { title: 'Dean AM, Voss AM, and Dragulji´c (2017). Design and Analysis of Experiments, 2nd edition. Springer.', file: '#' },
+                            { title: 'Bailey R (2008). Design of Comparative Experiments. Cambridge.' }
+                        ],
+                        questions: [
+                            { title: 'AST204 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST205: Demography',
+                        resourceId: 'AST205',
+                        books: [
+                            { title: 'Siegel JS and Swanson DA (2004). The Methods and Materials of Demography, 2nd edition. Emerald.' },
+                            { title: 'Shryock HS, Siegel JS and Larmon EA (1975). The Methods and Materials of Demography, volume I and II. U.S. Department of Commerce Publication.', file: '#' },
+                            { title: 'Poston Jri. DL, and Bouvier LF (2016). Population and Society: An Introduction to Demography, 2nd edition. Cambridge University Press.' }
+                        ],
+                        questions: [
+                            { title: 'AST205 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST206: Sampling Methods I',
+                        resourceId: 'AST206',
+                        books: [
+                            { title: 'Thompson SK (2002). Smapling. 2nd edition. Wiley.' },
+                            { title: 'Cochran WG (1977). Sampling Techniques, 3rd edition. Wiley.' },
+                            { title: 'Lohr SL (1998). Sampling: Design and Analysis. Duxbury.' },
+                            { title: 'Levy PS and and Lemeshow S (2008). Sampling of Populations: Methods and Applications, 4th edition. Wiley.' },
+                            { title: 'Rao PSRS (2000). Sampling Methodologies with Applications, 1st edition. Chapman & Hall/CRC.' },
+                            { title: 'Thompson SK (2012). Sampling, 3rd edition. Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'AST206 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH207: Mathematical Methods',
+                        resourceId: 'MATH207',
+                        books: [
+                            { title: 'Burden RJ and Faires JD (2010). Numerical Analysis, 9th edition. Brooks Cole.' },
+                            { title: 'Kreyszig E (2011). Advanced Engineering Mathematics, 10th edition. Wiley.' },
+                            { title: 'Jeffrey A (2001). Advanced Engineering Mathematics. Academic Press.' }
+                        ],
+                        questions: [
+                            { title: 'MATH207 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'MATH208: Mathematical Analysis',
+                        resourceId: 'MATH208',
+                        books: [
+                            { title: 'Rudin W (2017). Principles of Mathematical Analysis, 3rd edition. McGraw-Hill.' },
+                            { title: 'Pugh CC (2015). Real Mathematical Analysis. Springer.' },
+                            { title: 'Rudin W (1976). Principles of Mathematical Analysis. McGraw-Hill.' }
+                        ],
+                        questions: [
+                            { title: 'MATH208 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST230: R for Data Science',
+                        resourceId: 'AST230',
+                        books: [
+                            { title: 'Wickham H and Grolemund G (2017). R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O’Reilly.' },
+                            { title: 'Wickham H (2019). Advanced R, Second Edition. Chapman & Hall/CRC.' }
+                        ],
+                        questions: [
+                            { title: 'AST230 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST231: Statistical Simulation',
+                        resourceId: 'AST231',
+                        books: [
+                            { title: 'Jones O, Maillardet R and Robinson A (2009). Introduction to Scientific Programming and Simulation using R. Chapman & Hall/CRC.' },
+                            { title: 'Robinson EA (2011). Probability Theory and Applications. Springer.' }
+                        ],
+                        questions: [
+                            { title: 'AST231 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST232: Statistical Computing I',
+                        resourceId: 'AST232',
+                        books: [
+                            { title: 'No specific textbooks listed for this course in the provided syllabus. Content is application-focused.' }
+                        ],
+                        questions: [
+                            { title: 'AST232 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST240: Oral II',
+                        resourceId: 'AST240',
+                        books: [
+                            { title: 'Oral II Preparation Guide' }
+                        ],
+                        questions: [
+                            { title: 'AST240 Previous Year Questions', file: '#' }
+                        ]
+                    }
+                ],
+                3: [
+                    {
+                        title: 'AST301: Design and Analysis of Experiments II',
+                        resourceId: 'AST301',
+                        books: [
+                            { title: 'Montgomery DC (2019). Design and Analysis of Experiments, 10th edition. Wiley.' },
+                            { title: 'Dean AM, Voss AM, and Dragulji´c (2017). Design and Analysis of Experiments, 2nd edition. Springer.' },
+                            { title: 'Bailey R (2008). Design of Comparative Experiments. Cambridge.' }
+                        ],
+                        questions: [
+                            { title: 'AST301 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST302: Sampling Methods II',
+                        resourceId: 'AST302',
+                        books: [
+                            { title: 'Cochran WG (1977). Sampling Techniques, 3rd edition. Wiley.' },
+                            { title: 'Lohr SL (1998). Sampling: Design and Analysis. Duxbury.' },
+                            { title: 'Thompson SK (2012). Sampling, 3rd edition. Wiley.' },
+                            { title: 'Kirk MW (2007). Introduction to Variance Estimation, 2nd edition.Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'AST302 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST303: Linear Regression Analysis',
+                        resourceId: 'AST303',
+                        books: [
+                            { title: 'Weisberg S (2013). Applied Linear Regression, 4th edition. Wiley.' },
+                            { title: 'Kutner M, Nachtsheim C, Neter J, and Li W (2014). Applied Linear Statistical Models, 5th edition, McGraw-Hill/Irwin.', file: '#' },
+                            { title: 'Draper NR and Smith H (1999). Applied Regression Analysis, 3rd edition. Wiley.' },
+                            { title: 'Christensen R (2011). Plane Answers to Complex Questions: The Theory of Linear Models, 4th edition, Springer.' }
+                        ],
+                        questions: [
+                            { title: 'AST303 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST304: Epidemiology',
+                        resourceId: 'AST304',
+                        books: [
+                            { title: 'Jewell NP (2003). Statistics for Epidemiology. Chapman and Hall.' },
+                            { title: 'Timothy L. Lash. Tyler J. Vander Weele, Sebastien Haneuse, and Kenneth J. Rothman (2021). Modern Epidemiology, 4th edition. Wolters Kluwer.' },
+                            { title: 'Fleiss JL, Levin B, and Paik MC (2003). Statistical Methods for Rates and Proportions, 3rd Edition. Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'AST304 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST305: Lifetime Data Analysis I',
+                        resourceId: 'AST305',
+                        books: [
+                            { title: 'Lawless J (2003). Statistical Models and Methods for Lifetime Data, 2nd Edition. Wiley.' },
+                            { title: 'Kalbfleisch J and Prentice R (2003). The Statistical Analysis of Failure Time Data, 2nd edition. Wiley.' },
+                            { title: 'Collett D (2014). Modelling Survival Data in Medical Research, 3rd edition. Chapman & Hall/CR.' }
+                        ],
+                        questions: [
+                            { title: 'AST305 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST306: Statistical Inference II',
+                        resourceId: 'AST306',
+                        books: [
+                            { title: 'Mukhopadhyay N (2020). Probability and Statistical Inference. CRC Press.' },
+                            { title: 'Rice J (2013). Mathematical Statistics and Data Analysis., 3rd Edition. Cengage Learning.' },
+                            { title: 'Hogg RV, McKean J and Craig AT (2019). Introduction to Mathematical Statistics, 8th Edition. Pearson.' }
+                        ],
+                        questions: [
+                            { title: 'AST306 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST307: Multivariate Statistics I',
+                        resourceId: 'AST307',
+                        books: [
+                            { title: 'Johnson RA and Wichern DW (2008). Applied Multivariate Statistical Analysis, 6th edition. Prentice-Hall.' },
+                            { title: 'Srivastava MS (2002). Methods of Multivariate Statistics. Wiley.' },
+                            { title: 'Anderson TW (2003). An Introduction to Multivariate Statistical Analysis. 3rd edition. Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'AST307 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST308: Research Methodology',
+                        resourceId: 'AST308',
+                        books: [
+                            { title: 'Kothari CR and Garg G (2019). Research Methodology: Methods & Techniques. New Age.' },
+                            { title: 'Gertler PJ, Martinez S, Premand P, Rawlings LB and Vermeersch CMJ (2017) . Impact Evaluation in Practice, 2nd edition. World Bank Group, Washinngton DC.', file: '#' },
+                            { title: 'Coninck JD, Chaturvedi K, Haagsma B, Griffioen H and Glas MVD (2008). Planning, monitoring and evaluation in development organizations: sharing training and facilitation experiences. Sage.' }
+                        ],
+                        questions: [
+                            { title: 'AST308 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST330: Stata for Data Science',
+                        resourceId: 'AST330',
+                        books: [
+                            { title: 'Hamilton LC (2006). Statistics with Stata, Thomson Brooks/Cole.' },
+                            { title: 'Acock AC (2010). A Gentle Introduction to Stata, 6th edition. Stata Press.' }
+                        ],
+                        questions: [
+                            { title: 'AST330 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST331: Data Science with Python',
+                        resourceId: 'AST331',
+                        books: [
+                            { title: 'McKinney W. (2022). Python for data analysis: Data wrangling with Pandas, NumPy, and Jupyter, 3rd edition. O’Reilly.' },
+                            { title: 'VanderPlas J. (2016). Python data science handbook: Essential tools for working with data. O’Reilly.' },
+                            { title: 'Grus, J. (2019). Data science from scratch: First principles with python. O’Reilly.' }
+                        ],
+                        questions: [
+                            { title: 'AST331 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST340: Oral III',
+                        resourceId: 'AST340',
+                        books: [
+                            { title: 'Oral III Preparation Guide' }
+                        ],
+                        questions: [
+                            { title: 'AST340 Previous Year Questions', file: '#' }
+                        ]
+                    }
+                ],
+                4: [
+                    {
+                        title: 'AST401: Advanced Probability and Stochastic Processes',
+                        resourceId: 'AST401',
+                        books: [
+                            { title: 'Grimmett G and Stirzaker D (2001). Probability and Random Processes, 3rd edition. Oxford.' },
+                            { title: 'Ross S (2010). Introduction to Probability Models, 10th edition. Elsevier.' },
+                            { title: 'Jones PW and Smith P (2018). Stochastic Processes: An Introduction, 3rd Edition. Routledge.' }
+                        ],
+                        questions: [
+                            { title: 'AST401 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST402: Statistics for AI and Machine Learning',
+                        resourceId: 'AST402',
+                        books: [
+                            { title: 'Stuart J. Russell and Peter Norvig (2021). Artificial Intelligence: A Modern Approach, 4th edition, Pearson Education Inc.' },
+                            { title: 'James G, Witten D, Hastie T and Tibshirani R (2013). An Introduction to Statistical Learning: with Applications in R. Springer.' },
+                            { title: 'Hastie T, Tibshirani R and Friedman J (2009). The Elements of Statistical Learning: Data Mining, Inference and Prediction, 2nd edition. Springer.' },
+                            { title: 'Russell S and Norvig, P (2020). Artificial Intelligence: A Modern Approach, 4th edition. Pearson Education.' }
+                        ],
+                        questions: [
+                            { title: 'AST402 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST403: Multivariate Statistics II',
+                        resourceId: 'AST403',
+                        books: [
+                            { title: 'Johnson RA and Wichern DW (2008). Applied Multivariate Statistical Analysis, 6th edition. Prentice-Hall.' },
+                            { title: 'Srivastava MS (2002). Methods of Multivariate Statistics. Wiley.' },
+                            { title: 'Anderson TW (2003). An Introduction to Multivariate Statistical Analysis. 3rd edition. Wiley.' }
+                        ],
+                        questions: [
+                            { title: 'AST403 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST404: Econometric Methods',
+                        resourceId: 'AST404',
+                        books: [
+                            { title: 'Greene WH (2011). Econometric Analysis, 7th edition. Prentice Hall.' },
+                            { title: 'Gujarati DN (2010). Basic Econometrics, 5th edition. McGraw-Hill.' },
+                            { title: 'Wooldridge JM (2010). Introductory Econometrics: A Modern Approach, 5th edition. Cengage Learning.' }
+                        ],
+                        questions: [
+                            { title: 'AST404 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST405: Lifetime Data Analysis II',
+                        resourceId: 'AST405',
+                        books: [
+                            { title: 'Lawless J (2003). Statistical Models and Methods for Lifetime Data, 2nd Edition. Wiley.' },
+                            { title: 'Kalbfleisch J and Prentice R (2003). The Statistical Analysis of Failure Time Data, 2nd edition. Wiley.' },
+                            { title: 'Collett D (2014). Modelling Survival Data in Medical Research, 3rd edition. Chapman & Hall/CR.' },
+                            { title: 'Therneau TM and Grambsch PM (2000). Modeling survival data: extending Cox model. Springer.' }
+                        ],
+                        questions: [
+                            { title: 'AST405 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'CSE406: Big Data Analytics',
+                        resourceId: 'CSE406',
+                        books: [
+                            { title: 'Balusamy B, Nandhini AR, Kadry S, and Gandomi AH (2021). Big Data: Concepts, Technology, and Architecture. Wiley.' },
+                            { title: 'Li K-C, Jiang H, Yang LT, and Cuzzocrea A (2015). Big Data: Algorithms, Analytics, and Applications. Chapman & Hall/CRC.' },
+                            { title: 'Erl T, Khattak W, and Buhler P (2016). Big Data Fundamentals: Concepts, Drivers & Techniques. The Prentice Hall.' }
+                        ],
+                        questions: [
+                            { title: 'CSE406 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST407: Time Series Modelling',
+                        resourceId: 'AST407',
+                        books: [
+                            { title: 'Jonathan DC and Kung-Sik C (2008). Time Series Analysis - With Applications in R. Springer.' },
+                            { title: 'Spyros M, Steven W and Rob H (1997). Forecasting – Methods and Applications, 3rd edition. Wiley.' },
+                            { title: 'Chatfield C (2003). The Analysis of Time Series, 6th edition. Chapman & Hall.' },
+                            { title: 'Shumway RH and Stoffer DS (2011). Time Series Analysis and Its Applications: With R Examples. Springer.' },
+                            { title: 'Brockwell PJ and Davis RA (2002). Introduction to Time Series and Forecasting. 3rd edition. Springer.' }
+                        ],
+                        questions: [
+                            { title: 'AST407 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST408: Generalized Linear Models',
+                        resourceId: 'AST408',
+                        books: [
+                            { title: 'Dobson AJ and Barnett AG (2008). An Introduction to Generalized Linear Models, 3rd edition. Chapman & Hall.' },
+                            { title: 'McCullagh P and Nelder JA (1989). Generalized Linear Models, 2nd edition. CRC Press.' },
+                            { title: 'Agresti A (2007). An Introduction to Categorical Data Analysis. 2nd edition. Wiley.' },
+                            { title: 'Generalized Linear Models and Extensions, 4th edition.' }
+                        ],
+                        questions: [
+                            { title: 'AST408 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST409: Official Statistics',
+                        resourceId: 'AST409',
+                        books: [
+                            { title: 'Linneman TJ (2014). Social Statistics: Managing Data, Conducting Analyses, Presenting Results. Routledge.' },
+                            { title: 'Stillwell J and Clarke M (2011). Population Dynamics and Projection Methods, 4th edition, Springer.' },
+                            { title: 'Haughton J and Khandker SR (2009). Handbook on Poverty and Inequality. Washington, DC: World Bank.' },
+                            { title: 'Rahman PkMM (2016). Fundamentals of Social Statistics and Social Development. Osder.' },
+                            { title: 'Chadha NK (2009). Applied Psychometry. Sage.' },
+                            { title: 'NIPORT and ICF (2023). Bangladesh Demographic and Health Survey, 2022. Dhaka, Bangladesh and Rockville, Maryland, USA.' }
+                        ],
+                        questions: [
+                            { title: 'AST409 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST430: Statistical Computing IV',
+                        resourceId: 'AST430',
+                        books: [
+                            { title: 'No specific textbooks listed for this course in the provided syllabus. Content is application-focused.' }
+                        ],
+                        questions: [
+                            { title: 'AST430 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST431: Statistical Computing V',
+                        resourceId: 'AST431',
+                        books: [
+                            { title: 'No specific textbooks listed for this course in the provided syllabus. Content is application-focused.' }
+                        ],
+                        questions: [
+                            { title: 'AST431 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST432: Statistical Computing VI',
+                        resourceId: 'AST432',
+                        books: [
+                            { title: 'No specific textbooks listed for this course in the provided syllabus. Content is application-focused.' }
+                        ],
+                        questions: [
+                            { title: 'AST432 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST440: Oral IV',
+                        resourceId: 'AST440',
+                        books: [
+                            { title: 'Oral IV Preparation Guide' }
+                        ],
+                        questions: [
+                            { title: 'AST440 Previous Year Questions', file: '#' }
+                        ]
+                    },
+                    {
+                        title: 'AST450: B.S. Capstone Project',
+                        resourceId: 'AST450',
+                        books: [
+                            { title: 'Capstone Project Guidelines' }
+                        ],
+                        questions: [
+                            { title: 'AST450 Previous Year Questions', file: '#' }
+                        ]
+                    }
+                ]
+            }
         };
-
 
         function displayResources(year) {
             welcomeMessage.classList.add('hidden');
             resourcesContent.innerHTML = '';
             resourcesContent.classList.remove('hidden');
 
-            const yearResources = resourcesData[year];
-            if (yearResources && yearResources.length > 0) {
-                yearResources.forEach(resourceCategory => {
+            const yearSubjects = resourcesData.subjects[year];
+            if (yearSubjects && yearSubjects.length > 0) {
+                yearSubjects.forEach(subject => {
                     const card = document.createElement('div');
                     card.className = 'card p-6 flex flex-col items-center text-center';
                     card.innerHTML = `
-                        <h3 class="text-xl font-semibold mb-3 text-gray-800">${resourceCategory.title}</h3>
-                        <button class="btn-primary py-2 px-5 rounded-full font-medium text-sm mt-auto" onclick="openResourcesModal('${resourceCategory.resourceId}', '${resourceCategory.title}')">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">${subject.title}</h3>
+                        <button class="btn-primary py-2 px-5 rounded-full font-medium text-sm mt-auto" onclick="openResourcesModal('${subject.resourceId}')">
                             View Resources
                         </button>
                     `;
                     resourcesContent.appendChild(card);
                 });
             } else {
-                resourcesContent.innerHTML = '<p class="text-lg text-gray-600">No resources available for this year yet.</p>';
+                resourcesContent.innerHTML = '<p class="text-lg text-gray-600">No subject resources available for this year yet.</p>';
             }
         }
 
-        function openResourcesModal(resourceId, resourceTitle) {
-            modalResourceTitle.textContent = resourceTitle;
-            individualResourceList.innerHTML = '';
+        function openResourcesModal(resourceId) {
+            individualResourceList.innerHTML = ''; // Clear previous content
 
-            const resourceCategory = resourcesData[currentYear].find(category => category.resourceId === resourceId);
+            const subject = resourcesData.subjects[currentYear].find(s => s.resourceId === resourceId);
 
-            if (resourceCategory && resourceCategory.items.length > 0) {
-                resourceCategory.items.forEach(item => {
-                    const resourceItem = document.createElement('div');
-                    resourceItem.className = 'flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0';
-                    resourceItem.innerHTML = `
-                        <span class="text-gray-700">${item.title}</span>
-                        <a href="${item.file}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200">
-                            View File
-                        </a>
-                    `;
-                    individualResourceList.appendChild(resourceItem);
-                });
+            if (subject) {
+                modalResourceTitle.textContent = `${subject.title} Resources`;
+
+                // Add Books
+                if (subject.books && subject.books.length > 0) {
+                    const booksHeader = document.createElement('h3');
+                    booksHeader.className = 'text-xl font-semibold mt-4 mb-2 text-gray-800';
+                    booksHeader.textContent = 'Books';
+                    individualResourceList.appendChild(booksHeader);
+
+                    subject.books.forEach(item => {
+                        const resourceItem = document.createElement('div');
+                        resourceItem.className = 'flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0';
+                        resourceItem.innerHTML = `
+                            <span class="text-gray-700">${item.title}</span>
+                            <a href="${item.file ? item.file : '#'}" target="_blank" rel="noopener noreferrer" class="btn-primary py-2 px-4 rounded-full font-medium text-sm">
+                                View
+                            </a>
+                        `;
+                        individualResourceList.appendChild(resourceItem);
+                    });
+                }
+
+                // Add Questions
+                if (subject.questions && subject.questions.length > 0) {
+                    const questionsHeader = document.createElement('h3');
+                    questionsHeader.className = 'text-xl font-semibold mt-4 mb-2 text-gray-800';
+                    questionsHeader.textContent = 'Questions';
+                    individualResourceList.appendChild(questionsHeader);
+
+                    subject.questions.forEach(item => {
+                        const resourceItem = document.createElement('div');
+                        resourceItem.className = 'flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0';
+                        resourceItem.innerHTML = `
+                            <span class="text-gray-700">${item.title}</span>
+                            <a href="${item.file ? item.file : '#'}" target="_blank" rel="noopener noreferrer" class="btn-primary py-2 px-4 rounded-full font-medium text-sm">
+                                View
+                            </a>
+                        `;
+                        individualResourceList.appendChild(resourceItem);
+                    });
+                }
+
+                if ((!subject.books || subject.books.length === 0) && (!subject.questions || subject.questions.length === 0)) {
+                    individualResourceList.innerHTML = '<p class="text-gray-600">No resources available for this subject yet.</p>';
+                }
+
             } else {
-                individualResourceList.innerHTML = '<p class="text-gray-600">No items available in this section yet.</p>';
+                individualResourceList.innerHTML = '<p class="text-gray-600">Subject not found.</p>';
             }
+
             resourcesModal.classList.remove('hidden');
             setTimeout(() => {
                 resourcesModal.classList.add('modal-enter-active');
