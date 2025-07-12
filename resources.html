@@ -112,7 +112,7 @@
 
         <div id="resourcesDisplay" class="w-full max-w-5xl">
             <div id="welcomeMessage" class="text-lg text-gray-600">
-                <p class="mb-4">Welcome to the resources section! Here you can find various materials like books and slides categorized by year.</p>
+                <p class="mb-4">Welcome to the resources section! Here you can find various materials like reference books, questions, and a toolbox, categorized by year.</p>
                 <p>Please select a year above to view the available resources.</p>
             </div>
 
@@ -148,474 +148,418 @@
         const resourcesData = {
             1: [
                 {
-                    title: 'AST101: Introduction to Applied Statistics and Data Science Resources',
+                    title: 'AST101: Introduction to Applied Statistics and Data Science Reference Books',
                     resourceId: 'AST101_R',
                     items: [
-                        { title: 'Book: Introductory Statistics', file: 'resources/year1/AST101_Book1.pdf' },
-                        { title: 'Slides: Week 1 Overview', file: 'resources/year1/AST101_Slides1.pdf' }
+                        { title: 'Book: Introductory Statistics', file: 'resources/year1/AST101_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST102: Elements of Probability Resources',
+                    title: 'AST102: Elements of Probability Reference Books',
                     resourceId: 'AST102_R',
                     items: [
                         { title: 'Book: A First Course in Probability', file: 'https://drive.google.com/file/d/1OSz_TvPdJRQfeTlMa_EPPgfn4XjlhSwW/view?usp=drive_link' },
                     ]
                 },
                 {
-                    title: 'MATH103: Foundations of Mathematics Resources',
+                    title: 'MATH103: Foundations of Mathematics Reference Books',
                     resourceId: 'MATH103_R',
                     items: [
-                        { title: 'Book: Theory and Problems of Modern Algebra', file: 'resources/year1/MATH103_Book1.pdf' },
-                        { title: 'Slides: Theory of Numbers', file: 'resources/year1/MATH103_Slides1.pdf' }
+                        { title: 'Book: Theory and Problems of Modern Algebra', file: 'resources/year1/MATH103_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'MATH104: Differential Calculus Resources',
+                    title: 'MATH104: Differential Calculus Reference Books',
                     resourceId: 'MATH104_R',
                     items: [
-                        { title: 'Book: Calculus', file: 'resources/year1/MATH104_Book1.pdf' },
-                        { title: 'Slides: Functions and Graphs', file: 'resources/year1/MATH104_Slides1.pdf' }
+                        { title: 'Book: Calculus', file: 'resources/year1/MATH104_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'MATH105: Integral Calculus Resources',
+                    title: 'MATH105: Integral Calculus Reference Books',
                     resourceId: 'MATH105_R',
                     items: [
-                        { title: 'Book: Integral Calculus', file: 'resources/year1/MATH105_Book1.pdf' },
-                        { title: 'Slides: Antiderivatives', file: 'resources/year1/MATH105_Slides1.pdf' }
+                        { title: 'Book: Integral Calculus', file: 'resources/year1/MATH105_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'MATH106: Linear Algebra Resources',
+                    title: 'MATH106: Linear Algebra Reference Books',
                     resourceId: 'MATH106_R',
                     items: [
-                        { title: 'Book: Elementary Linear Algebra', file: 'resources/year1/MATH106_Book1.pdf' },
-                        { title: 'Slides: Matrices and Vectors', file: 'resources/year1/MATH106_Slides1.pdf' }
+                        { title: 'Book: Elementary Linear Algebra', file: 'resources/year1/MATH106_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'ECON107: Economics Resources',
+                    title: 'ECON107: Economics Reference Books',
                     resourceId: 'ECON107_R',
                     items: [
-                        { title: 'Book: Economics', file: 'resources/year1/ECON107_Book1.pdf' },
-                        { title: 'Slides: Definition and Scope', file: 'resources/year1/ECON107_Slides1.pdf' }
+                        { title: 'Book: Economics', file: 'resources/year1/ECON107_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'ENG108: English Communication Skills Resources',
+                    title: 'ENG108: English Communication Skills Reference Books',
                     resourceId: 'ENG108_R',
                     items: [
-                        { title: 'Book: Academic Writing', file: 'resources/year1/ENG108_Book1.pdf' },
-                        { title: 'Slides: Reading Skills', file: 'resources/year1/ENG108_Slides1.pdf' }
+                        { title: 'Book: Academic Writing', file: 'resources/year1/ENG108_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'CSE130: Programming with C/C++ Resources',
+                    title: 'CSE130: Programming with C/C++ Reference Books',
                     resourceId: 'CSE130_R',
                     items: [
-                        { title: 'Book: C How to Program', file: 'resources/year1/CSE130_Book1.pdf' },
-                        { title: 'Slides: Introduction to C', file: 'resources/year1/CSE130_Slides1.pdf' }
+                        { title: 'Book: C How to Program', file: 'resources/year1/CSE130_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'CSE131: SQL for Data Science Resources',
+                    title: 'CSE131: SQL for Data Science Reference Books',
                     resourceId: 'CSE131_R',
                     items: [
-                        { title: 'Book: Learning SQL', file: 'resources/year1/CSE131_Book1.pdf' },
-                        { title: 'Slides: Introduction to SQL', file: 'resources/year1/CSE131_Slides1.pdf' }
+                        { title: 'Book: Learning SQL', file: 'resources/year1/CSE131_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST140: Oral I Resources',
+                    title: 'AST140: Oral I Reference Books',
                     resourceId: 'AST140_R',
                     items: [
                         { title: 'Oral I Preparation Guide', file: 'resources/year1/AST140_P1.pdf' }
                     ]
                 },
+                {
+                    title: 'Year 1 Questions',
+                    resourceId: 'Y1_Q',
+                    items: []
+                },
+                {
+                    title: 'Year 1 Toolbox',
+                    resourceId: 'Y1_T',
+                    items: []
+                }
             ],
             2: [
                 {
-                    title: 'AST201: Sampling Distributions Resources',
+                    title: 'AST201: Sampling Distributions Reference Books',
                     resourceId: 'AST201_R',
                     items: [
-                        { title: 'Book: Probability Theory and Applications', file: 'resources/year2/AST201_Book1.pdf' },
-                        { title: 'Slides: Generating Functions', file: 'resources/year2/AST201_Slides1.pdf' }
+                        { title: 'Book: Probability Theory and Applications', file: 'resources/year2/AST201_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST202: Actuarial Statistics Resources',
+                    title: 'AST202: Actuarial Statistics Reference Books',
                     resourceId: 'AST202_R',
                     items: [
-                        { title: 'Book: The Theory of Interest', file: 'resources/year2/AST202_Book1.pdf' },
-                        { title: 'Slides: Actuarial Science Basics', file: 'resources/year2/AST202_Slides1.pdf' }
+                        { title: 'Book: The Theory of Interest', file: 'resources/year2/AST202_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST203: Statistical Inference I Resources',
+                    title: 'AST203: Statistical Inference I Reference Books',
                     resourceId: 'AST203_R',
                     items: [
-                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year2/AST203_Book1.pdf' },
-                        { title: 'Slides: Basic Concepts', file: 'resources/year2/AST203_Slides1.pdf' }
+                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year2/AST203_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST204: Design and Analysis of Experiments I Resources',
+                    title: 'AST204: Design and Analysis of Experiments I Reference Books',
                     resourceId: 'AST204_R',
                     items: [
-                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year2/AST204_Book1.pdf' },
-                        { title: 'Slides: Intro to DOE', file: 'resources/year2/AST204_Slides1.pdf' }
+                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year2/AST204_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST205: Demography Resources',
+                    title: 'AST205: Demography Reference Books',
                     resourceId: 'AST205_R',
                     items: [
-                        { title: 'Book: The Methods and Materials of Demography', file: 'resources/year2/AST205_Book1.pdf' },
-                        { title: 'Slides: Demography Basics', file: 'resources/year2/AST205_Slides1.pdf' }
+                        { title: 'Book: The Methods and Materials of Demography', file: 'resources/year2/AST205_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST206: Sampling Methods I Resources',
+                    title: 'AST206: Sampling Methods I Reference Books',
                     resourceId: 'AST206_R',
                     items: [
-                        { title: 'Book: Sampling', file: 'resources/year2/AST206_Book1.pdf' },
-                        { title: 'Slides: Sampling Concepts', file: 'resources/year2/AST206_Slides1.pdf' }
+                        { title: 'Book: Sampling', file: 'resources/year2/AST206_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'MATH207: Mathematical Methods Resources',
+                    title: 'MATH207: Mathematical Methods Reference Books',
                     resourceId: 'MATH207_R',
                     items: [
-                        { title: 'Book: Numerical Analysis', file: 'resources/year2/MATH207_Book1.pdf' },
-                        { title: 'Slides: Interpolation', file: 'resources/year2/MATH207_Slides1.pdf' }
+                        { title: 'Book: Numerical Analysis', file: 'resources/year2/MATH207_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'MATH208: Mathematical Analysis Resources',
+                    title: 'MATH208: Mathematical Analysis Reference Books',
                     resourceId: 'MATH208_R',
                     items: [
-                        { title: 'Book: Principles of Mathematical Analysis', file: 'resources/year2/MATH208_Book1.pdf' },
-                        { title: 'Slides: Real Number System', file: 'resources/year2/MATH208_Slides1.pdf' }
+                        { title: 'Book: Principles of Mathematical Analysis', file: 'resources/year2/MATH208_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST230: R for Data Science Resources',
+                    title: 'AST230: R for Data Science Reference Books',
                     resourceId: 'AST230_R',
                     items: [
-                        { title: 'Book: R for Data Science', file: 'resources/year2/AST230_Book1.pdf' },
-                        { title: 'Slides: Introduction to R', file: 'resources/year2/AST230_Slides1.pdf' }
+                        { title: 'Book: R for Data Science', file: 'resources/year2/AST230_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST231: Statistical Simulation Resources',
+                    title: 'AST231: Statistical Simulation Reference Books',
                     resourceId: 'AST231_R',
                     items: [
-                        { title: 'Book: Introduction to Scientific Programming and Simulation using R', file: 'resources/year2/AST231_Book1.pdf' },
-                        { title: 'Slides: Simulation Concepts', file: 'resources/year2/AST231_Slides1.pdf' }
+                        { title: 'Book: Simulation', file: 'resources/year2/AST231_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST232: Statistical Computing I Resources',
+                    title: 'AST232: Statistical Computing I Reference Books',
                     resourceId: 'AST232_R',
                     items: [
-                        { title: 'Slides: Experimental Design Computing', file: 'resources/year2/AST232_Slides1.pdf' }
+                        { title: 'Book: Statistical Computing with R', file: 'resources/year2/AST232_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST240: Oral II Resources',
+                    title: 'AST240: Oral II Reference Books',
                     resourceId: 'AST240_R',
                     items: [
                         { title: 'Oral II Preparation Guide', file: 'resources/year2/AST240_P1.pdf' }
                     ]
                 },
+                {
+                    title: 'Year 2 Questions',
+                    resourceId: 'Y2_Q',
+                    items: []
+                },
+                {
+                    title: 'Year 2 Toolbox',
+                    resourceId: 'Y2_T',
+                    items: []
+                }
             ],
             3: [
                 {
-                    title: 'AST301: Design and Analysis of Experiments II Resources',
+                    title: 'AST301: Statistical Inference II Reference Books',
                     resourceId: 'AST301_R',
                     items: [
-                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year3/AST301_Book1.pdf' },
-                        { title: 'Slides: Factorial Designs', file: 'resources/year3/AST301_Slides1.pdf' }
+                        { title: 'Book: Statistical Inference', file: 'resources/year3/AST301_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST302: Sampling Methods II Resources',
+                    title: 'AST302: Regression Analysis Reference Books',
                     resourceId: 'AST302_R',
                     items: [
-                        { title: 'Book: Sampling Techniques', file: 'resources/year3/AST302_Book1.pdf' },
-                        { title: 'Slides: PPS Sampling', file: 'resources/year3/AST302_Slides1.pdf' }
+                        { title: 'Book: Applied Linear Regression Models', file: 'resources/year3/AST302_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST303: Linear Regression Analysis Resources',
+                    title: 'AST303: Design and Analysis of Experiments II Reference Books',
                     resourceId: 'AST303_R',
                     items: [
-                        { title: 'Book: Applied Linear Regression', file: 'resources/year3/AST303_Book1.pdf' },
-                        { title: 'Slides: Simple Linear Regression', file: 'resources/year3/AST303_Slides1.pdf' }
+                        { title: 'Book: Design and Analysis of Experiments', file: 'resources/year3/AST303_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST304: Epidemiology Resources',
+                    title: 'AST304: Non-parametric Statistics Reference Books',
                     resourceId: 'AST304_R',
                     items: [
-                        { title: 'Book: Statistics for Epidemiology', file: 'resources/year3/AST304_Book1.pdf' },
-                        { title: 'Slides: Intro to Epidemiology', file: 'resources/year3/AST304_Slides1.pdf' }
+                        { title: 'Book: Nonparametric Statistical Methods', file: 'resources/year3/AST304_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST305: Lifetime Data Analysis I Resources',
+                    title: 'AST305: Econometrics Reference Books',
                     resourceId: 'AST305_R',
                     items: [
-                        { title: 'Book: Statistical Models and Methods for Lifetime Data', file: 'resources/year3/AST305_Book1.pdf' },
-                        { title: 'Slides: Basic Concepts', file: 'resources/year3/AST305_Slides1.pdf' }
+                        { title: 'Book: Basic Econometrics', file: 'resources/year3/AST305_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST306: Statistical Inference II Resources',
+                    title: 'AST306: Biostatistics Reference Books',
                     resourceId: 'AST306_R',
                     items: [
-                        { title: 'Book: Probability and Statistical Inference', file: 'resources/year3/AST306_Book1.pdf' },
-                        { title: 'Slides: Statistical Inference Methods', file: 'resources/year3/AST306_Slides1.pdf' }
+                        { title: 'Book: Biostatistics: A Foundation for Analysis in the Health Sciences', file: 'resources/year3/AST306_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST307: Multivariate Statistics I Resources',
+                    title: 'AST307: Population Studies Reference Books',
                     resourceId: 'AST307_R',
                     items: [
-                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year3/AST307_Book1.pdf' },
-                        { title: 'Slides: Preliminaries', file: 'resources/year3/AST307_Slides1.pdf' }
+                        { title: 'Book: Population and Society', file: 'resources/year3/AST307_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST308: Research Methodology Resources',
+                    title: 'AST308: Statistical Quality Control Reference Books',
                     resourceId: 'AST308_R',
                     items: [
-                        { title: 'Book: Research Methodology: Methods & Techniques', file: 'resources/year3/AST308_Book1.pdf' },
-                        { title: 'Slides: Foundations of Research', file: 'resources/year3/AST308_Slides1.pdf' }
+                        { title: 'Book: Introduction to Statistical Quality Control', file: 'resources/year3/AST308_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST330: Stata for Data Science Resources',
+                    title: 'AST330: Statistical Computing II Reference Books',
                     resourceId: 'AST330_R',
                     items: [
-                        { title: 'Book: Statistics with Stata', file: 'resources/year3/AST330_Book1.pdf' },
-                        { title: 'Slides: Introduction to Stata', file: 'resources/year3/AST330_Slides1.pdf' }
+                        { title: 'Book: Computational Statistics', file: 'resources/year3/AST330_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'CSE331: Python for Data Science Resources',
-                    resourceId: 'CSE331_R',
+                    title: 'AST331: Data Science with Python Reference Books',
+                    resourceId: 'AST331_R',
                     items: [
-                        { title: 'Book: Python for data analysis', file: 'resources/year3/CSE331_Book1.pdf' },
-                        { title: 'Slides: Fundamentals of Python', file: 'resources/year3/CSE331_Slides1.pdf' }
+                        { title: 'Book: Python for Data Analysis', file: 'resources/year3/AST331_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST332: Statistical Computing II Resources',
-                    resourceId: 'AST332_R',
-                    items: [
-                        { title: 'Slides: GLMs Computing', file: 'resources/year3/AST332_Slides1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST333: Statistical Computing III Resources',
-                    resourceId: 'AST333_R',
-                    items: [
-                        { title: 'Slides: Regression Models Computing', file: 'resources/year3/AST333_Slides1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST340: Oral III Resources',
+                    title: 'AST340: Oral III Reference Books',
                     resourceId: 'AST340_R',
                     items: [
                         { title: 'Oral III Preparation Guide', file: 'resources/year3/AST340_P1.pdf' }
                     ]
                 },
+                {
+                    title: 'Year 3 Questions',
+                    resourceId: 'Y3_Q',
+                    items: []
+                },
+                {
+                    title: 'Year 3 Toolbox',
+                    resourceId: 'Y3_T',
+                    items: []
+                }
             ],
             4: [
                 {
-                    title: 'AST401: Advanced Probability and Stochastic Processes Resources',
+                    title: 'AST401: Multivariate Analysis Reference Books',
                     resourceId: 'AST401_R',
                     items: [
-                        { title: 'Book: Probability and Random Processes', file: 'resources/year4/AST401_Book1.pdf' },
-                        { title: 'Slides: Modern Probability', file: 'resources/year4/AST401_Slides1.pdf' }
+                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year4/AST401_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST402: Statistics for AI and Machine Learning Resources',
+                    title: 'AST402: Time Series Analysis Reference Books',
                     resourceId: 'AST402_R',
                     items: [
-                        { title: 'Book: Artificial Intelligence: A Modern Approach', file: 'resources/year4/AST402_Book1.pdf' },
-                        { title: 'Slides: Intro to AI/ML', file: 'resources/year4/AST402_Slides1.pdf' }
+                        { title: 'Book: Time Series Analysis and Its Applications', file: 'resources/year4/AST402_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST403: Multivariate Statistics II Resources',
+                    title: 'AST403: Categorical Data Analysis and Generalized Linear Models Reference Books',
                     resourceId: 'AST403_R',
                     items: [
-                        { title: 'Book: Applied Multivariate Statistical Analysis', file: 'resources/year4/AST403_Book1.pdf' },
-                        { title: 'Slides: Principal Components', file: 'resources/year4/AST403_Slides1.pdf' }
+                        { title: 'Book: An Introduction to Generalized Linear Models', file: 'resources/year4/AST403_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST404: Econometric Methods Resources',
+                    title: 'AST404: Survival Analysis Reference Books',
                     resourceId: 'AST404_R',
                     items: [
-                        { title: 'Book: Econometric Analysis', file: 'resources/year4/AST404_Book1.pdf' },
-                        { title: 'Slides: Econometric Modeling', file: 'resources/year4/AST404_Slides1.pdf' }
+                        { title: 'Book: Applied Survival Analysis', file: 'resources/year4/AST404_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST405: Lifetime Data Analysis II Resources',
+                    title: 'AST405: Bayesian Statistics Reference Books',
                     resourceId: 'AST405_R',
                     items: [
-                        { title: 'Book: Statistical Models and Methods for Lifetime Data', file: 'resources/year4/AST405_Book1.pdf' },
-                        { title: 'Slides: Parametric Regression Models', file: 'resources/year4/AST405_Slides1.pdf' }
+                        { title: 'Book: Bayesian Data Analysis', file: 'resources/year4/AST405_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'CSE406: Big Data Analytics Resources',
-                    resourceId: 'CSE406_R',
+                    title: 'AST406: Environmental Statistics Reference Books',
+                    resourceId: 'AST406_R',
                     items: [
-                        { title: 'Book: Big Data: Concepts, Technology, and Architecture', file: 'resources/year4/CSE406_Book1.pdf' },
-                        { title: 'Slides: Intro to Big Data', file: 'resources/year4/CSE406_Slides1.pdf' }
+                        { title: 'Book: Environmental Statistics with S-Plus', file: 'resources/year4/AST406_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST407: Time Series Modelling Resources',
+                    title: 'AST407: Machine Learning Reference Books',
                     resourceId: 'AST407_R',
                     items: [
-                        { title: 'Book: Time Series Analysis - With Applications in R', file: 'resources/year4/AST407_Book1.pdf' },
-                        { title: 'Slides: Time Series Examples', file: 'resources/year4/AST407_Slides1.pdf' }
+                        { title: 'Book: An Introduction to Statistical Learning', file: 'resources/year4/AST407_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST408: Generalized Linear Models Resources',
+                    title: 'AST408: Data Mining Reference Books',
                     resourceId: 'AST408_R',
                     items: [
-                        { title: 'Book: An Introduction to Generalized Linear Models', file: 'resources/year4/AST408_Book1.pdf' },
-                        { title: 'Slides: Exponential Family', file: 'resources/year4/AST408_Slides1.pdf' }
+                        { title: 'Book: Data Mining: Concepts and Techniques', file: 'resources/year4/AST408_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST409: Official Statistics Resources',
-                    resourceId: 'AST409_R',
-                    items: [
-                        { title: 'Book: Social Statistics: Managing Data, Conducting Analyses, Presenting Results', file: 'resources/year4/AST409_Book1.pdf' },
-                        { title: 'Slides: Domains of Official Statistics', file: 'resources/year4/AST409_Slides1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST430: Statistical Computing IV Resources',
+                    title: 'AST430: Big Data Analytics Reference Books',
                     resourceId: 'AST430_R',
                     items: [
-                        { title: 'Slides: Multivariate Computing', file: 'resources/year4/AST430_Slides1.pdf' }
+                        { title: 'Book: Big Data Analytics: A Practitioner\'s Guide to Using R and Python for Transforming Big Data into Insight', file: 'resources/year4/AST430_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST431: Statistical Computing V Resources',
+                    title: 'AST431: Deep Learning Reference Books',
                     resourceId: 'AST431_R',
                     items: [
-                        { title: 'Slides: Time Series Computing', file: 'resources/year4/AST431_Slides1.pdf' }
+                        { title: 'Book: Deep Learning', file: 'resources/year4/AST431_Book1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST432: Statistical Computing VI Resources',
-                    resourceId: 'AST432_R',
-                    items: [
-                        { title: 'Slides: GLMs and Survival Models Computing', file: 'resources/year4/AST432_Slides1.pdf' }
-                    ]
-                },
-                {
-                    title: 'AST440: Oral IV Resources',
+                    title: 'AST440: Oral IV Reference Books',
                     resourceId: 'AST440_R',
                     items: [
                         { title: 'Oral IV Preparation Guide', file: 'resources/year4/AST440_P1.pdf' }
                     ]
                 },
                 {
-                    title: 'AST450: B.S. Capstone Project Resources',
-                    resourceId: 'AST450_R',
-                    items: [
-                        { title: 'Capstone Project Guidelines', file: 'resources/year4/AST450_P1.pdf' }
-                    ]
+                    title: 'Year 4 Questions',
+                    resourceId: 'Y4_Q',
+                    items: []
                 },
+                {
+                    title: 'Year 4 Toolbox',
+                    resourceId: 'Y4_T',
+                    items: []
+                }
             ]
         };
 
-        function openResourcesModal(year, resourceId) {
-            const subjectData = resourcesData[year]?.find(s => s.resourceId === resourceId);
-
-            if (!subjectData) {
-                console.error('Resource data not found for:', { year, resourceId });
-                return;
-            }
-
-            modalResourceTitle.textContent = subjectData.title;
-            individualResourceList.innerHTML = '';
-
-            if (subjectData.items && subjectData.items.length > 0) {
-                subjectData.items.forEach(item => {
-                    const resourceItem = document.createElement('div');
-                    resourceItem.classList.add('card', 'p-4', 'flex', 'flex-col', 'md:flex-row', 'justify-between', 'items-center', 'space-y-2', 'md:space-y-0', 'md:space-x-4');
-                    
-                    resourceItem.innerHTML = `
-                        <h4 class="text-lg font-medium text-gray-700 text-center md:text-left flex-grow">${item.title}</h4>
-                        <div class="flex space-x-3">
-                            <button onclick="viewPdf('${item.file}')" class="btn-primary py-2 px-5 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                                View
-                            </button>
-                        </div>
-                    `;
-                    individualResourceList.appendChild(resourceItem);
-                });
-            } else {
-                individualResourceList.innerHTML = `<p class="text-md text-gray-500 text-center">No individual resources available for this subject.</p>`;
-            }
-
-            openModal('resourcesModal');
-        }
 
         function displayResources(year) {
-            resourcesContent.innerHTML = '';
             welcomeMessage.classList.add('hidden');
+            resourcesContent.innerHTML = '';
             resourcesContent.classList.remove('hidden');
 
-            const selectedResources = resourcesData[year];
-
-            if (selectedResources && selectedResources.length > 0) {
-                selectedResources.forEach(resource => {
+            const yearResources = resourcesData[year];
+            if (yearResources && yearResources.length > 0) {
+                yearResources.forEach(resourceCategory => {
                     const card = document.createElement('div');
-                    card.classList.add('card', 'p-6', 'rounded-xl', 'flex', 'flex-col', 'justify-between', 'items-center', 'text-center', 'space-y-4');
-                    
+                    card.className = 'card p-6 flex flex-col items-center text-center';
                     card.innerHTML = `
-                        <h3 class="text-xl font-semibold text-gray-800">${resource.title}</h3>
-                        <div class="flex space-x-4">
-                            <button onclick="openResourcesModal('${year}', '${resource.resourceId}')" class="btn-primary py-2 px-6 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                                View Resources
-                            </button>
-                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">${resourceCategory.title}</h3>
+                        <button class="btn-primary py-2 px-5 rounded-full font-medium text-sm mt-auto" onclick="openResourcesModal('${resourceCategory.resourceId}', '${resourceCategory.title}')">
+                            View Resources
+                        </button>
                     `;
                     resourcesContent.appendChild(card);
                 });
             } else {
-                resourcesContent.innerHTML = `<p class="text-lg text-gray-600 text-center">No resources available for Year ${year}.</p>`;
+                resourcesContent.innerHTML = '<p class="text-lg text-gray-600">No resources available for this year yet.</p>';
             }
         }
 
-        function viewPdf(pdfUrl) {
-            window.open(pdfUrl, '_blank');
-        }
+        function openResourcesModal(resourceId, resourceTitle) {
+            modalResourceTitle.textContent = resourceTitle;
+            individualResourceList.innerHTML = '';
 
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            const modalContent = modal.querySelector('.modal-content');
+            const resourceCategory = resourcesData[currentYear].find(category => category.resourceId === resourceId);
 
-            modal.classList.remove('hidden');
+            if (resourceCategory && resourceCategory.items.length > 0) {
+                resourceCategory.items.forEach(item => {
+                    const resourceItem = document.createElement('div');
+                    resourceItem.className = 'flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0';
+                    resourceItem.innerHTML = `
+                        <span class="text-gray-700">${item.title}</span>
+                        <a href="${item.file}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200">
+                            View File
+                        </a>
+                    `;
+                    individualResourceList.appendChild(resourceItem);
+                });
+            } else {
+                individualResourceList.innerHTML = '<p class="text-gray-600">No items available in this section yet.</p>';
+            }
+            resourcesModal.classList.remove('hidden');
             setTimeout(() => {
-                modal.classList.add('modal-enter-active');
-                modalContent.classList.add('modal-content-enter-active');
+                resourcesModal.classList.add('modal-enter-active');
+                resourcesModal.querySelector('.modal-content').classList.add('modal-content-enter-active');
             }, 10);
         }
 

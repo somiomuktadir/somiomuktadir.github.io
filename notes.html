@@ -103,16 +103,7 @@
     <div class="w-full max-w-5xl mx-auto text-center pt-32 pb-16 px-4 flex flex-col items-center">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-8">My Notes</h1>
 
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 mb-12">
-            <button id="classNotesBtn" class="btn-primary py-3 px-10 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                Class Notes
-            </button>
-            <button id="practiceNotesBtn" class="btn-primary py-3 px-10 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                Practice Notes
-            </button>
-        </div>
-
-        <div id="yearButtons" class="flex flex-wrap justify-center gap-4 mb-12 hidden">
+        <div id="yearButtons" class="flex flex-wrap justify-center gap-4 mb-12">
             <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="1">Year 1</button>
             <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="2">Year 2</button>
             <button class="year-btn btn-primary py-2 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75" data-year="3">Year 3</button>
@@ -121,8 +112,7 @@
 
         <div id="notesDisplay" class="w-full max-w-5xl">
             <div id="welcomeMessage" class="text-lg text-gray-600">
-                <p class="mb-4">Welcome to your personal notes archive! Here, you can organize and access all your class notes and weekend practice notes.</p>
-                <p>Please select either "Class Notes" or "Practice Notes" above to get started, and then choose a year to view your materials.</p>
+                <p class="mb-4">Welcome to your personal notes archive! Please select a year to view your class notes.</p>
             </div>
 
             <div id="notesContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
@@ -145,9 +135,6 @@
     </div>
 
     <script>
-        const classNotesBtn = document.getElementById('classNotesBtn');
-        const practiceNotesBtn = document.getElementById('practiceNotesBtn');
-        const yearButtonsContainer = document.getElementById('yearButtons');
         const yearButtons = document.querySelectorAll('.year-btn');
         const welcomeMessage = document.getElementById('welcomeMessage');
         const notesContent = document.getElementById('notesContent');
@@ -155,516 +142,384 @@
         const modalSubjectTitle = document.getElementById('modalSubjectTitle');
         const individualNotesList = document.getElementById('individualNotesList');
 
-        let currentNoteType = null;
         let currentYear = null;
 
         const notesData = {
-            class: {
-                1: [
-                    {
-                        title: 'AST101: Introduction to Applied Statistics and Data Science',
-                        subjectId: 'AST101',
-                        notes: [
-                            { title: 'Week-01', file: '#' },
-                            { title: 'Week-02', file: 'notes/class/year1/AST101_L3.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST102: Elements of Probability',
-                        subjectId: 'AST102',
-                        notes: [
-                            { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_pr_week1.pdf' },
-                            { title: 'Week-02', file: 'notes/class/year1/AST102_L2.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH103: Foundations of Mathematics',
-                        subjectId: 'MATH103',
-                        notes: [
-                            { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_de_week1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH104: Differential Calculus',
-                        subjectId: 'MATH104',
-                        notes: [
-                            { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_dc_week1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH105: Integral Calculus',
-                        subjectId: 'MATH105',
-                        notes: [
-                            { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_ic_week1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH106: Linear Algebra',
-                        subjectId: 'MATH106',
-                        notes: [
-                            { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_la_week1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'ECON107: Economics',
-                        subjectId: 'ECON107',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year1/ECON107_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'ENG108: English Communication Skills',
-                        subjectId: 'ENG108',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year1/ENG108_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'CSE130: Programming with C/C++',
-                        subjectId: 'CSE130',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year1/CSE130_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'CSE131: SQL for Data Science',
-                        subjectId: 'CSE131',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year1/CSE131_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST140: Oral I',
-                        subjectId: 'AST140',
-                        notes: [
-                            { title: 'Oral I Preparation', file: 'notes/class/year1/AST140_P1.pdf' }
-                        ]
-                    },
-                ],
-                2: [
-                    {
-                        title: 'AST201: Sampling Distributions',
-                        subjectId: 'AST201',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST201_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST202: Actuarial Statistics',
-                        subjectId: 'AST202',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST202_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST203: Statistical Inference I',
-                        subjectId: 'AST203',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST203_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST204: Design and Analysis of Experiments I',
-                        subjectId: 'AST204',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST204_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST205: Demography',
-                        subjectId: 'AST205',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST205_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST206: Sampling Methods I',
-                        subjectId: 'AST206',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST206_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH207: Mathematical Methods',
-                        subjectId: 'MATH207',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/MATH207_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'MATH208: Mathematical Analysis',
-                        subjectId: 'MATH208',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/MATH208_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST230: R for Data Science',
-                        subjectId: 'AST230',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST230_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST231: Statistical Simulation',
-                        subjectId: 'AST231',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST231_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST232: Statistical Computing I',
-                        subjectId: 'AST232',
-                        notes: [
-                            { title: 'Week-01', file: 'notes/class/year2/AST232_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST240: Oral II',
-                        subjectId: 'AST240',
-                        notes: [
-                            { title: 'Oral II Preparation', file: 'notes/class/year2/AST240_P1.pdf' }
-                        ]
-                    },
-                ],
-                3: [
-                    {
-                        title: 'AST301: Design and Analysis of Experiments II',
-                        subjectId: 'AST301',
-                        notes: [
-                            { title: 'Week-01: Factorial Designs', file: 'notes/class/year3/AST301_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST302: Sampling Methods II',
-                        subjectId: 'AST302',
-                        notes: [
-                            { title: 'Week-01: PPS Sampling', file: 'notes/class/year3/AST302_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST303: Linear Regression Analysis',
-                        subjectId: 'AST303',
-                        notes: [
-                            { title: 'Week-01: Simple Linear Regression', file: 'notes/class/year3/AST303_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST304: Epidemiology',
-                        subjectId: 'AST304',
-                        notes: [
-                            { title: 'Week-01: Intro to Epidemiology', file: 'notes/class/year3/AST304_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST305: Lifetime Data Analysis I',
-                        subjectId: 'AST305',
-                        notes: [
-                            { title: 'Week-01: Basic Concepts', file: 'notes/class/year3/AST305_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST306: Statistical Inference II',
-                        subjectId: 'AST306',
-                        notes: [
-                            { title: 'Week-01: Statistical Inference Methods', file: 'notes/class/year3/AST306_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST307: Multivariate Statistics I',
-                        subjectId: 'AST307',
-                        notes: [
-                            { title: 'Week-01: Preliminaries', file: 'notes/class/year3/AST307_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST308: Research Methodology',
-                        subjectId: 'AST308',
-                        notes: [
-                            { title: 'Week-01: Foundations of Research', file: 'notes/class/year3/AST308_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST330: Stata for Data Science',
-                        subjectId: 'AST330',
-                        notes: [
-                            { title: 'Week-01: Introduction to Stata', file: 'notes/class/year3/AST330_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'CSE331: Python for Data Science',
-                        subjectId: 'CSE331',
-                        notes: [
-                            { title: 'Week-01: Fundamentals of Python', file: 'notes/class/year3/CSE331_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST332: Statistical Computing II',
-                        subjectId: 'AST332',
-                        notes: [
-                            { title: 'Week-01: GLMs Computing', file: 'notes/class/year3/AST332_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST333: Statistical Computing III',
-                        subjectId: 'AST333',
-                        notes: [
-                            { title: 'Week-01: Regression Models Computing', file: 'notes/class/year3/AST333_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST340: Oral III',
-                        subjectId: 'AST340',
-                        notes: [
-                            { title: 'Oral III Preparation', file: 'notes/class/year3/AST340_P1.pdf' }
-                        ]
-                    },
-                ],
-                4: [
-                    {
-                        title: 'AST401: Advanced Probability and Stochastic Processes',
-                        subjectId: 'AST401',
-                        notes: [
-                            { title: 'Week-01: Modern Probability', file: 'notes/class/year4/AST401_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST402: Statistics for AI and Machine Learning',
-                        subjectId: 'AST402',
-                        notes: [
-                            { title: 'Week-01: Intro to AI/ML', file: 'notes/class/year4/AST402_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST403: Multivariate Statistics II',
-                        subjectId: 'AST403',
-                        notes: [
-                            { title: 'Week-01: Principal Components', file: 'notes/class/year4/AST403_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST404: Econometric Methods',
-                        subjectId: 'AST404',
-                        notes: [
-                            { title: 'Week-01: Econometric Modeling', file: 'notes/class/year4/AST404_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST405: Lifetime Data Analysis II',
-                        subjectId: 'AST405',
-                        notes: [
-                            { title: 'Week-01: Parametric Regression Models', file: 'notes/class/year4/AST405_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'CSE406: Big Data Analytics',
-                        subjectId: 'CSE406',
-                        notes: [
-                            { title: 'Week-01: Intro to Big Data', file: 'notes/class/year4/CSE406_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST407: Time Series Modelling',
-                        subjectId: 'AST407',
-                        notes: [
-                            { title: 'Week-01: Time Series Examples', file: 'notes/class/year4/AST407_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST408: Generalized Linear Models',
-                        subjectId: 'AST408',
-                        notes: [
-                            { title: 'Week-01: Exponential Family', file: 'notes/class/year4/AST408_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST409: Official Statistics',
-                        subjectId: 'AST409',
-                        notes: [
-                            { title: 'Week-01: Domains of Official Statistics', file: 'notes/class/year4/AST409_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST430: Statistical Computing IV',
-                        subjectId: 'AST430',
-                        notes: [
-                            { title: 'Week-01: Multivariate Computing', file: 'notes/class/year4/AST430_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST431: Statistical Computing V',
-                        subjectId: 'AST431',
-                        notes: [
-                            { title: 'Week-01: Time Series Computing', file: 'notes/class/year4/AST431_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST432: Statistical Computing VI',
-                        subjectId: 'AST432',
-                        notes: [
-                            { title: 'Week-01: GLMs and Survival Models Computing', file: 'notes/class/year4/AST432_L1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST440: Oral IV',
-                        subjectId: 'AST440',
-                        notes: [
-                            { title: 'Oral IV Preparation', file: 'notes/class/year4/AST440_P1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'AST450: B.S. Capstone Project',
-                        subjectId: 'AST450',
-                        notes: [
-                            { title: 'Capstone Project Guidelines', file: 'notes/class/year4/AST450_P1.pdf' }
-                        ]
-                    },
-                ],
-            },
-            practice: {
-                1: [
-                    {
-                        title: 'Weekend Practice 1: Probability Basics',
-                        subjectId: 'PRACTICE1',
-                        notes: [
-                            { title: 'Weekend-01: Problem Set 1.1', file: 'notes/practice/year1/practice1_PS1.pdf' },
-                            { title: 'Weekend-02: Solution Set 1.1', file: 'notes/practice/year1/practice1_Sol1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'Weekend Practice 2: Data Visualization',
-                        subjectId: 'PRACTICE2',
-                        notes: [
-                            { title: 'Weekend-01: Exercise 2.1', file: 'notes/practice/year1/practice2_Ex1.pdf' }
-                        ]
-                    },
-                ],
-                2: [
-                    {
-                        title: 'Weekend Practice 3: Statistical Inference',
-                        subjectId: 'PRACTICE3',
-                        notes: [
-                            { title: 'Weekend-01: Problem Set 3.1', file: 'notes/practice/year2/practice3_PS1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'Weekend Practice 4: Experimental Design',
-                        subjectId: 'PRACTICE4',
-                        notes: [
-                            { title: 'Weekend-01: Exercise 4.1', file: 'notes/practice/year2/practice4_Ex1.pdf' }
-                        ]
-                    },
-                ],
-                3: [
-                    {
-                        title: 'Weekend Practice 5: Regression Analysis',
-                        subjectId: 'PRACTICE5',
-                        notes: [
-                            { title: 'Weekend-01: Problem Set 5.1', file: 'notes/practice/year3/practice5_PS1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'Weekend Practice 6: Multivariate Analysis',
-                        subjectId: 'PRACTICE6',
-                        notes: [
-                            { title: 'Weekend-01: Exercise 6.1', file: 'notes/practice/year3/practice6_Ex1.pdf' }
-                        ]
-                    },
-                ],
-                4: [
-                    {
-                        title: 'Weekend Practice 7: Machine Learning Algorithms',
-                        subjectId: 'PRACTICE7',
-                        notes: [
-                            { title: 'Weekend-01: Problem Set 7.1', file: 'notes/practice/year4/practice7_PS1.pdf' }
-                        ]
-                    },
-                    {
-                        title: 'Weekend Practice 8: Time Series Forecasting',
-                        subjectId: 'PRACTICE8',
-                        notes: [
-                            { title: 'Weekend-01: Exercise 8.1', file: 'notes/practice/year4/practice8_Ex1.pdf' }
-                        ]
-                    },
-                ],
-            }
+            1: [
+                {
+                    title: 'AST101: Introduction to Applied Statistics and Data Science',
+                    subjectId: 'AST101',
+                    notes: [
+                        { title: 'Week-01', file: '#' },
+                        { title: 'Week-02', file: 'notes/class/year1/AST101_L3.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST102: Elements of Probability',
+                    subjectId: 'AST102',
+                    notes: [
+                        { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_pr_week1.pdf' },
+                        { title: 'Week-02', file: 'notes/class/year1/AST102_L2.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH103: Foundations of Mathematics',
+                    subjectId: 'MATH103',
+                    notes: [
+                        { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_de_week1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH104: Differential Calculus',
+                    subjectId: 'MATH104',
+                    notes: [
+                        { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_dc_week1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH105: Integral Calculus',
+                    subjectId: 'MATH105',
+                    notes: [
+                        { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_ic_week1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH106: Linear Algebra',
+                    subjectId: 'MATH106',
+                    notes: [
+                        { title: 'Week-01-Adhora', file: 'notes/class/year1/week1/a_la_week1.pdf' }
+                    ]
+                },
+                {
+                    title: 'ECON107: Economics',
+                    subjectId: 'ECON107',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year1/ECON107_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'ENG108: English Communication Skills',
+                    subjectId: 'ENG108',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year1/ENG108_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE130: Programming with C/C++',
+                    subjectId: 'CSE130',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year1/CSE130_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'CSE131: SQL for Data Science',
+                    subjectId: 'CSE131',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year1/CSE131_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST140: Oral I',
+                    subjectId: 'AST140',
+                    notes: [
+                        { title: 'Oral I Preparation', file: 'notes/class/year1/AST140_P1.pdf' }
+                    ]
+                },
+            ],
+            2: [
+                {
+                    title: 'AST201: Sampling Distributions',
+                    subjectId: 'AST201',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST201_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST202: Actuarial Statistics',
+                    subjectId: 'AST202',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST202_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST203: Statistical Inference I',
+                    subjectId: 'AST203',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST203_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST204: Design and Analysis of Experiments I',
+                    subjectId: 'AST204',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST204_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST205: Demography',
+                    subjectId: 'AST205',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST205_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST206: Sampling Methods I',
+                    subjectId: 'AST206',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST206_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH207: Mathematical Methods',
+                    subjectId: 'MATH207',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/MATH207_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'MATH208: Mathematical Analysis',
+                    subjectId: 'MATH208',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/MATH208_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST230: R for Data Science',
+                    subjectId: 'AST230',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST230_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST231: Statistical Simulation',
+                    subjectId: 'AST231',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST231_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST232: Statistical Computing I',
+                    subjectId: 'AST232',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year2/AST232_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST240: Oral II',
+                    subjectId: 'AST240',
+                    notes: [
+                        { title: 'Oral II Preparation', file: 'notes/class/year2/AST240_P1.pdf' }
+                    ]
+                },
+            ],
+            3: [
+                {
+                    title: 'AST301: Statistical Inference II',
+                    subjectId: 'AST301',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST301_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST302: Regression Analysis',
+                    subjectId: 'AST302',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST302_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST303: Design and Analysis of Experiments II',
+                    subjectId: 'AST303',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST303_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST304: Non-parametric Statistics',
+                    subjectId: 'AST304',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST304_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST305: Econometrics',
+                    subjectId: 'AST305',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST305_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST306: Biostatistics',
+                    subjectId: 'AST306',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST306_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST307: Population Studies',
+                    subjectId: 'AST307',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST307_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST308: Statistical Quality Control',
+                    subjectId: 'AST308',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST308_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST330: Statistical Computing II',
+                    subjectId: 'AST330',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST330_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST331: Data Science with Python',
+                    subjectId: 'AST331',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year3/AST331_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST340: Oral III',
+                    subjectId: 'AST340',
+                    notes: [
+                        { title: 'Oral III Preparation', file: 'notes/class/year3/AST340_P1.pdf' }
+                    ]
+                },
+            ],
+            4: [
+                {
+                    title: 'AST401: Multivariate Analysis',
+                    subjectId: 'AST401',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST401_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST402: Time Series Analysis',
+                    subjectId: 'AST402',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST402_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST403: Categorical Data Analysis and Generalized Linear Models',
+                    subjectId: 'AST403',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST403_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST404: Survival Analysis',
+                    subjectId: 'AST404',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST404_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST405: Bayesian Statistics',
+                    subjectId: 'AST405',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST405_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST406: Environmental Statistics',
+                    subjectId: 'AST406',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST406_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST407: Machine Learning',
+                    subjectId: 'AST407',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST407_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST408: Data Mining',
+                    subjectId: 'AST408',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST408_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST430: Big Data Analytics',
+                    subjectId: 'AST430',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST430_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST431: Deep Learning',
+                    subjectId: 'AST431',
+                    notes: [
+                        { title: 'Week-01', file: 'notes/class/year4/AST431_L1.pdf' }
+                    ]
+                },
+                {
+                    title: 'AST440: Oral IV',
+                    subjectId: 'AST440',
+                    notes: [
+                        { title: 'Oral IV Preparation', file: 'notes/class/year4/AST440_P1.pdf' }
+                    ]
+                },
+            ]
         };
 
-        function openNotesModal(type, year, subjectId) {
-            const subjectData = notesData[type]?.[year]?.find(s => s.subjectId === subjectId);
-
-            if (!subjectData) {
-                console.error('Subject data not found for:', { type, year, subjectId });
-                return;
-            }
-
-            modalSubjectTitle.textContent = subjectData.title;
-            individualNotesList.innerHTML = '';
-
-            if (subjectData.notes && subjectData.notes.length > 0) {
-                subjectData.notes.forEach(note => {
-                    const noteItem = document.createElement('div');
-                    noteItem.classList.add('card', 'p-4', 'flex', 'flex-col', 'md:flex-row', 'justify-between', 'items-center', 'space-y-2', 'md:space-y-0', 'md:space-x-4');
-                    
-                    noteItem.innerHTML = `
-                        <h4 class="text-lg font-medium text-gray-700 text-center md:text-left flex-grow">${note.title}</h4>
-                        <div class="flex space-x-3">
-                            <button onclick="viewPdf('${note.file}')" class="btn-primary py-2 px-5 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                                View
-                            </button>
-                            <a href="${note.file}" download class="btn-primary py-2 px-5 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                                Download
-                            </a>
-                        </div>
-                    `;
-                    individualNotesList.appendChild(noteItem);
-                });
-            } else {
-                individualNotesList.innerHTML = `<p class="text-md text-gray-500 text-center">No individual notes available for this subject.</p>`;
-            }
-
-            openModal('notesModal');
-        }
-
-        function displayNotes(type, year) {
-            notesContent.innerHTML = '';
+        function displayNotes(year) {
             welcomeMessage.classList.add('hidden');
+            notesContent.innerHTML = '';
             notesContent.classList.remove('hidden');
 
-            const selectedSubjects = notesData[type]?.[year];
-
-            if (selectedSubjects && selectedSubjects.length > 0) {
-                selectedSubjects.forEach(subject => {
+            const yearNotes = notesData[year];
+            if (yearNotes && yearNotes.length > 0) {
+                yearNotes.forEach(subject => {
                     const card = document.createElement('div');
-                    card.classList.add('card', 'p-6', 'rounded-xl', 'flex', 'flex-col', 'justify-between', 'items-center', 'text-center', 'space-y-4');
-                    
+                    card.className = 'card p-6 flex flex-col items-center text-center';
                     card.innerHTML = `
-                        <h3 class="text-xl font-semibold text-gray-800">${subject.title}</h3>
-                        <div class="flex space-x-4">
-                            <button onclick="openNotesModal('${type}', '${year}', '${subject.subjectId}')" class="btn-primary py-2 px-6 rounded-full font-semibold text-sm transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                                View Notes
-                            </button>
-                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">${subject.title}</h3>
+                        <button class="btn-primary py-2 px-5 rounded-full font-medium text-sm mt-auto" onclick="openNotesModal('${subject.subjectId}', '${subject.title}')">
+                            View Notes
+                        </button>
                     `;
                     notesContent.appendChild(card);
                 });
             } else {
-                notesContent.innerHTML = `<p class="text-lg text-gray-600 text-center">No subjects available for ${type} in Year ${year}.</p>`;
+                notesContent.innerHTML = '<p class="text-lg text-gray-600">No notes available for this year yet.</p>';
             }
         }
 
-        function viewPdf(pdfUrl) {
-            window.open(pdfUrl, '_blank');
-        }
+        function openNotesModal(subjectId, subjectTitle) {
+            modalSubjectTitle.textContent = subjectTitle;
+            individualNotesList.innerHTML = '';
 
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            const modalContent = modal.querySelector('.modal-content');
+            const subjectNotes = notesData[currentYear].find(subject => subject.subjectId === subjectId).notes;
 
-            modal.classList.remove('hidden');
+            if (subjectNotes && subjectNotes.length > 0) {
+                subjectNotes.forEach(note => {
+                    const noteItem = document.createElement('div');
+                    noteItem.className = 'flex items-center justify-between p-3 border-b border-gray-200 last:border-b-0';
+                    noteItem.innerHTML = `
+                        <span class="text-gray-700">${note.title}</span>
+                        <a href="${note.file}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200">
+                            View File
+                        </a>
+                    `;
+                    individualNotesList.appendChild(noteItem);
+                });
+            } else {
+                individualNotesList.innerHTML = '<p class="text-gray-600">No notes available for this subject yet.</p>';
+            }
+            notesModal.classList.remove('hidden');
             setTimeout(() => {
-                modal.classList.add('modal-enter-active');
-                modalContent.classList.add('modal-content-enter-active');
+                notesModal.classList.add('modal-enter-active');
+                notesModal.querySelector('.modal-content').classList.add('modal-content-enter-active');
             }, 10);
         }
 
@@ -683,44 +538,17 @@
             });
         }
 
-        classNotesBtn.addEventListener('click', () => {
-            currentNoteType = 'class';
-            classNotesBtn.classList.add('active-selection-btn');
-            practiceNotesBtn.classList.remove('active-selection-btn');
-
-            yearButtonsContainer.classList.remove('hidden');
-            yearButtons.forEach(btn => btn.classList.remove('active-selection-btn'));
-            welcomeMessage.classList.remove('hidden');
-            notesContent.classList.add('hidden');
-            notesContent.innerHTML = '';
-            currentYear = null;
-        });
-
-        practiceNotesBtn.addEventListener('click', () => {
-            currentNoteType = 'practice';
-            practiceNotesBtn.classList.add('active-selection-btn');
-            classNotesBtn.classList.remove('active-selection-btn');
-
-            yearButtonsContainer.classList.remove('hidden');
-            yearButtons.forEach(btn => btn.classList.remove('active-selection-btn'));
-            welcomeMessage.classList.remove('hidden');
-            notesContent.classList.add('hidden');
-            notesContent.innerHTML = '';
-            currentYear = null;
-        });
+        // Initialize display by showing year buttons and welcome message
+        yearButtons.forEach(btn => btn.classList.remove('hidden'));
+        welcomeMessage.classList.remove('hidden');
+        notesContent.classList.add('hidden');
 
         yearButtons.forEach(button => {
             button.addEventListener('click', () => {
-                if (currentNoteType) {
-                    yearButtons.forEach(btn => btn.classList.remove('active-selection-btn'));
-                    button.classList.add('active-selection-btn');
-                    currentYear = button.dataset.year;
-                    displayNotes(currentNoteType, currentYear);
-                } else {
-                    welcomeMessage.innerHTML = `<p class="mb-4">Please select either "Class Notes" or "Practice Notes" first, then choose a year.</p>`;
-                    welcomeMessage.classList.remove('hidden');
-                    notesContent.classList.add('hidden');
-                }
+                yearButtons.forEach(btn => btn.classList.remove('active-selection-btn'));
+                button.classList.add('active-selection-btn');
+                currentYear = button.dataset.year;
+                displayNotes(currentYear);
             });
         });
 
