@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st Year Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comfortaa', cursive;
+            background-color: #f8f8f8;
+            color: #333333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            scroll-behavior: smooth;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: #9ca3af;
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .modal-content {
+            background-color: #ffffff;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-enter-active, .modal-leave-active {
+            transition: opacity 0.4s ease-in-out;
+        }
+        .modal-enter-from, .modal-leave-to {
+            opacity: 0;
+        }
+        .modal-content-enter-active, .modal-content-leave-active {
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out;
+        }
+        .modal-content-enter-from {
+            transform: translateY(-50px) scale(0.95);
+            opacity: 0;
+        }
+        .modal-content-leave-to {
+            transform: translateY(-50px) scale(0.95);
+            opacity: 0;
+        }
+        .modal-content {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+            max-height: 90vh;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-12 px-6">
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 px-8 md:px-16 lg:px-24">
+        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-indigo-600">
+            Muktadir Somio
+        </a>
+        <div class="flex items-center space-x-6">
+            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.743.082-.729.082-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.106 24 17.617 24 12 24 5.373 18.627 0 12 0z"/>
+                </svg>
+                <span class="sr-only">GitHub Profile</span>
+            </a>
+            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span class="sr-only">Email Me</span>
+            </a>
+        </div>
+    </nav>
+    <div class="w-full max-w-5xl mx-auto text-center pt-32 pb-16 px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">First-Year Notes</h1>
+        <p class="text-lg text-gray-600">Contributors : Muktadir, Adhora, Nushin, Fariha, Mahin, Anan, Protity, Sanjida</p>
+    </div>
+    <div id="notes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+    </div>
+    <div id="notesModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('notesModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from my-8">
+            <button onclick="closeModal('notesModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h2 id="modal-title" class="text-2xl font-bold mb-4 text-gradient"></h2>
+            <ul id="modal-links" class="list-disc list-inside space-y-2 text-gray-700">
+            </ul>
+        </div>
+    </div>
+    <script>
+        const notesData = [
+            {
+                title: "101",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" },
+                    { text: "Class-03", url: "" }
+                ]
+            },
+            {
+                title: "102",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" }
+                ]
+            },
+            {
+                title: "103",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" },
+                    { text: "Class-03", url: "" }
+                ]
+            },
+            {
+                title: "104",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" }
+                ]
+            },
+            {
+                title: "105",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" }
+                ]
+            },
+            {
+                title: "106",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" }
+                ]
+            },
+            {
+                title: "107",
+                notes: [
+                    { text: "Class-01", url: "" },
+                    { text: "Class-02", url: "" }
+                ]
+            },
+            {
+                title: "108",
+                notes: [
+                    { text: "Paragraph", url: "" },
+                    { text: "CV writing", url: "" }
+                ]
+            },
+            {
+                title: "Lab",
+                notes: [
+                    { text: "Quarto", url: "" },
+                    { text: "C_Tutorial", url: "" },
+                    { text: "C_assignment_01", url: "" },
+                    { text: "C_assignment_02", url: "" },
+                    { text: "MySQL_Tutorial", url: "" }
+                ]
+            }
+        ];
+        function createCards() {
+            const notesGrid = document.getElementById('notes-grid');
+            notesData.forEach((subject, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card', 'p-6', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-center');
+                card.innerHTML = `
+                    <h2 class="text-2xl font-bold mb-4 text-gradient">${subject.title}</h2>
+                    <button data-index="${index}" class="view-notes-btn btn-primary py-2 px-6 rounded-full font-semibold">
+                        View Notes
+                    </button>
+                `;
+                notesGrid.appendChild(card);
+            });
+        }
+        function openModal(index) {
+            const subject = notesData[index];
+            const modal = document.getElementById('notesModal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalLinks = document.getElementById('modal-links');
+            const modalContent = modal.querySelector('.modal-content');
+            modalTitle.textContent = subject.title;
+            modalLinks.innerHTML = subject.notes.map(note => `
+                <li>
+                    <a href="${note.url}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 transition-colors duration-200">
+                        ${note.text}
+                    </a>
+                </li>
+            `).join('');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('modal-enter-active');
+                modalContent.classList.add('modal-content-enter-active');
+                modalContent.classList.remove('modal-content-enter-from');
+            }, 10);
+        }
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const modalContent = modal.querySelector('.modal-content');
+            modal.classList.remove('modal-enter-active');
+            modalContent.classList.remove('modal-content-enter-active');
+            modalContent.classList.add('modal-content-leave-to');
+            modalContent.addEventListener('transitionend', function handler() {
+                modal.classList.add('hidden');
+                modalContent.classList.remove('modal-content-leave-to');
+                modalContent.classList.add('modal-content-enter-from');
+                modalContent.removeEventListener('transitionend', handler);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            createCards();
+            document.getElementById('notes-grid').addEventListener('click', (e) => {
+                if (e.target && e.target.matches('.view-notes-btn')) {
+                    const index = e.target.getAttribute('data-index');
+                    openModal(index);
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const notesModal = document.getElementById('notesModal');
+                    if (!notesModal.classList.contains('hidden')) {
+                        closeModal('notesModal');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
