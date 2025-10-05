@@ -3,92 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muktadir Somio - Microblog</title>
+    <title>Muktadir Somio // [DATA LOG ARCHIVE]</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --neon-blue: #00ffff;
+            --neon-magenta: #ff00ff;
+            --dark-bg: #0a0a0d;
+            --terminal-green: #00ff00;
+        }
+
         body {
-            font-family: 'Comfortaa', cursive;
-            background-color: #f8f8f8;
-            color: #333333;
+            font-family: 'Fira Code', monospace;
+            background-color: var(--dark-bg);
+            color: var(--terminal-green);
+            min-height: 100vh;
+            padding-bottom: 5rem; /* Space for content below footer */
         }
 
         .navbar {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(10, 10, 13, 0.8);
+            backdrop-filter: blur(5px);
+            border-bottom: 2px solid var(--neon-blue);
         }
 
-        .microblog-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            padding: 24px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .neon-text-blue {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        .neon-text-magenta {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 5px var(--neon-magenta);
         }
 
-        .microblog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        .log-card {
+            background-color: #1a1a2e;
+            border: 1px solid var(--neon-magenta);
+            border-left: 5px solid var(--neon-magenta);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .log-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 0 15px var(--neon-magenta);
+            border-color: var(--neon-blue);
+        }
+
+        .btn-link {
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        .btn-link:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-12 px-6">
+<body class="antialiased">
 
-    <nav class="navbar fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 px-8 md:px-16 lg:px-24">
-        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-indigo-600">
-            Muktadir Somio
-        </a>
-        <div class="flex items-center space-x-6">
-            <a href="microblog.html" class="text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-                <span class="sr-only">Microblog</span>
-            </a>
-            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.743.082-.729.082-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.106 24 17.617 24 12 24 5.373 18.627 0 12 0z"/>
-                </svg>
-                <span class="sr-only">GitHub Profile</span>
-            </a>
-            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <span class="sr-only">Email Me</span>
-            </a>
+    <!-- Navbar: Data Stream Header -->
+    <nav class="navbar sticky top-0 z-10 w-full px-6 py-4 flex justify-between items-center">
+        <div class="text-xl font-['Orbitron'] neon-text-blue tracking-widest">
+            LOG_ARCHIVE_001
+        </div>
+        <div class="flex space-x-4 text-sm font-semibold">
+            <a href="index.html" class="btn-link">SYSTEM_ROOT</a>
+            <a href="notes_year1.html" class="btn-link">NOTES_ARCHIVE</a>
         </div>
     </nav>
 
-    <div class="w-full max-w-5xl mx-auto pt-32 pb-16 px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-12 text-center">My micro-blogs</h1>
-        
-        <div class="space-y-8">
-            
-            <!-- Microblog Card 3 -->
-            <div class="microblog-card">
-                <h2 class="text-2xl font-semibold text-blue-800 mb-4 text-left">In for a Vacation  - 30.09.2025</h2>
-                <p class="text-gray-600 text-justify leading-relaxed">
-                    With a hope to keep the mind busy amidst the vacation, I have taken up some initiatives such as reading books, watching a new series. I have also started learning coding in Python and prepared a <a href="https://drive.google.com/file/d/1aXCKh1VU4Ksb6AW1GQgyK3WhxQWoxaeT/view?usp=drive_link"> practical roadmap</a> that would help me on the journey as a beginner ML engineer. You can check my Github Repo <b>"Machine_Learning_Journey"</b> containing the resources, and progress updates for my journey.
-                </p>
-            </div>
+    <div class="container mx-auto px-4 py-12 max-w-4xl">
+        <h1 class="text-5xl font-['Orbitron'] neon-text-magenta mb-10 text-center tracking-wider border-b-2 border-neon-magenta pb-4">
+            ENCRYPTED DATA LOGS
+        </h1>
 
+        <div class="space-y-8">
             <!-- Microblog Card 2 -->
-            <div class="microblog-card">
-                <h2 class="text-2xl font-semibold text-blue-800 mb-4 text-left">Little Encouragements - 18.09.2025</h2>
-                <p class="text-gray-600 text-justify leading-relaxed">
-                    What changes the course of life? For me, it has always been little words of encouragements and a small boost-up of confidence. I have learnt the hard way that controlling emotions, channeling them in productive paths and being focused on what one does with a clear plan always brings up positive results. Pressure of work and constantly brewing new ideas are what keep me distracted, in a positive way.
+            <div class="log-card p-6 md:p-8 rounded-lg">
+                <div class="flex justify-between items-start mb-4 border-b border-gray-700 pb-2">
+                    <h2 class="text-2xl font-['Orbitron'] text-white/90">
+                        LITTLE ENCOURAGEMENTS // [LOG_ID: #PER001]
+                    </h2>
+                    <span class="text-sm neon-text-blue font-['Fira Code']">// TIMESTAMP: 18.09.2025</span>
+                </div>
+                <p class="text-gray-400 text-justify leading-relaxed text-base">
+                    What changes the course of life? For me, it has always been little words of encouragements and a small boost-up of confidence. I have learnt the hard way that controlling emotions, channeling them in productive paths and being focused on what one does with a clear plan always brings up positive results. Pressure of work and constantly brewing new ideas are what keep me distracted, in a positive way. This discipline is essential when debugging complex code or architecting large systems.
                 </p>
             </div>
 
             <!-- Microblog Card 1 -->
-            <div class="microblog-card">
-                <h2 class="text-2xl font-semibold text-blue-800 mb-4 text-left">AI for Governance - 07.08.2025</h2>
-                <p class="text-gray-600 text-justify leading-relaxed">
-                    I believe AI has the power to change the very structure of the modern world in an irreversible way. AI is fundamentally restructuring our daily lives and is on the way to changing the economic structure of the world. Education, research, health, military, business efficiency : AI is everywhere. But have you ever thought what would happen if AI takes over the government one day?
+            <div class="log-card p-6 md:p-8 rounded-lg">
+                <div class="flex justify-between items-start mb-4 border-b border-gray-700 pb-2">
+                    <h2 class="text-2xl font-['Orbitron'] text-white/90">
+                        AI FOR GOVERNANCE // [LOG_ID: #AI001]
+                    </h2>
+                    <span class="text-sm neon-text-blue font-['Fira Code']">// TIMESTAMP: 07.08.2025</span>
+                </div>
+                <p class="text-gray-400 text-justify leading-relaxed text-base">
+                    I believe AI has the power to change the very structure of the modern world in an irreversible way. AI is fundamentally restructuring our daily lives and is on the way to changing the economic structure of the world. Education, research, health, military, business efficiency: AI is everywhere. But have you ever thought what would happen if AI takes over the government one day? The philosophical and ethical implications of algorithmic rule are vast and deserve rigorous examination.
                 </p>
             </div>
         </div>

@@ -3,265 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muktadir Somio - Personal Website</title>
+    <title>Muktadir Somio // Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Comfortaa', cursive;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        body {
-            background-color: #f8f8f8;
-            color: #333333;
-        }
-        .btn-primary {
-            background-color: #4f46e5;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary:hover {
-            background-color: #4338ca;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-        .modal-content {
-            background-color: #ffffff;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.4);
+        :root {
+            --neon-blue: #00ffff;
+            --neon-magenta: #ff00ff;
+            --dark-bg: #0a0a0d;
+            --terminal-green: #00ff00;
         }
 
-        .modal-enter-active, .modal-leave-active {
-            transition: opacity 0.4s ease-in-out;
-        }
-        .modal-enter-from, .modal-leave-to {
-            opacity: 0;
-        }
-        .modal-content-enter-active, .modal-content-leave-active {
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out;
-        }
-        .modal-content-enter-from {
-            transform: translateY(-50px) scale(0.95);
-            opacity: 0;
-        }
-        .modal-content-leave-to {
-            transform: translateY(-50px) scale(0.95);
-            opacity: 0;
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: var(--dark-bg);
+            color: var(--terminal-green);
+            min-height: 100vh;
+            display: block; 
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        .img-container {
-            width: 192px;
-            height: 192px;
-            border-radius: 9999px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .img-container img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-            position: absolute;
+        body::before {
+            content: '';
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 1;
-        }
-        .img-container .fallback-svg {
-            width: 70%;
-            height: 70%;
-            z-index: 0;
-        }
-
-        .navbar {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .slideshow-text {
-            display: inline-block;
-            opacity: 0;
-            transition: opacity 0.6s ease-in-out;
-            font-weight: 700;
-            font-style: italic;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .slideshow-text.active {
-            opacity: 1;
-        }
-        .slideshow-bar span:first-child {
-            display: inline-block;
-            color: inherit;
-            font-weight: normal;
-            font-style: normal;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                #0a0a0d 0,
+                #0a0a0d 1px,
+                rgba(0, 255, 255, 0.05) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            opacity: 0.3;
+            z-index: -1;
         }
 
-        .resume-section h3 {
-            font-size: 1.625rem;
-            font-weight: 600;
-            margin-top: 1.75rem;
-            margin-bottom: 0.875rem;
-            color: #4f46e5;
+        .neon-text-blue {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px rgba(0, 255, 255, 0.4);
         }
-        .resume-item {
-            margin-bottom: 1.125rem;
+        .neon-glow-magenta {
+            box-shadow: 0 0 8px var(--neon-magenta), inset 0 0 4px var(--neon-magenta);
+            border-color: var(--neon-magenta);
         }
-        .resume-item h4 {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: #333333;
+        .neon-glow-blue {
+            box-shadow: 0 0 8px var(--neon-blue), inset 0 0 4px var(--neon-blue);
+            border-color: var(--neon-blue);
         }
-        .resume-item p {
-            font-size: 0.9375rem;
-            color: #555555;
+
+        .btn-cyber {
+            background-color: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            transition: all 0.3s ease;
         }
-        .resume-list li {
-            margin-bottom: 0.625rem;
+        .btn-cyber:hover {
+            background-color: rgba(0, 255, 255, 0.25);
+            transform: translateY(-2px);
+            color: black;
+            text-shadow: none;
+            box-shadow: 0 0 12px var(--neon-blue);
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            -webkit-overflow-scrolling: touch;
-            overflow-y: auto;
-            max-height: 90vh;
-            &::-webkit-scrollbar {
-                display: none;
-            }
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            background-color: #1a1a2e;
+            border: 2px solid var(--neon-magenta);
+            border-radius: 8px;
+            box-shadow: 0 0 20px var(--neon-magenta);
+            color: var(--terminal-green);
         }
+
+        
+        .modal-enter-active { transition: opacity 0.3s ease; }
+        .modal-enter-from { opacity: 0; }
+        .modal-content-enter-active { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); } /* spring effect */
+        .modal-content-enter-from { transform: scale(0.8); opacity: 0; }
+        .modal-content-leave-to { transform: scale(0.95); opacity: 0; transition: all 0.3s ease; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-12 px-6">
+<body class="antialiased">
 
-    <nav class="navbar fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 px-8 md:px-16 lg:px-24">
-        <a href="index.html" class="text-2xl md:text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-indigo-600">
-            Muktadir Somio
-        </a>
-        <div class="flex items-center space-x-6">
-            <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.743.082-.729.082-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.106 24 17.617 24 12 24 5.373 18.627 0 12 0z"/>
-                </svg>
-                <span class="sr-only">GitHub Profile</span>
-            </a>
-            <a href="mailto:somiomuktadir@gmail.com" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <span class="sr-only">Email Me</span>
-            </a>
-            <a href="microblog.html" class="text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                </svg>
-                <span class="sr-only">Microblog</span>
-            </a>
-            </a>
-        </div>
-    </nav>
+    <div id="system-console" class="w-full min-h-screen p-8 md:p-12">
 
-    <div class="w-full max-w-5xl mx-auto text-center pt-32 pb-16 px-4 flex flex-col items-center">
-        
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-8">Hi there!</h1>
+        <!-- Header: Profile ID -->
+        <header class="mb-8 border-b border-gray-700 pb-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold font-['Orbitron'] tracking-wider neon-text-blue leading-none">
+                Muktadir Somio
+            </h1>
+            <p class="text-xl mt-2 text-white/70 font-['Fira Code']">
+                > STUDENT <span class="text-yellow-400">AI/ML ENTHUSIAST</span> CHESS PLAYER
+            </p>
+        </header>
 
-        <div class="flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-8 w-full justify-center">
-            <button id="aboutMeBtn" class="btn-primary py-3 px-10 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-                <span>About Me</span>
-            </button>
-            <button id="viewResumeBtn" class="btn-primary py-3 px-10 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <span>My Resume</span>
-            </button>
-            <a href="notes_year1.html" class="btn-primary py-3 px-10 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>1st Year Notes</span>
-            </a>
-        </div>
-    </div>
-
-    <div id="aboutMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('aboutMeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-2xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from my-8">
-            <button onclick="closeModal('aboutMeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <div class="prose max-w-none text-justify text-gray-700">
-                
-                <p class="mb-4 leading-relaxed">
-                    I'm Muktadir and am coming to ou guys from Dhaka, Bangladesh. My academic journey is currently focused on Applied Statistics & Data Science (ASDS) at Institute of Statistical Research and Training (soon to be renamed as IASDS from ISRT), University of Dhaka. I was born in Satkhira and brought up in Dhaka and have been living in Dhaka since my age was four.
-                </p>
-                <p class="mb-6 leading-relaxed">
-                    In my free time (I get a lot of free time to be honest), I find immense joy in delving into new books, writing literary pieces, exploring and documenting diverse ideas. I have started learning ML in this vacation and will continue this until I gain solid skills and get my hands on some fun projects. I will then move on to Deep Learning and MLOps. My favorite subject to study is Linear Algebra.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div id="resumeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" onclick="closeModal('resumeModal')"></div>
-        <div class="modal-content relative bg-white rounded-xl p-8 max-w-3xl w-full mx-auto transform transition-all duration-300 modal-content-enter-from my-8 overflow-y-auto max-h-[90vh]">
-            <button onclick="closeModal('resumeModal')" class="absolute top-4 right-4 text-indigo-500 hover:text-indigo-700 transition duration-200">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <div class="prose max-w-none text-gray-700">
-                <h2 class="text-4xl font-bold mb-7 text-gray-900 text-center">Resume of Muktadir Somio</h2>
-
-                <div class="flex flex-col sm:flex-row justify-center items-center sm:items-start text-center sm:text-left text-sm mb-6 text-gray-600">
-                    <p class="mb-1 sm:mb-0 sm:mr-4">Dhanmondi, Dhaka, Bangladesh</p>
-                    <p>somiomuktadir@gmail.com</p>
+        <!-- Main Console -->
+        <main class="space-y-8">
+            <!-- Data Channels (Navigation) -->
+            <div class="space-y-2">
+                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
+                    DATA CHANNELS // LINKS
+                </h2>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="microblog.html" class="btn-cyber px-4 py-2 rounded-md font-semibold text-lg hover:neon-glow-blue flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 2l-3-3m0 0l-3 3m3-3v12a2 2 0 01-2 2h-1"></path></svg>
+                        [LOGS] Microblog
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU?usp=drive_link" class="btn-cyber px-4 py-2 rounded-md font-semibold text-lg hover:neon-glow-blue flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        [ARCHIVE] Year 1 Resources
+                    </a>
                 </div>
+            </div>
 
-                <div class="resume-section border-b border-gray-200 pb-5 mb-5">
-                    <h3>Skills</h3>
-                    <ul class="list-disc list-inside resume-list flex flex-wrap gap-x-8">
-                        <li>Office Softwares such as Docs, Sheets, Meet</li>
-                        <li>Database systems such as MySQL, MS SQL Server</li>
-                        <li>Studying DSA, Python, Machine Learning (ML)</li>
-                        <li>Proficiency in English and learning Russian</li>
+            <!-- Profile Actions -->
+            <div class="space-y-2">
+                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
+                    COMMAND // EXECUTION
+                </h2>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <button id="aboutMeBtn" class="btn-cyber neon-glow-magenta px-6 py-3 rounded-full font-bold text-lg">
+                        <span class="font-['Orbitron']">ACCESS_FILE: ABOUT_ME.DAT</span>
+                    </button>
+                    <button id="viewResumeBtn" class="btn-cyber px-6 py-3 rounded-full font-bold text-lg">
+                        <span class="font-['Orbitron']">LOAD_SCHEMATIC: RESUME.DAT</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Social Links / Contact Matrix -->
+            <div class="space-y-2">
+                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
+                    CONTACT // MATRIX_ACCESS
+                </h2>
+                <div class="flex flex-wrap gap-6 pt-2 text-lg">
+                
+                    <a href="https://github.com/somiomuktadir/" target="_blank" class="hover:text-neon-magenta hover:underline transition-colors duration-200">
+                        //GITHUB
+                    </a>
+                    <a href="mailto:somiomuktadir@gmail.com" class="hover:text-neon-magenta hover:underline transition-colors duration-200">
+                        //EMAIL_ADDRESS
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- About Me Modal (Holographic Overlay) -->
+    <div id="aboutMeModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-2xl p-6 md:p-8 relative modal-content-enter-from">
+            <button onclick="closeModal('aboutMeModal')" class="absolute top-3 right-3 text-2xl hover:text-red-500 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-['Orbitron'] neon-text-magenta mb-4 border-b border-gray-700 pb-2">
+                [FILE_READOUT] :: ABOUT_ME
+            </h3>
+            <p class="text-sm md:text-base leading-relaxed text-gray-300">
+                // System.out.println("Initializing Personal Log...");<br><br>
+                Hello there! This is Muktadir and I am coming to you guys from Dhaka. I am a student and my academic journey is currently focused on Applied Statostics and Data Science at ISRT, DU. I am an AI/ML enthusiast and I love to keep myself engaged in fun projects. I use arch btw and my favorite subject to study is Linear Algebra.
+            </p>
+            <p class="mt-4 text-xs text-yellow-400">
+                // EXECUTION COMPLETE. PRESS ESCAPE TO RETURN.
+            </p>
+        </div>
+    </div>
+
+    <!-- View Resume Modal (Placeholder/Holographic Link) -->
+    <div id="resumeModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-xl p-6 md:p-8 relative modal-content-enter-from">
+            <button onclick="closeModal('resumeModal')" class="absolute top-3 right-3 text-2xl hover:text-red-500 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-['Orbitron'] neon-text-magenta mb-4 border-b border-gray-700 pb-2">
+                [FILE_READOUT] :: RESUME_SUMMARY
+            </h3>
+            <div class="text-sm md:text-base leading-relaxed text-gray-300 space-y-4">
+                <p>// INITIALIZING DATA STREAM... (Muktadir Somio)</p>
+
+                <!-- Core Competencies -->
+                <div class="border-t border-neon-blue pt-2">
+                    <span class="neon-text-blue block mb-1 font-['Orbitron']">// CORE_COMPETENCIES</span>
+                    <ul class="list-none pl-4 text-xs text-yellow-400 space-y-1">
+                        <li>> Python, English, MySQL</li>
+                        <li>> Chess, learning Russian</li>
                     </ul>
                 </div>
 
-
-                <div class="resume-section border-b border-gray-200 pb-5 mb-5">
-                    <h3>Education</h3>
-                    <div class="resume-item">
-                        <h4>B.S in ASDS - ISRT, DU</h4>
-                        <p class="text-gray-600">JULY 2025 - Present</p>
-                    </div>
-                    <div class="resume-item">
-                        <h4>H.S.C in Science - NDC, Dhaka</h4>
-                        <p class="text-gray-600">JANUARY 2023 - DECEMBER 2024</p>
-                    </div>
+                <!-- Experience Snapshot -->
+                <div class="border-t border-neon-blue pt-2">
+                    <span class="neon-text-blue block mb-1 font-['Orbitron']">// EXPERIENCE_SNAPSHOT</span>
+                    <p class="text-white/80">
+                        [03.2023 - PRESENT] <span class="neon-text-magenta">Student</span> Studying ASDS at ISRT, University of Dhaka
+                    </p>
+                    <p class="text-white/80">
+                        [01.2023 - 12.2024] <span class="neon-text-magenta">Sotudent</span> Studied at Notre Dame College, Dhaka.
+                    </p>
                 </div>
 
             </div>
+            <p class="mt-4 text-xs text-yellow-400">
+                // FULL SCHEMATIC AVAILABLE VIA CONTACT MATRIX.
+            </p>
         </div>
     </div>
 
     <script>
-        // Modal logic
         const aboutMeBtn = document.getElementById('aboutMeBtn');
         const viewResumeBtn = document.getElementById('viewResumeBtn');
         const aboutMeModal = document.getElementById('aboutMeModal');
@@ -272,13 +225,12 @@
             if (modal) {
                 const modalContent = modal.querySelector('.modal-content');
                 modal.classList.remove('hidden');
-                setTimeout(() => {
+                // Give browser time to recognize 'hidden' removal before starting transition
+                requestAnimationFrame(() => {
                     modal.classList.add('modal-enter-active');
-                    if (modalContent) {
-                        modalContent.classList.add('modal-content-enter-active');
-                        modalContent.classList.remove('modal-content-enter-from');
-                    }
-                }, 10);
+                    modalContent.classList.add('modal-content-enter-active');
+                    modalContent.classList.remove('modal-content-enter-from');
+                });
             }
         }
 
@@ -287,16 +239,18 @@
             if (modal) {
                 const modalContent = modal.querySelector('.modal-content');
                 modal.classList.remove('modal-enter-active');
+
                 if (modalContent) {
                     modalContent.classList.remove('modal-content-enter-active');
                     modalContent.classList.add('modal-content-leave-to');
 
+                    // Wait for the content transition to finish before hiding the overlay
                     modalContent.addEventListener('transitionend', function handler() {
                         modal.classList.add('hidden');
                         modalContent.classList.remove('modal-content-leave-to');
-                        modalContent.classList.add('modal-content-enter-from');
+                        modalContent.classList.add('modal-content-enter-from'); // Reset for next open
                         modalContent.removeEventListener('transitionend', handler);
-                    });
+                    }, { once: true });
                 }
             }
         }
