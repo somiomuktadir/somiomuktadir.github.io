@@ -1,272 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muktadir Somio // Website</title>
+    <title>Minimalist Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-blue: #00e1ff;
-            --neon-magenta: #c300ff;
-            --dark-bg: #0a0a0d;
-            --terminal-green: #00ff00;
+        html {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        body {
-            font-family: 'Fira Code', monospace;
-            background-color: var(--dark-bg);
-            color: var(--terminal-green);
-            min-height: 100vh;
-            display: block; 
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                #0a0a0d 0,
-                #0a0a0d 1px,
-                rgba(0, 255, 255, 0.05) 2px,
-                rgba(0, 0, 0, 0.1) 4px
-            );
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .neon-text-blue {
-            color: var(--neon-blue);
-            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px rgba(0, 255, 255, 0.4);
-        }
-        .neon-glow-magenta {
-            box-shadow: 0 0 8px var(--neon-magenta), inset 0 0 4px var(--neon-magenta);
-            border-color: var(--neon-magenta);
-        }
-        .neon-glow-blue {
-            box-shadow: 0 0 8px var(--neon-blue), inset 0 0 4px var(--neon-blue);
-            border-color: var(--neon-blue);
-        }
-
-        .btn-cyber {
-            background-color: rgba(0, 255, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            transition: all 0.3s ease;
-        }
-        .btn-cyber:hover {
-            background-color: rgba(0, 255, 255, 0.25);
-            transform: translateY(-2px);
-            color: black;
-            text-shadow: none;
-            box-shadow: 0 0 12px var(--neon-blue);
-        }
-
-        .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: #1a1a2e;
-            border: 2px solid var(--neon-magenta);
-            border-radius: 8px;
-            box-shadow: 0 0 20px var(--neon-magenta);
-            color: var(--terminal-green);
-        }
-
-        
-        .modal-enter-active { transition: opacity 0.3s ease; }
-        .modal-enter-from { opacity: 0; }
-        .modal-content-enter-active { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); } /* spring effect */
-        .modal-content-enter-from { transform: scale(0.8); opacity: 0; }
-        .modal-content-leave-to { transform: scale(0.95); opacity: 0; transition: all 0.3s ease; }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen antialiased">
 
-    <div id="system-console" class="w-full min-h-screen p-8 md:p-12">
-
-        <!-- Header: Profile ID -->
-        <header class="mb-8 border-b border-gray-700 pb-4">
-            <h1 class="text-4xl md:text-6xl font-extrabold font-['Orbitron'] tracking-wider  neon-text-blue leading-none">
+    <header class="sticky top-0 z-10 backdrop-blur-sm bg-white/80 dark:bg-gray-900/80">
+        <div class="max-w-4xl mx-auto px-4 py-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tight border-b-2 border-transparent hover:border-gray-800 dark:hover:border-gray-200 transition-colors">
                 Muktadir Somio
-            </h1>
-            <p class="text-xl mt-2 text-white/70 font-['Fira Code']">
-                > STUDENT <span class="text-yellow-400">AI/ML ENTHUSIAST</span> CHESS PLAYER
-            </p>
-        </header>
+            </a>
 
-        <!-- Main Console -->
-        <main class="space-y-8">
-            <!-- Data Channels (Navigation) -->
-            <div class="space-y-2">
-                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
-                    DATA CHANNELS // LINKS
-                </h2>
-                <div class="flex flex-wrap gap-4 pt-2">
-                    <a href="microblog.html" class="btn-cyber px-4 py-2 rounded-md font-semibold text-lg hover:neon-glow-blue flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 2l-3-3m0 0l-3 3m3-3v12a2 2 0 01-2 2h-1"></path></svg>
-                        [LOGS] Microblogs n Logs
-                    </a>
-                    <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU?usp=drive_link" class="btn-cyber neon-glow-magenta px-4 py-2 rounded-md font-semibold text-lg hover:neon-glow-blue flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        [ARCHIVE] Academic Resources
-                    </a>
-                </div>
-            </div>
-
-            <!-- Profile Actions -->
-            <div class="space-y-2">
-                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
-                    COMMAND // EXECUTION
-                </h2>
-                <div class="flex flex-wrap gap-4 pt-2">
-                    <button id="aboutMeBtn" class="btn-cyber neon-glow-magenta px-6 py-3 rounded-full font-bold text-lg">
-                        <span class="font-['Orbitron']">ACCESS_FILE: ABOUT_ME.DAT</span>
-                    </button>
-                    <button id="viewResumeBtn" class="btn-cyber px-6 py-3 rounded-full font-bold text-lg">
-                        <span class="font-['Orbitron']">LOAD_SCHEMATIC: RESUME.DAT</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Social Links / Contact Matrix -->
-            <div class="space-y-2">
-                <h2 class="text-2xl font-['Orbitron'] neon-text-blue border-l-4 pl-3 border-neon-blue">
-                    CONTACT // MATRIX_ACCESS
-                </h2>
-                <div class="flex flex-wrap gap-6 pt-2 text-lg">
+            <nav class="hidden sm:flex space-x-6 text-sm font-medium">
                 
-                    <a href="https://github.com/somiomuktadir/" target="_blank" class="hover:text-neon-magenta hover:underline transition-colors duration-200">
-                        //GITHUB
-                    </a>
-                    <a href="mailto:somiomuktadir@gmail.com" class="hover:text-neon-magenta hover:underline transition-colors duration-200">
-                        //EMAIL_ADDRESS
-                    </a>
-                </div>
-            </div>
-        </main>
-    </div>
+                <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Resources</span>
+                </a>
+                
+                <a href="somiomuktadir@gmail.com" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.8 5.2a2 2 0 002.4 0L21 8m-2 10H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+                    <span>Email</span>
+                </a>
+                <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.819-.26.819-.57v-2.126c-3.338.725-4.04-1.61-4.04-1.61-.546-1.385-1.332-1.756-1.332-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.77.42-.998.761-1.226-2.674-.303-5.462-1.338-5.462-5.924 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.654 1.652.242 2.873.118 3.176.77.84 1.236 1.911 1.236 3.221 0 4.596-2.793 5.612-5.478 5.922.433.372.823 1.102.823 2.222v3.293c0 .314.218.682.823.57C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </nav>
 
-    <!-- About Me Modal (Holographic Overlay) -->
-    <div id="aboutMeModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-        <div class="modal-content w-full max-w-2xl p-6 md:p-8 relative modal-content-enter-from">
-            <button onclick="closeModal('aboutMeModal')" class="absolute top-3 right-3 text-2xl hover:text-red-500 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button id="menu-button" class="sm:hidden p-1 rounded-md transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">
+                <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <h3 class="text-3xl font-['Orbitron'] neon-text-magenta mb-4 border-b border-gray-700 pb-2">
-                [FILE_READOUT] :: ABOUT_ME
-            </h3>
-            <p class="text-sm md:text-base leading-relaxed text-gray-300">
-                // System.out.println("Initializing Personal Log...");<br><br>
-                Hello there! This is Muktadir and I am coming to you guys from Dhaka. I am a student and my academic journey is currently focused on Applied Statostics and Data Science at ISRT, DU. I am an AI/ML enthusiast and I love to keep myself engaged in fun projects. I use arch btw and my favorite subject to study is Linear Algebra.
-            </p>
-            <p class="mt-4 text-xs text-yellow-400">
-                // EXECUTION COMPLETE. PRESS ESCAPE TO RETURN.
-            </p>
         </div>
-    </div>
 
-    <!-- View Resume Modal (Placeholder/Holographic Link) -->
-    <div id="resumeModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-        <div class="modal-content w-full max-w-xl p-6 md:p-8 relative modal-content-enter-from">
-            <button onclick="closeModal('resumeModal')" class="absolute top-3 right-3 text-2xl hover:text-red-500 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h3 class="text-3xl font-['Orbitron'] neon-text-magenta mb-4 border-b border-gray-700 pb-2">
-                [FILE_READOUT] :: RESUME_SUMMARY
-            </h3>
-            <div class="text-sm md:text-base leading-relaxed text-gray-300 space-y-4">
-                <p>// INITIALIZING DATA STREAM... (Muktadir Somio)</p>
-
-                <!-- Core Competencies -->
-                <div class="border-t border-neon-blue pt-2">
-                    <span class="neon-text-blue block mb-1 font-['Orbitron']">// CORE_COMPETENCIES</span>
-                    <ul class="list-none pl-4 text-xs text-yellow-400 space-y-1">
-                        <li>> Python, English, MySQL</li>
-                        <li>> Chess, learning Russian</li>
-                    </ul>
-                </div>
-
-                <!-- Experience Snapshot -->
-                <div class="border-t border-neon-blue pt-2">
-                    <span class="neon-text-blue block mb-1 font-['Orbitron']">// EXPERIENCE_SNAPSHOT</span>
-                    <p class="text-white/80">
-                        [03.2023 - PRESENT] <span class="neon-text-magenta">Student</span> Studying ASDS at ISRT, University of Dhaka.
-                    </p>
-                    <p class="text-white/80">
-                        [01.2023 - 12.2024] <span class="neon-text-magenta">Sotudent</span> Studied at Notre Dame College, Dhaka.
-                    </p>
-                </div>
-
+        <div id="mobile-menu" class="hidden sm:hidden absolute w-full bg-white dark:bg-gray-900 border-t dark:border-gray-800 transition-all duration-300 ease-in-out">
+            <div class="flex flex-col p-4 space-y-3 font-medium">
+                <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Resources</span>
+                </a>
+                
+                <a href="mailto:somiomuktadir@gmail.com" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.8 5.2a2 2 0 002.4 0L21 8m-2 10H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+                    <span>Email</span>
+                </a>
+                <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.819-.26.819-.57v-2.126c-3.338.725-4.04-1.61-4.04-1.61-.546-1.385-1.332-1.756-1.332-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.77.42-.998.761-1.226-2.674-.303-5.462-1.338-5.462-5.924 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.654 1.652.242 2.873.118 3.176.77.84 1.236 1.911 1.236 3.221 0 4.596-2.793 5.612-5.478 5.922.433.372.823 1.102.823 2.222v3.293c0 .314.218.682.823.57C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
             </div>
-            <p class="mt-4 text-xs text-yellow-400">
-                // FULL SCHEMATIC AVAILABLE VIA CONTACT MATRIX.
-            </p>
         </div>
-    </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
+
+        <section id="about" class="mb-16 sm:mb-24">
+            <h1 class="text-xl sm:text-xl font-extrabold mb-8">
+                Hello, I'm a student ...
+            </h1>
+            <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+                And I am currently based in Dhaka. I completed my high school from NDC, Dhaka. My academic journey is currently focused on Applied Statistics and Data Science at ISRT, DU. I am an AI/ML enthusiast and I love to keep myself engaged in fun projects. You can contact me through my email address anytime and you can find my <b><a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU">Classnotes, and Academic Resources</a></b> here and through the navbar/hamburger button. Have a good day!
+            </p>
+        </section>
+
+    </main>
 
     <script>
-        const aboutMeBtn = document.getElementById('aboutMeBtn');
-        const viewResumeBtn = document.getElementById('viewResumeBtn');
-        const aboutMeModal = document.getElementById('aboutMeModal');
-        const resumeModal = document.getElementById('resumeModal');
+        const htmlElement = document.documentElement;
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = document.getElementById('menu-icon-open');
+        const closeIcon = document.getElementById('menu-icon-close');
 
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                const modalContent = modal.querySelector('.modal-content');
-                modal.classList.remove('hidden');
-                // Give browser time to recognize 'hidden' removal before starting transition
-                requestAnimationFrame(() => {
-                    modal.classList.add('modal-enter-active');
-                    modalContent.classList.add('modal-content-enter-active');
-                    modalContent.classList.remove('modal-content-enter-from');
-                });
+
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
             }
         }
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                const modalContent = modal.querySelector('.modal-content');
-                modal.classList.remove('modal-enter-active');
+        applyTheme(isDarkMode.matches);
 
-                if (modalContent) {
-                    modalContent.classList.remove('modal-content-enter-active');
-                    modalContent.classList.add('modal-content-leave-to');
+        isDarkMode.addEventListener('change', (event) => {
+            applyTheme(event.matches);
+        });
 
-                    // Wait for the content transition to finish before hiding the overlay
-                    modalContent.addEventListener('transitionend', function handler() {
-                        modal.classList.add('hidden');
-                        modalContent.classList.remove('modal-content-leave-to');
-                        modalContent.classList.add('modal-content-enter-from'); // Reset for next open
-                        modalContent.removeEventListener('transitionend', handler);
-                    }, { once: true });
-                }
+        menuButton.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                openIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
             }
-        }
+        });
 
-        aboutMeBtn.addEventListener('click', () => openModal('aboutMeModal'));
-        viewResumeBtn.addEventListener('click', () => openModal('resumeModal'));
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (!aboutMeModal.classList.contains('hidden')) {
-                    closeModal('aboutMeModal');
-                }
-                if (!resumeModal.classList.contains('hidden')) {
-                    closeModal('resumeModal');
-                }
-            }
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                openIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
         });
     </script>
 </body>
