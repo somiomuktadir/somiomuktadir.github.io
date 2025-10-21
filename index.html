@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muktadir Somio // Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen antialiased">
+
+    <header class="sticky top-0 z-10 backdrop-blur-sm bg-white/80 dark:bg-gray-900/80">
+        <div class="max-w-4xl mx-auto px-4 py-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tight border-b-2 border-transparent hover:border-gray-800 dark:hover:border-gray-200 transition-colors">
+                Muktadir Somio
+            </a>
+
+            <nav class="hidden sm:flex space-x-6 text-sm font-medium">
+                
+                <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Resources</span>
+                </a>
+                
+                <a href="mailto:somiomuktadir@gmail.com" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.8 5.2a2 2 0 002.4 0L21 8m-2 10H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+                    <span>Email</span>
+                </a>
+                <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-1 transition-colors hover:text-gray-600 dark:hover:text-gray-400 text-xl">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.819-.26.819-.57v-2.126c-3.338.725-4.04-1.61-4.04-1.61-.546-1.385-1.332-1.756-1.332-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.77.42-.998.761-1.226-2.674-.303-5.462-1.338-5.462-5.924 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.654 1.652.242 2.873.118 3.176.77.84 1.236 1.911 1.236 3.221 0 4.596-2.793 5.612-5.478 5.922.433.372.823 1.102.823 2.222v3.293c0 .314.218.682.823.57C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </nav>
+
+            <button id="menu-button" class="sm:hidden p-1 rounded-md transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">
+                <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden sm:hidden absolute w-full bg-white dark:bg-gray-900 border-t dark:border-gray-800 transition-all duration-300 ease-in-out">
+            <div class="flex flex-col p-4 space-y-3 font-medium">
+                <a href="https://drive.google.com/drive/folders/1DhpFeMdvC27PdNmu7hnQq7_TFcooBorU" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Resources</span>
+                </a>
+                
+                <a href="mailto:somiomuktadir@gmail.com" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.8 5.2a2 2 0 002.4 0L21 8m-2 10H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+                    <span>Email</span>
+                </a>
+                <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 py-2 transition-colors hover:text-gray-600 dark:hover:text-gray-400">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.6.111.819-.26.819-.57v-2.126c-3.338.725-4.04-1.61-4.04-1.61-.546-1.385-1.332-1.756-1.332-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.77.42-.998.761-1.226-2.674-.303-5.462-1.338-5.462-5.924 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.654 1.652.242 2.873.118 3.176.77.84 1.236 1.911 1.236 3.221 0 4.596-2.793 5.612-5.478 5.922.433.372.823 1.102.823 2.222v3.293c0 .314.218.682.823.57C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
+
+        <section id="about" class="mb-16 sm:mb-24">
+            <h1 class="text-xl sm:text-xl font-extrabold mb-8">
+                Hello, I'm a student ...
+            </h1>
+            <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+                I completed high school from Notre Dame College, Dhaka and my academic journey is currently focused on Applied Statistics and Data Science at ISRT, University of Dhaka. I am a Machine Learning and AI enthusiast, often play chess and love to keep myself engaged in fun projects. You can contact me through my email address and can also request to access my <b><a href="https://drive.google.com/drive/folders/1kd-jeVyjVibbvInMtMz7MmGnHGS4_JVb?usp=sharing">Academic Resources</a></b> here or through the navbar/hamburger button. You can also check out my Github Repo for the codes of this website, and some cool project(s). Have a nice day!
+            </p>
+        </section>
+
+    </main>
+
+    <script>
+        const htmlElement = document.documentElement;
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = document.getElementById('menu-icon-open');
+        const closeIcon = document.getElementById('menu-icon-close');
+
+
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+        }
+
+        applyTheme(isDarkMode.matches);
+
+        isDarkMode.addEventListener('change', (event) => {
+            applyTheme(event.matches);
+        });
+
+        menuButton.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                openIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                openIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
