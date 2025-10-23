@@ -75,10 +75,6 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
-        <div class="mb-12">
-            <input type="text" id="search-input" placeholder="Search by title, topic, or year"
-                   class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 transition-colors">
-        </div>
         <div id="blog-list" class="space-y-8">
             <div class="blog-card p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md flex flex-col justify-between" 
                  data-title="The Power of Bayesian Statistics" data-year="2024" data-topics="Data Science, Statistics">
@@ -140,25 +136,6 @@
                 closeIcon.classList.add('hidden');
             }
         });
-        
-        document.getElementById('search-input').addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            const blogCards = document.querySelectorAll('.blog-card');
-            
-            blogCards.forEach(card => {
-                const title = card.getAttribute('data-title').toLowerCase();
-                const year = card.getAttribute('data-year').toLowerCase();
-                const topics = card.getAttribute('data-topics').toLowerCase();
-                const matches = title.includes(query) || year.includes(query) || topics.includes(query);
-
-                if (matches) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        });
-        
         document.getElementById('load-more-btn').addEventListener('click', () => {
             const btn = document.getElementById('load-more-btn');
             btn.textContent = "No more posts available right now!";
