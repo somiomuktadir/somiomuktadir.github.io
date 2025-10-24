@@ -78,14 +78,24 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 py-12 sm:py-20">
+        
+        <!-- Search Input -->
+        <div class="mb-10">
+            <div class="relative max-w-lg mx-auto md:mx-0">
+                <!-- Search bar updated to use rounded-full for better aesthetics -->
+                <input type="text" id="blog-search-input" placeholder="Search blog titles or content..." class="w-full py-3 pl-12 pr-4 text-base rounded-full border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:ring-cyan-500 focus:border-cyan-500 transition-colors shadow-sm focus:outline-none" onkeyup="filterPosts()">
+                <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+            </div>
+        </div>
 
         <!-- Blog Post Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div id="blog-post-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10">
             
-            <!-- Card 1 -->
+            <!-- Card 1: AI in Modern Society (Category: Thoughts, Color: Blue) -->
             <a href="blogs/ai_in_modern_society.html" class="blog-card block bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out">
                 <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    <span class="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 px-2 py-0.5 rounded-full font-medium">Opinion</span>
+                    <!-- Updated tag from Opinion to THOUGHTS -->
+                    <span class="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 px-2 py-0.5 rounded-full font-medium" data-card-color="blue">Thoughts</span>
                     <i class="fas fa-calendar-alt text-xs"></i>
                     <span>November 07, 2024</span>
                 </div>
@@ -100,10 +110,10 @@
                 </div>
             </a>
 
-            <!-- Card 2 -->
+            <!-- Card 2: Our Revolution (Category: Literary, Color: Red) -->
             <a href="blogs/our_revolution.html" class="blog-card block bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out">
                 <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    <span class="bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 px-2 py-0.5 rounded-full font-medium">Literary</span>
+                    <span class="bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 px-2 py-0.5 rounded-full font-medium" data-card-color="red">Literary</span>
                     <i class="fas fa-calendar-alt text-xs"></i>
                     <span>March 22, 2025</span>
                 </div>
@@ -117,20 +127,24 @@
                     Read Here <i class="fas fa-arrow-right ml-2 text-sm"></i>
                 </div>
             </a>
-            <!-- Card 3 -->
+            
+            <!-- Card 3: Forced Respect (Category: Thoughts, Color: Blue) -->
             <a href="blogs/forced_respect.html" class="blog-card block bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 ease-in-out">
                 <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    <span class="bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 px-2 py-0.5 rounded-full font-medium">Thoughts</span>
+                    <!-- Updated to Blue color scheme and Thoughts tag -->
+                    <span class="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 px-2 py-0.5 rounded-full font-medium" data-card-color="blue">Thoughts</span>
                     <i class="fas fa-calendar-alt text-xs"></i>
                     <span>October 24, 2025</span>
                 </div>
-                <h2 class="text-2xl font-bold mb-3 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                <!-- Updated to Blue color scheme -->
+                <h2 class="text-2xl font-bold mb-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     Forced Respect & Stockholm Syndrome
                 </h2>
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
                     An exploration of the paradoxical dynamic of forced respect in university settings, drawing parallels to Stockholm Syndrome and its psychological implications.
                 </p>
-                <div class="flex items-center text-red-600 dark:text-red-400 font-medium">
+                <!-- Updated to Blue color scheme -->
+                <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium">
                     Read Post <i class="fas fa-arrow-right ml-2 text-sm"></i>
                 </div>
             </a>
@@ -149,6 +163,38 @@
     </main>
 
     <script>
+        // Store original content of the posts to allow resetting highlights
+        const originalContent = []; 
+        
+        // Map card colors to Tailwind highlight classes (soft background)
+        const colorMap = {
+            'blue': 'bg-blue-300/50 dark:bg-blue-600/50', // Used for Thoughts
+            'red': 'bg-red-300/50 dark:bg-red-600/50',   // Used for Literary
+            'cyan': 'bg-cyan-300/50 dark:bg-cyan-600/50', // Will be used for Ideas
+            'purple': 'bg-purple-300/50 dark:bg-purple-600/50' // Will be used for Events
+        };
+
+        function initPostData() {
+            const blogCards = document.querySelectorAll('.blog-card');
+            blogCards.forEach(card => {
+                const titleElement = card.querySelector('h2');
+                const contentElement = card.querySelector('p');
+                // Ensure the data-card-color attribute exists before trying to read it
+                const colorSpan = card.querySelector('[data-card-color]');
+                const colorKey = colorSpan ? colorSpan.getAttribute('data-card-color') : 'default';
+                
+                // Store the necessary data for filtering and highlighting
+                originalContent.push({
+                    card: card,
+                    title: titleElement.textContent,
+                    content: contentElement.textContent,
+                    titleElement: titleElement,
+                    contentElement: contentElement,
+                    highlightClass: colorMap[colorKey] || 'bg-gray-300/50 dark:bg-gray-600/50' // Fallback
+                });
+            });
+        }
+
         // Theme Toggle Logic
         const htmlElement = document.documentElement;
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
@@ -196,6 +242,60 @@
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
             }, 2000);
         });
+
+        // Search Filter Logic with Highlighting
+        function filterPosts() {
+            const searchInput = document.getElementById('blog-search-input');
+            const filter = searchInput.value.trim();
+            const filterLower = filter.toLowerCase();
+
+            // Loop through the stored original content
+            originalContent.forEach(item => {
+                const titleLower = item.title.toLowerCase();
+                const contentLower = item.content.toLowerCase();
+                
+                // 1. Reset content (clear previous highlights)
+                item.titleElement.innerHTML = item.title;
+                item.contentElement.innerHTML = item.content;
+
+                if (!filter) {
+                    // If search is empty, show all cards
+                    item.card.style.display = 'block';
+                    return;
+                }
+
+                // 2. Check for match
+                if (titleLower.includes(filterLower) || contentLower.includes(filterLower)) {
+                    item.card.style.display = 'block';
+
+                    // 3. Highlight the matches
+                    // Use a global, case-insensitive regex pattern
+                    // Note: Escaping special characters is not strictly necessary for simple text, 
+                    // but it's good practice for general regex safety.
+                    const safeFilter = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(safeFilter, 'gi');
+                    
+                    // Highlighting structure: <span class="px-1 [color-class] rounded-sm font-semibold">[Match]</span>
+                    const highlightSpan = (match) => 
+                        `<span class="px-1 ${item.highlightClass} rounded-sm font-semibold">${match}</span>`;
+                    
+                    // Highlight title
+                    const highlightedTitle = item.title.replace(regex, highlightSpan);
+                    item.titleElement.innerHTML = highlightedTitle;
+
+                    // Highlight content (description)
+                    const highlightedContent = item.content.replace(regex, highlightSpan);
+                    item.contentElement.innerHTML = highlightedContent;
+
+                } else {
+                    // 4. Hide card if no match
+                    item.card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Initialize post data after all DOM elements are loaded
+        document.addEventListener('DOMContentLoaded', initPostData);
     </script>
 </body>
 </html>
