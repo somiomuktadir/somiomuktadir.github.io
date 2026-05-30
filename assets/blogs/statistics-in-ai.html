@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Role of Statistics in Artificial Intelligence &mdash; Muktadir Somio</title>
+  <link rel="stylesheet" href="../../assets/style.css">
+  <script>
+    (function(){var t=localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t)}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark")}})();
+  </script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <ul class="nav-links">
+        <li>
+          <a href="../../index.html" aria-label="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </a>
+        </li>
+      </ul>
+      <div class="nav-right">
+        <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <button id="theme-toggle" class="nav-toggle" aria-label="Toggle theme">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="blog-post">
+      <a href="../../blogs.html" class="blog-back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to blogs
+      </a>
+
+      <h1>The Role of Statistics in Artificial Intelligence</h1>
+
+      <p>Artificial intelligence gets most of the attention these days. Headlines announce new language models, image generators, and autonomous systems every week. But underneath all of that sits a discipline that has been around for over a century: statistics. Most of what we call AI is, at its core, applied statistics. The difference is mostly in branding and scale.</p>
+
+      <p>This is not a complaint. It is a statement of fact that matters for anyone trying to understand how these systems actually work. If you strip away the marketing language and the impressive demos, you find probability distributions, likelihood functions, and optimization algorithms. These are the tools of statistics, dressed up in new clothes.</p>
+
+      <h2>Probability as the Foundation</h2>
+
+      <p>The single most important idea in AI is probability. Every machine learning model, from a simple linear regression to a large neural network, makes predictions by estimating probabilities. When a spam filter marks an email as junk, it is calculating the probability that the email is spam given the words it contains. When an image classifier identifies a cat, it is estimating the probability that the image belongs to the "cat" category.</p>
+
+      <p>Probability theory gives us a formal language for reasoning under uncertainty. This is what AI needs, because the real world is noisy and incomplete. You rarely have perfect information. You have data with errors, missing values, and confounding factors. Probability allows you to quantify your uncertainty and make decisions despite it.</p>
+
+      <p>The Bayesian framework is particularly important here. Bayesian statistics says that you start with a prior belief about something, observe some data, and then update your belief using Bayes' theorem. This is exactly what many AI systems do. A language model, for instance, has learned prior probabilities about which words tend to follow which other words. When you give it a prompt, it uses those priors to generate a response.</p>
+
+      <p>The prior is not arbitrary. It is learned from data. A model trained on millions of English documents has learned the statistical patterns of English. This is not the same as understanding English, but it is enough to produce text that often looks correct. The distinction between statistical pattern matching and understanding is important, and it is one that the AI community often glosses over.</p>
+
+      <h2>Hypothesis Testing and Model Evaluation</h2>
+
+      <p>Before you deploy an AI system, you need to know whether it works. This is where hypothesis testing comes in. You form a null hypothesis (the model does not perform better than chance), collect evidence, and decide whether to reject the null hypothesis. This is the same process used in clinical trials, quality control, and social science research.</p>
+
+      <p>In practice, AI researchers use metrics like accuracy, precision, recall, and F1 score to evaluate models. These are all statistical concepts. Accuracy is the proportion of correct predictions. Precision is the proportion of positive predictions that are actually correct. Recall is the proportion of actual positives that are correctly identified. F1 score balances precision and recall.</p>
+
+      <p>Cross-validation is another statistical technique that is essential in AI. You split your data into training and testing sets, train the model on one set, and evaluate it on the other. K-fold cross-validation goes further: you repeat this process k times, using different splits each time, and average the results. This gives you a more reliable estimate of how the model will perform on new data.</p>
+
+      <p>None of this is new. Statisticians have been doing cross-validation since the 1930s. What has changed is the scale. Modern AI systems use these techniques on datasets with billions of data points, which requires different computational approaches. But the underlying logic is the same.</p>
+
+      <h2>Regression and Classification</h2>
+
+      <p>The two most common tasks in supervised machine learning are regression and classification. Regression means predicting a continuous value (like the price of a house or the temperature tomorrow). Classification means predicting a discrete label (like whether an email is spam or not).</p>
+
+      <p>Both of these are statistical problems that have been studied for decades. Linear regression, which fits a straight line to data, was developed by Francis Galton in the 1880s. Logistic regression, which is used for classification, dates to the 1940s. These methods are still used extensively in AI, even though they are often overshadowed by more complex models.</p>
+
+      <p>The reason they persist is that they are interpretable. When a logistic regression model predicts that a patient has a 70% chance of having a disease, you can look at the coefficients and understand which factors contributed to that prediction. With a neural network with millions of parameters, you often cannot. This is a real problem in domains like medicine and criminal justice, where decisions need to be explainable.</p>
+
+      <h2>The Bias-Variance Tradeoff</h2>
+
+      <p>One of the most fundamental concepts in statistics that applies directly to AI is the bias-variance tradeoff. Bias is the error introduced by approximating a real-world problem with a simplified model. Variance is the error introduced by the model's sensitivity to small fluctuations in the training data.</p>
+
+      <p>A simple model (like linear regression) tends to have high bias and low variance. It makes strong assumptions about the shape of the data, which means it can miss real patterns. A complex model (like a deep neural network) tends to have low bias and high variance. It can capture very subtle patterns, but it may also fit noise in the training data.</p>
+
+      <p>The goal is to find the right balance. Too much bias and you underfit the data. Too much variance and you overfit. Regularization is a set of techniques designed to control this tradeoff. L1 and L2 regularization add penalty terms to the loss function that discourage the model from becoming too complex. Dropout, used in neural networks, randomly removes neurons during training to prevent over-reliance on any single feature.</p>
+
+      <p>These are all statistical ideas. The fact that they are implemented in Python code running on GPUs does not change what they are. They are solutions to problems that statisticians identified long before anyone used the term "artificial intelligence."</p>
+
+      <h2>Bayesian Methods in Modern AI</h2>
+
+      <p>Bayesian statistics has seen a resurgence in AI research. Bayesian neural networks, for instance, do not just give you a prediction. They give you a distribution over possible predictions. This is useful because it tells you how confident the model is. If the distribution is tight, the model is confident. If it is wide, the model is uncertain.</p>
+
+      <p>Uncertainty quantification is important in practice. A self-driving car that is uncertain about whether an object is a pedestrian or a shadow should behave differently than one that is certain. A medical diagnosis system that reports its uncertainty along with its prediction is more useful than one that just gives a label.</p>
+
+      <p>Gaussian processes are another Bayesian tool that has found applications in AI. They provide a principled way to make predictions and quantify uncertainty. They are computationally expensive for large datasets, which limits their use in some applications, but they remain valuable in areas like hyperparameter tuning and Bayesian optimization.</p>
+
+      <p>Bayesian inference is also central to how many AI systems learn. Variational autoencoders, for instance, use variational inference to approximate complex posterior distributions. This is a technique from Bayesian statistics that allows you to perform inference on models that would otherwise be intractable.</p>
+
+      <h2>Statistical Learning Theory</h2>
+
+      <p>There is a whole branch of statistics called statistical learning theory that provides the theoretical foundation for machine learning. It answers questions like: Under what conditions can a model generalize from training data to new data? How much training data do you need? What is the relationship between model complexity and generalization?</p>
+
+      <p>The bias-variance tradeoff is one result from this field. The VC dimension (Vapnik-Chervonenkis dimension) is another. It measures the capacity of a model class, which is roughly how complex the models in that class can be. A model with high VC dimension can fit very complex patterns, but it needs more data to do so reliably.</p>
+
+      <p>These results are not just theoretical curiosities. They have practical implications. If you know the VC dimension of your model class, you can estimate how much data you need to achieve a certain level of performance. This is useful for planning data collection and for understanding the limitations of your model.</p>
+
+      <h2>Where Statistics Ends and AI Begins</h2>
+
+      <p>The line between statistics and AI is blurry, and it has been for decades. Leo Breiman, a statistician, wrote a famous paper in 2001 called "Statistical Modeling: The Two Cultures" in which he distinguished between the "data modeling culture" (traditional statistics) and the "algorithmic modeling culture" (machine learning). He argued that statisticians focused too much on assuming a particular model form and not enough on prediction accuracy.</p>
+
+      <p>The AI field has largely adopted the algorithmic approach. Instead of assuming a specific model, you let the algorithm learn the structure from data. Neural networks are the clearest example: you do not tell the network what features to look for. It learns them on its own.</p>
+
+      <p>But this does not mean AI has moved beyond statistics. It has moved beyond certain statistical traditions while relying more heavily on others. The statistical foundations are still there, even when they are not acknowledged.</p>
+
+      <p>Understanding these foundations matters. If you are training a machine learning model and it performs well on your test set but poorly in production, the problem is almost certainly statistical. It could be data drift, selection bias, or overfitting. These are statistical problems with statistical solutions.</p>
+
+      <p>The same goes for interpreting results. A model that predicts recidivism with 80% accuracy sounds good until you discover that the errors are concentrated among a particular demographic group. This is a fairness issue, but it is also a statistical one. It involves questions about how accuracy is measured and what the costs of different types of errors are.</p>
+
+      <h2>Conclusion</h2>
+
+      <p>Statistics is not a competitor to AI. It is a prerequisite. The field of AI would not exist without statistical theory, and it cannot advance without it. The problems that AI faces today, from bias and fairness to interpretability and robustness, are fundamentally statistical problems.</p>
+
+      <p>For students and practitioners, this means that learning statistics is not optional. You can build models without understanding the theory, and you might even get good results for a while. But eventually, you will encounter a problem that requires you to think carefully about probability, inference, and uncertainty. When that happens, the people who understand statistics will be the ones who can solve it.</p>
+
+      <p>The hype around AI will continue. New models will be announced with impressive capabilities. But the underlying questions will remain statistical: What is the probability that this prediction is correct? How much should I trust this model? What are the sources of error? These are the questions that matter, and statistics is the discipline that answers them.</p>
+    </div>
+  </main>
+
+  <script src="../../assets/script.js"></script>
+</body>
+</html>
