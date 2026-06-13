@@ -4,24 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blogs &mdash; Muktadir Somio</title>
+  <meta name="description" content="Thoughts on philosophy, AI, statistics, and data science by Muktadir Somio.">
   <link rel="stylesheet" href="assets/style.css">
   <script>
-    (function(){var t=localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t)}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark")}})();
+    (function(){var t=localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t)}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark")}document.documentElement.classList.add('js-loading');})();
   </script>
 </head>
 <body>
-  <nav class="navbar">
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-content">
+      <!-- Desktop loader: progress bar -->
+      <div class="preloader-bar-container">
+        <div class="preloader-bar">
+          <div class="preloader-bar-inner"></div>
+        </div>
+      </div>
+      <!-- Mobile loader: spinner -->
+      <div class="preloader-spinner"></div>
+    </div>
+  </div>
+
+  <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <ul class="nav-links">
         <li>
-          <a href="index.html" aria-label="Home">
+          <a href="index.html" aria-label="Home" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </a>
         </li>
       </ul>
       <div class="nav-right">
         <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         </a>
         <button id="theme-toggle" class="nav-toggle" aria-label="Toggle theme">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -41,22 +56,33 @@
         <div class="blog-card">
           <h3>Advaita Vedanta and the Problem of Knowledge</h3>
           <p>An exploration of the Advaita Vedanta school of Hindu philosophy, focusing on its core claims about consciousness, the self, and the relationship between perception and reality. This piece examines how Shankara's arguments about the nature of Brahman hold up when subjected to modern epistemological scrutiny.</p>
-          <a href="assets/blogs/advaita-vedanta.html">Read more &rarr;</a>
+          <a href="assets/blogs/advaita-vedanta.html">
+            Read more 
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
         </div>
         <div class="blog-card">
           <h3>The Role of Statistics in Artificial Intelligence</h3>
           <p>A look at how statistical theory forms the backbone of modern AI systems. From Bayesian inference to hypothesis testing, this post covers the mathematical foundations that most machine learning practitioners take for granted, and why understanding them matters.</p>
-          <a href="assets/blogs/statistics-in-ai.html">Read more &rarr;</a>
+          <a href="assets/blogs/statistics-in-ai.html">
+            Read more 
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
         </div>
         <div class="blog-card">
           <h3>How AI Automates Data Science Workflows</h3>
           <p>An honest assessment of what automated machine learning tools can and cannot do. This post walks through the stages of a typical data science workflow and identifies where AI adds value and where it falls short of human judgment.</p>
-          <a href="assets/blogs/ai-automates-data-science.html">Read more &rarr;</a>
+          <a href="assets/blogs/ai-automates-data-science.html">
+            Read more 
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
         </div>
       </div>
     </section>
   </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="assets/script.js"></script>
 </body>
 </html>
