@@ -33,7 +33,7 @@
       const next = current === "dark" ? "light" : "dark";
       localStorage.setItem("theme", next);
       applyTheme(next);
-      
+
       // Clean up class after transition completes
       setTimeout(() => {
         document.body.classList.remove("theme-transitioning");
@@ -67,6 +67,25 @@
       document.body.appendChild(noise);
     }
 
+    function initResponsiveTables() {
+      const tables = document.querySelectorAll(".blog-post table");
+      tables.forEach((table) => {
+        if (!table.parentElement.classList.contains("table-wrapper")) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "table-wrapper";
+          wrapper.style.overflowX = "auto";
+          wrapper.style.width = "100%";
+          wrapper.style.webkitOverflowScrolling = "touch";
+          table.parentNode.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initResponsiveTables();
+    });
+
     // Glow Blobs
     if (!document.querySelector(".glow-blob")) {
       const b1 = document.createElement("div");
@@ -87,7 +106,8 @@
       backButton.id = "back-to-top";
       backButton.setAttribute("aria-label", "Back to top");
       // Clean upwards arrow chevron logo
-      backButton.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>';
+      backButton.innerHTML =
+        '<svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>';
       document.body.appendChild(backButton);
     }
 
@@ -106,12 +126,16 @@
     }
 
     // Reading Progress Bar (only on blog posts, injected inside navbar to prevent gaps)
-    if (document.querySelector(".blog-post") && !document.querySelector(".reading-progress-container")) {
+    if (
+      document.querySelector(".blog-post") &&
+      !document.querySelector(".reading-progress-container")
+    ) {
       const navbar = document.querySelector(".navbar");
       if (navbar) {
         const progressContainer = document.createElement("div");
         progressContainer.className = "reading-progress-container";
-        progressContainer.innerHTML = '<div class="reading-progress-bar"></div>';
+        progressContainer.innerHTML =
+          '<div class="reading-progress-bar"></div>';
         navbar.appendChild(progressContainer);
       }
     }
@@ -123,8 +147,10 @@
     const cursorDot = document.getElementById("custom-cursor-dot");
     if (!cursor || !cursorDot) return;
 
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
+    let mouseX = 0,
+      mouseY = 0;
+    let cursorX = 0,
+      cursorY = 0;
     let isMoving = false;
 
     window.addEventListener("mousemove", (e) => {
@@ -135,7 +161,7 @@
       // Inner dot moves instantly using translate3d
       const scale = cursorDot.classList.contains("hovered") ? 1.5 : 1;
       cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) scale(${scale})`;
-      
+
       if (cursor.style.opacity === "0" || !cursor.style.opacity) {
         cursor.style.opacity = "1";
         cursorDot.style.opacity = "1";
@@ -164,8 +190,10 @@
 
     // Dynamic hover bindings
     function updateHoverBindings() {
-      const targets = document.querySelectorAll("a, button, [role='button'], input, textarea");
-      targets.forEach(target => {
+      const targets = document.querySelectorAll(
+        "a, button, [role='button'], input, textarea",
+      );
+      targets.forEach((target) => {
         target.addEventListener("mouseenter", () => {
           cursor.classList.add("hovered");
           cursorDot.classList.add("hovered");
@@ -178,7 +206,7 @@
     }
 
     updateHoverBindings();
-    
+
     // Periodically re-bind to handle dynamically loaded content if any
     const observer = new MutationObserver(updateHoverBindings);
     observer.observe(document.body, { childList: true, subtree: true });
@@ -187,7 +215,7 @@
   // ── Smooth Scroll (Lenis) ──
   function initSmoothScroll() {
     if (typeof Lenis === "undefined") return;
-    
+
     const lenis = new Lenis({
       duration: 0.9, // Snappier scrolling response
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -207,9 +235,13 @@
     }
     requestAnimationFrame(raf);
 
-    if (typeof gsap !== "undefined" && gsap.registerPlugin && typeof ScrollTrigger !== "undefined") {
+    if (
+      typeof gsap !== "undefined" &&
+      gsap.registerPlugin &&
+      typeof ScrollTrigger !== "undefined"
+    ) {
       gsap.registerPlugin(ScrollTrigger);
-      lenis.on('scroll', ScrollTrigger.update);
+      lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
       });
@@ -242,7 +274,7 @@
   // ── Spotlight Effect on Cards ──
   function initSpotlightEffect() {
     const cards = document.querySelectorAll(".blog-card");
-    cards.forEach(card => {
+    cards.forEach((card) => {
       card.addEventListener("mousemove", (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -259,8 +291,11 @@
     if (!bar) return;
 
     window.addEventListener("scroll", () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
       bar.style.width = scrolled + "%";
     });
@@ -292,7 +327,7 @@
   function initPreloaderAndAnimations() {
     const preloader = document.getElementById("preloader");
     const barInner = document.querySelector(".preloader-bar-inner");
-    
+
     // Default animation helper if GSAP is loaded
     if (typeof gsap !== "undefined") {
       const tl = gsap.timeline();
@@ -301,21 +336,25 @@
       tl.to(barInner, {
         width: "100%",
         duration: 0.45, // Snappier loading bar
-        ease: "power2.out"
+        ease: "power2.out",
       });
 
       // Step 2: Fade out preloader and transition content
-      tl.to(preloader, {
-        opacity: 0,
-        duration: 0.4, // Snappier fade
-        ease: "power2.inOut",
-        onComplete: () => {
-          preloader.style.display = "none";
-          // Reveal page contents by removing js-loading FOUC class
-          document.documentElement.classList.remove("js-loading");
-          triggerEntranceAnimations();
-        }
-      }, "+=0.1");
+      tl.to(
+        preloader,
+        {
+          opacity: 0,
+          duration: 0.4, // Snappier fade
+          ease: "power2.inOut",
+          onComplete: () => {
+            preloader.style.display = "none";
+            // Reveal page contents by removing js-loading FOUC class
+            document.documentElement.classList.remove("js-loading");
+            triggerEntranceAnimations();
+          },
+        },
+        "+=0.1",
+      );
 
       // Safety timeout: Ensure page reveals even if GSAP or load hangs
       setTimeout(() => {
@@ -325,7 +364,6 @@
           triggerEntranceAnimations();
         }
       }, 1800);
-
     } else {
       // Fallback if GSAP is not loaded
       if (preloader) {
@@ -354,77 +392,106 @@
       y: -20,
       opacity: 0,
       duration: 0.45, // snappier duration
-      ease: "power2.out"
+      ease: "power2.out",
     });
 
     // 2. Hero content slides up and fades in
     if (document.querySelector(".hero")) {
-      tl.from(".hero h1", {
-        y: 15,
-        opacity: 0,
-        duration: 0.5, // snappier duration
-        ease: "power2.out"
-      }, "-=0.25");
+      tl.from(
+        ".hero h1",
+        {
+          y: 15,
+          opacity: 0,
+          duration: 0.5, // snappier duration
+          ease: "power2.out",
+        },
+        "-=0.25",
+      );
 
-      tl.from(".hero .tagline", {
-        y: 10,
-        opacity: 0,
-        duration: 0.5, // snappier duration
-        ease: "power2.out"
-      }, "-=0.35");
+      tl.from(
+        ".hero .tagline",
+        {
+          y: 10,
+          opacity: 0,
+          duration: 0.5, // snappier duration
+          ease: "power2.out",
+        },
+        "-=0.35",
+      );
     }
 
     // 3. Sections staggered
     const sections = document.querySelectorAll("section");
     if (sections.length > 0) {
-      tl.from(sections, {
-        y: 15,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.08, // smaller stagger
-        ease: "power2.out"
-      }, "-=0.3");
+      tl.from(
+        sections,
+        {
+          y: 15,
+          opacity: 0,
+          duration: 0.45,
+          stagger: 0.08, // smaller stagger
+          ease: "power2.out",
+        },
+        "-=0.3",
+      );
     }
 
     // 4. Blog listing cards staggered
     const cards = document.querySelectorAll(".blog-card");
     if (cards.length > 0) {
-      tl.from(cards, {
-        y: 12,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.06, // smaller stagger
-        ease: "power2.out"
-      }, "-=0.35");
+      tl.from(
+        cards,
+        {
+          y: 12,
+          opacity: 0,
+          duration: 0.45,
+          stagger: 0.06, // smaller stagger
+          ease: "power2.out",
+        },
+        "-=0.35",
+      );
     }
 
     // 5. Blog post content animations
     if (document.querySelector(".blog-post")) {
-      tl.from(".blog-back", {
-        x: -8,
-        opacity: 0,
-        duration: 0.4,
-        ease: "power2.out"
-      }, "-=0.35");
-
-      tl.from(".blog-post h1", {
-        y: 15,
-        opacity: 0,
-        duration: 0.45,
-        ease: "power2.out"
-      }, "-=0.3");
-
-      const postElements = document.querySelectorAll(".blog-post > *:not(.blog-back):not(h1)");
-      if (postElements.length > 0) {
-        tl.from(postElements, {
-          y: 10,
+      tl.from(
+        ".blog-back",
+        {
+          x: -8,
           opacity: 0,
           duration: 0.4,
-          stagger: 0.05, // smaller stagger
-          ease: "power2.out"
-        }, "-=0.3");
+          ease: "power2.out",
+        },
+        "-=0.35",
+      );
+
+      tl.from(
+        ".blog-post h1",
+        {
+          y: 15,
+          opacity: 0,
+          duration: 0.45,
+          ease: "power2.out",
+        },
+        "-=0.3",
+      );
+
+      const postElements = document.querySelectorAll(
+        ".blog-post > *:not(.blog-back):not(h1)",
+      );
+      if (postElements.length > 0) {
+        tl.from(
+          postElements,
+          {
+            y: 10,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.05, // smaller stagger
+            ease: "power2.out",
+          },
+          "-=0.3",
+        );
       }
     }
   }
-
 })();
