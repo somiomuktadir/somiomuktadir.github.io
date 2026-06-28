@@ -3,6 +3,9 @@
   const toggle = document.getElementById("theme-toggle");
   const root = document.documentElement;
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
   function getSystemTheme() {
     return mq.matches ? "dark" : "light";
@@ -60,6 +63,19 @@
   });
 
   function injectDOMElements() {
+    function initResponsiveTables() {
+      const tables = document.querySelectorAll(".blog-post table");
+      tables.forEach((table) => {
+        const parent = table.parentElement;
+        if (parent && parent.classList.contains("table-wrapper")) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-wrapper";
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+    }
+
     // Noise Overlay
     if (!document.querySelector(".noise-overlay")) {
       const noise = document.createElement("div");
@@ -67,24 +83,7 @@
       document.body.appendChild(noise);
     }
 
-    function initResponsiveTables() {
-      const tables = document.querySelectorAll(".blog-post table");
-      tables.forEach((table) => {
-        if (!table.parentElement.classList.contains("table-wrapper")) {
-          const wrapper = document.createElement("div");
-          wrapper.className = "table-wrapper";
-          wrapper.style.overflowX = "auto";
-          wrapper.style.width = "100%";
-          wrapper.style.webkitOverflowScrolling = "touch";
-          table.parentNode.insertBefore(wrapper, table);
-          wrapper.appendChild(table);
-        }
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      initResponsiveTables();
-    });
+    initResponsiveTables();
 
     // Glow Blobs
     if (!document.querySelector(".glow-blob")) {
@@ -145,7 +144,7 @@
   function initCustomCursor() {
     const cursor = document.getElementById("custom-cursor");
     const cursorDot = document.getElementById("custom-cursor-dot");
-    if (!cursor || !cursorDot) return;
+    if (!cursor || !cursorDot || reducedMotion) return;
 
     let mouseX = 0,
       mouseY = 0;
@@ -189,11 +188,15 @@
     requestAnimationFrame(lerpCursor);
 
     // Dynamic hover bindings
+    const boundTargets = new WeakSet();
+
     function updateHoverBindings() {
       const targets = document.querySelectorAll(
         "a, button, [role='button'], input, textarea",
       );
       targets.forEach((target) => {
+        if (boundTargets.has(target)) return;
+        boundTargets.add(target);
         target.addEventListener("mouseenter", () => {
           cursor.classList.add("hovered");
           cursorDot.classList.add("hovered");
@@ -214,7 +217,7 @@
 
   // ── Smooth Scroll (Lenis) ──
   function initSmoothScroll() {
-    if (typeof Lenis === "undefined") return;
+    if (typeof Lenis === "undefined" || reducedMotion) return;
 
     const lenis = new Lenis({
       duration: 0.9, // Snappier scrolling response
@@ -256,7 +259,9 @@
 
     let lastScrollY = window.scrollY;
 
-    window.addEventListener("scroll", () => {
+    window.addEventListener(
+      "scroll",
+      () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > 100) {
         if (currentScrollY > lastScrollY) {
@@ -268,7 +273,9 @@
         navbar.classList.remove("nav-hidden");
       }
       lastScrollY = currentScrollY;
-    });
+      },
+      { passive: true },
+    );
   }
 
   // ── Spotlight Effect on Cards ──
@@ -290,7 +297,9 @@
     const bar = document.querySelector(".reading-progress-bar");
     if (!bar) return;
 
-    window.addEventListener("scroll", () => {
+    window.addEventListener(
+      "scroll",
+      () => {
       const winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
       const height =
@@ -298,7 +307,9 @@
         document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
       bar.style.width = scrolled + "%";
-    });
+      },
+      { passive: true },
+    );
   }
 
   // ── Back to Top Center Floating Control ──
@@ -306,13 +317,17 @@
     const backToTop = document.getElementById("back-to-top");
     if (!backToTop) return;
 
-    window.addEventListener("scroll", () => {
+    window.addEventListener(
+      "scroll",
+      () => {
       if (window.scrollY > 300) {
         backToTop.classList.add("visible");
       } else {
         backToTop.classList.remove("visible");
       }
-    });
+      },
+      { passive: true },
+    );
 
     backToTop.addEventListener("click", () => {
       if (window.lenisInstance) {
@@ -327,6 +342,24 @@
   function initPreloaderAndAnimations() {
     const preloader = document.getElementById("preloader");
     const barInner = document.querySelector(".preloader-bar-inner");
+
+    function revealPage() {
+      if (preloader) {
+        preloader.style.display = "none";
+      }
+      document.documentElement.classList.remove("js-loading");
+      if (!reducedMotion) {
+        triggerEntranceAnimations();
+      }
+    }
+
+    if (reducedMotion) {
+      if (barInner) {
+        barInner.style.width = "100%";
+      }
+      revealPage();
+      return;
+    }
 
     // Default animation helper if GSAP is loaded
     if (typeof gsap !== "undefined") {
@@ -347,10 +380,7 @@
           duration: 0.4, // Snappier fade
           ease: "power2.inOut",
           onComplete: () => {
-            preloader.style.display = "none";
-            // Reveal page contents by removing js-loading FOUC class
-            document.documentElement.classList.remove("js-loading");
-            triggerEntranceAnimations();
+            revealPage();
           },
         },
         "+=0.1",
@@ -359,9 +389,7 @@
       // Safety timeout: Ensure page reveals even if GSAP or load hangs
       setTimeout(() => {
         if (preloader.style.display !== "none") {
-          preloader.style.display = "none";
-          document.documentElement.classList.remove("js-loading");
-          triggerEntranceAnimations();
+          revealPage();
         }
       }, 1800);
     } else {
@@ -373,8 +401,7 @@
             preloader.style.transition = "opacity 0.4s ease";
             preloader.style.opacity = 0;
             setTimeout(() => {
-              preloader.style.display = "none";
-              document.documentElement.classList.remove("js-loading");
+              revealPage();
             }, 400);
           }, 300);
         }, 100);
@@ -383,7 +410,7 @@
   }
 
   function triggerEntranceAnimations() {
-    if (typeof gsap === "undefined") return;
+    if (typeof gsap === "undefined" || reducedMotion) return;
 
     const tl = gsap.timeline();
 
