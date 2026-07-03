@@ -6,11 +6,12 @@
   <title>Muktadir Somio &mdash; Data Scientist & Statistician</title>
   <meta name="description" content="Applied statistics and data science student at the University of Dhaka. I work with data, write about philosophy, statistics, and AI, and play chess in my free time.">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/index-modern.css">
   <script>
     (function(){var t=localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t)}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark")}document.documentElement.classList.add('js-loading');})();
   </script>
 </head>
-<body>
+<body class="home-modern">
   <!-- Preloader -->
   <div class="preloader" id="preloader">
     <div class="preloader-content">
@@ -45,13 +46,14 @@
     </div>
   </nav>
 
-  <main>
+  <main class="home-main">
     <div class="hero">
       <h1>Muktadir Somio</h1>
       <p class="tagline">Applied statistics and data science student at the University of Dhaka. I work with data, read books on weekends, and play chess in my free time.</p>
     </div>
 
-    <section id="about">
+    <div class="info-grid">
+      <section id="about" class="home-section section-card">
       <h2>About</h2>
       <div class="about-text">
         <p>I am currently studying applied statistics and data science at the University of Dhaka. Most of my time goes into coursework, data analysis projects, and trying to get better at both.</p>
@@ -61,12 +63,13 @@
       </div>
     </section>
 
-    <section id="contact">
+      <section id="contact" class="home-section section-card">
       <h2>Contact</h2>
       <div class="contact-info">
         <p>Reach me out at <a href="mailto:somiomuktadir@gmail.com">somiomuktadir@gmail.com</a></p>
       </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
