@@ -1,79 +1,368 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="js-loading">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <!-- Responsive behaviour & alignment across mobile and all devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
   <title>Muktadir Somio &mdash; Data Scientist & Statistician</title>
-  <meta name="description" content="Applied statistics and data science student at the University of Dhaka. I work with data, write about philosophy, statistics, and AI, and play chess in my free time.">
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/index-modern.css">
+  <meta name="description" content="Applied statistics and data science student at the University of Dhaka. I work with data, write about philosophy, statistics, and AI, and play chess in my free time." />
+  <meta name="author" content="Muktadir Somio" />
+  <meta name="keywords" content="Muktadir Somio, data scientist, statistician, applied statistics, data science, University of Dhaka, philosophy, AI, machine learning" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://somiomuktadir.github.io/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Muktadir Somio — Data Scientist & Statistician" />
+  <meta property="og:description" content="Applied statistics and data science student at the University of Dhaka. I work with data, write about philosophy, statistics, and AI, and play chess in my free time." />
+  <meta property="og:url" content="https://somiomuktadir.github.io/" />
+  <meta property="og:site_name" content="Muktadir Somio" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Muktadir Somio — Data Scientist & Statistician" />
+  <meta name="twitter:description" content="Applied statistics and data science student at the University of Dhaka. I work with data, write about philosophy, statistics, and AI, and play chess in my free time." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    (function(){var t=localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t)}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-theme","dark")}document.documentElement.classList.add('js-loading');})();
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', "Georgia", "serif"],
+            sans: ["Inter", "system-ui", "sans-serif"],
+          },
+          colors: {
+            cream: "#F9F8F6",
+            ink: "#1C1C1C",
+            espresso: "#6F6A63",
+          },
+        },
+      },
+    };
   </script>
+
+  <!-- Custom layer: variables, keyframes, and effects Tailwind can't express -->
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --cream: #f9f8f6;
+      --espresso: #6f6a63;
+      --hairline: rgba(28, 28, 28, 0.14);
+      --card: rgba(255, 255, 255, 0.45);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark {
+      --ink: #f2efe9;
+      --cream: #161412;
+      --espresso: #a39c92;
+      --hairline: rgba(242, 239, 233, 0.16);
+      --card: rgba(38, 34, 28, 0.4);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; overflow-x: hidden; }
+    ::selection { background: rgba(28, 28, 28, 0.08); }
+    .dark ::selection { background: rgba(242, 239, 233, 0.14); }
+
+    /* Reveal after preloader */
+    html.js-loading main, html.js-loading nav, html.js-loading .site-footer { opacity: 0; }
+    html:not(.js-loading) main, html:not(.js-loading) nav, html:not(.js-loading) .site-footer {
+      opacity: 1; transition: opacity 0.6s var(--ease);
+    }
+
+    /* Floating, fully-rounded navbar */
+    #navbar { transform: translateX(-50%); transition: transform 0.5s var(--ease); }
+    #navbar.nav-hidden { transform: translate(-50%, -160%); }
+
+    /* Hairline atmospheric grid */
+    .bg-grid::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+      background-size: 88px 88px; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 24%, rgba(0,0,0,0.5), transparent 88%);
+      mask-image: radial-gradient(circle at 50% 24%, rgba(0,0,0,0.5), transparent 88%);
+    }
+
+    /* Marquee */
+    .marquee-track { display: inline-flex; white-space: nowrap; will-change: transform; animation: marquee 38s linear infinite; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+
+    /* Underline-reveal links */
+    .ulink { position: relative; color: var(--ink); transition: color 0.4s var(--ease); }
+    .ulink::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease);
+    }
+    .ulink:hover { color: var(--espresso); }
+    .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* Footer typographic links */
+    .footer-link { font-family: "Playfair Display", Georgia, serif; font-weight: 500; color: var(--ink); position: relative; transition: color 0.5s var(--ease); }
+    .footer-link::after {
+      content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: center; transition: transform 0.6s var(--ease);
+    }
+    .footer-link:hover { color: var(--espresso); }
+    .footer-link:hover::after { transform: scaleX(1); }
+
+    /* Contact overlay */
+    #contact-overlay { opacity: 0; visibility: hidden; transition: opacity 0.7s var(--ease), visibility 0.7s var(--ease); }
+    #contact-overlay.open { opacity: 1; visibility: visible; }
+    #contact-overlay .overlay-inner { transform: translateY(18px); transition: transform 0.8s var(--ease); }
+    #contact-overlay.open .overlay-inner { transform: translateY(0); }
+
+    /* Custom cursor */
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor-ring {
+        position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1.5px solid var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 999999;
+        transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease);
+      }
+      .cursor-dot {
+        position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 1000000;
+      }
+      .cursor-ring.hover { width: 54px; height: 54px; background: rgba(28,28,28,0.06); }
+      .dark .cursor-ring.hover { background: rgba(242,239,233,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee-track { animation: none; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
 </head>
-<body class="home-modern">
+
+<body class="bg-grid">
   <!-- Preloader -->
-  <div class="preloader" id="preloader">
-    <div class="preloader-content">
-      <!-- Desktop loader: progress bar -->
-      <div class="preloader-bar-container">
-        <div class="preloader-bar">
-          <div class="preloader-bar-inner"></div>
-        </div>
-      </div>
-      <!-- Mobile loader: spinner -->
-      <div class="preloader-spinner"></div>
+  <div id="preloader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-cream dark:bg-[#161412]">
+    <div class="w-44 h-[2px] bg-black/10 dark:bg-white/10 overflow-hidden rounded-full">
+      <div id="preloader-bar" class="h-full w-0 bg-ink dark:bg-[#F2EFE9]"></div>
     </div>
   </div>
 
-  <nav class="navbar" id="navbar">
-    <div class="nav-inner">
-      <ul class="nav-links">
-        <li>
-          <a href="blogs.html" aria-label="Blogs" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-          </a>
-        </li>
-      </ul>
-      <div class="nav-right">
-        <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" aria-label="GitHub">
-          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+  <!-- Custom cursor -->
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-[calc(1rem+env(safe-area-inset-top))] left-1/2 z-[1000] w-[min(calc(100%-2rem),1180px)] h-14 flex items-center rounded-full border border-[var(--hairline)] backdrop-blur-xl bg-cream/70 dark:bg-[#161412]/70 shadow-[0_18px_40px_-24px_rgba(28,28,28,0.4)] dark:shadow-[0_18px_45px_-22px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center justify-between w-full px-2">
+      <a href="https://substack.com/@somiomuktadir" target="_blank" rel="noopener" aria-label="Writing" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+      </a>
+      <div class="flex items-center gap-1">
+        <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" aria-label="GitHub" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         </a>
-        <button id="theme-toggle" class="nav-toggle" aria-label="Toggle theme">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <button id="theme-toggle" aria-label="Toggle theme" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
     </div>
   </nav>
 
-  <main class="home-main">
-    <div class="hero">
-      <h1>Muktadir Somio</h1>
-      <p class="tagline">Applied statistics and data science student at the University of Dhaka. I work with data, read books on weekends, and play chess in my free time.</p>
-    </div>
+  <main class="max-w-[1180px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
 
-    <div class="info-grid">
-      <section id="about" class="home-section section-card">
-      <h2>About</h2>
-      <div class="about-text">
+    <!-- Hero -->
+    <header class="flex flex-col items-center text-center">
+      <div data-parallax="0.03" class="hero-inner max-w-[980px]">
+        <h1 class="font-serif font-medium text-[clamp(3.4rem,12vw,9.5rem)] leading-[0.98] tracking-tight text-ink dark:text-[#F2EFE9]">Muktadir Somio</h1>
+        <p class="mt-7 mx-auto max-w-[56ch] font-light text-[clamp(1.05rem,1.1vw+0.85rem,1.4rem)] leading-relaxed text-espresso dark:text-[#A39C92]">Applied statistics and data science student at the University of Dhaka. I work with data, read books on weekends, and play poker in my free time.</p>
+      </div>
+
+      <!-- Marquee -->
+      <div class="marquee mt-[clamp(3rem,7vw,5.5rem)] w-screen relative left-1/2 -translate-x-1/2 overflow-hidden border-y border-[var(--hairline)] py-[clamp(1rem,2vw,1.4rem)]" style="-webkit-mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent);mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent);">
+        <div class="marquee-track">
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Statistics</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Data Science</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Philosophy</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Human Rights</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">MUN</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Poker</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Reading</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">University of Dhaka</span><span class="text-espresso/55 font-sans">—</span>
+          <span class="font-serif italic text-[clamp(1.1rem,2vw,1.6rem)] px-[clamp(1.25rem,3vw,2.5rem)] text-ink dark:text-[#F2EFE9]">Machine Learning</span><span class="text-espresso/55 font-sans">—</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- About (no card) -->
+    <section class="mt-[clamp(5rem,11vw,9.5rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)] text-center">
+      <h2 class="font-serif font-medium text-[clamp(1.8rem,4vw,3rem)] text-ink dark:text-[#F2EFE9]">About</h2>
+      <div data-parallax="0.04" class="mx-auto max-w-2xl mt-9 text-left font-light leading-[1.95] text-[clamp(1rem,0.4vw+0.95rem,1.18rem)] text-espresso dark:text-[#A39C92] space-y-6">
         <p>I am currently studying applied statistics and data science at the University of Dhaka. Most of my time goes into coursework, data analysis projects, and trying to get better at both.</p>
-        <p>Outside of academics, I read non-fiction and fiction on weekends. Chess takes up whatever free time is left. I find it useful for thinking through problems under pressure, which translates well into data work where you often have to make decisions with incomplete information. Also, I often tinker with ideas, constantly trying to build something meaningful out of them. </p>
+        <p>Outside of academics, I read non-fiction and fiction on weekends. Books and poker takes up whatever free time is left. I find it useful for thinking through problems under pressure, which translates well into data work where you often have to make decisions with incomplete information. Also, I often tinker with ideas, constantly trying to build something meaningful out of them. </p>
         <p>I built this site to have a place for my thoughts and projects. The blog covers topics I spend time thinking about: philosophy, statistics, and the practical side of working with data.</p>
-        <p>Visit my <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener">GitHub</a> to view my projects.</p>
+        <p>Visit my <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" class="ulink font-normal">GitHub</a> to view my projects.</p>
       </div>
     </section>
 
-      <section id="contact" class="home-section section-card">
-      <h2>Contact</h2>
-      <div class="contact-info">
-        <p>Reach me out at <a href="mailto:somiomuktadir@gmail.com">somiomuktadir@gmail.com</a></p>
+    <!-- Contact -->
+    <section class="mt-[clamp(5rem,11vw,9.5rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)] text-center">
+      <h2 class="font-serif font-medium text-[clamp(1.8rem,4vw,3rem)] text-ink dark:text-[#F2EFE9]">Contact</h2>
+      <div class="mt-9 font-light text-[clamp(1.05rem,1.1vw+0.85rem,1.4rem)] text-espresso dark:text-[#A39C92]">
+        <p>Reach me out at <a href="mailto:somiomuktadir@gmail.com" id="contact-cta" class="font-serif italic text-[clamp(1.4rem,3vw,2.2rem)] text-ink dark:text-[#F2EFE9] relative after:absolute after:left-0 after:bottom-0.5 after:w-full after:h-px after:bg-[var(--ink)] after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left after:transition-transform after:duration-500">somiomuktadir@gmail.com</a></p>
       </div>
-      </section>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer mt-[clamp(6rem,13vw,10.5rem)] pt-[clamp(2.25rem,4vw,3.5rem)] border-t border-[var(--hairline)] text-center">
+      <div class="flex flex-wrap justify-center gap-x-[clamp(1.75rem,5vw,4.5rem)] gap-y-4">
+        <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" class="footer-link text-[clamp(1.6rem,4vw,2.8rem)]">GitHub</a>
+        <a href="mailto:somiomuktadir@gmail.com" class="footer-link text-[clamp(1.6rem,4vw,2.8rem)]">Email</a>
+        <a href="https://substack.com/@somiomuktadir" target="_blank" rel="noopener" class="footer-link text-[clamp(1.6rem,4vw,2.8rem)]">Substack</a>
+      </div>
+    </footer>
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script src="assets/script.js"></script>
+  <!-- Full-screen contact overlay -->
+  <div id="contact-overlay" class="fixed inset-0 z-[9999999] flex items-center justify-center bg-cream/90 dark:bg-[#161412]/90 backdrop-blur-2xl">
+    <button id="contact-overlay-close" aria-label="Close contact" class="absolute top-[calc(1.25rem+env(safe-area-inset-top))] right-[clamp(1.25rem,3vw,2.5rem)] w-12 h-12 flex items-center justify-center rounded-full border border-[var(--hairline)] transition hover:rotate-90 hover:border-ink dark:hover:border-[#F2EFE9]">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="w-5 h-5 text-ink dark:text-[#F2EFE9]"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+    <div class="overlay-inner text-center px-6">
+      <span class="block font-sans text-[0.74rem] tracking-[0.4em] uppercase text-espresso dark:text-[#A39C92] mb-[clamp(1.25rem,3vw,2.1rem)]">Contact</span>
+      <a href="mailto:somiomuktadir@gmail.com" class="font-serif italic font-medium text-[clamp(2rem,7vw,5.5rem)] leading-[1.05] text-ink dark:text-[#F2EFE9] relative after:absolute after:left-0 after:bottom-1.5 after:w-full after:h-px after:bg-[var(--ink)] after:scale-x-0 after:origin-center hover:after:scale-x-100 after:transition-transform after:duration-700">somiomuktadir@gmail.com</a>
+      <div class="mt-[clamp(2.25rem,5vw,3.75rem)] flex gap-[clamp(1.5rem,4vw,3rem)] justify-center">
+        <a href="https://github.com/somiomuktadir" target="_blank" rel="noopener" class="font-sans text-xs tracking-[0.18em] uppercase text-espresso dark:text-[#A39C92] transition hover:text-ink dark:hover:text-[#F2EFE9]">GitHub</a>
+        <a href="https://substack.com/@somiomuktadir" target="_blank" rel="noopener" class="font-sans text-xs tracking-[0.18em] uppercase text-espresso dark:text-[#A39C92] transition hover:text-ink dark:hover:text-[#F2EFE9]">Substack</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var root = document.documentElement;
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ── Theme (class-based dark mode) ── */
+      var saved = localStorage.getItem("theme");
+      var initial = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      applyTheme(initial);
+      function applyTheme(t) {
+        root.classList.toggle("dark", t === "dark");
+      }
+      var toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var next = root.classList.contains("dark") ? "light" : "dark";
+          localStorage.setItem("theme", next);
+          applyTheme(next);
+        });
+      }
+
+      /* ── Preloader ── */
+      var preloader = document.getElementById("preloader");
+      var bar = document.getElementById("preloader-bar");
+      function reveal() {
+        if (preloader) preloader.style.display = "none";
+        root.classList.remove("js-loading");
+      }
+      window.addEventListener("load", function () {
+        if (reduced) { reveal(); return; }
+        if (bar) {
+          bar.style.transition = "width 0.5s cubic-bezier(0.22,1,0.36,1)";
+          requestAnimationFrame(function () { bar.style.width = "100%"; });
+        }
+        setTimeout(function () {
+          if (preloader) {
+            preloader.style.transition = "opacity 0.4s ease";
+            preloader.style.opacity = "0";
+            setTimeout(reveal, 400);
+          } else { reveal(); }
+        }, 550);
+      });
+      // Safety fallback
+      setTimeout(function () { if (root.classList.contains("js-loading")) reveal(); }, 2500);
+
+      /* ── Navbar hide on scroll down ── */
+      var navbar = document.getElementById("navbar");
+      var lastY = window.scrollY;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY;
+        if (y > 100) {
+          if (y > lastY) navbar.classList.add("nav-hidden");
+          else navbar.classList.remove("nav-hidden");
+        } else {
+          navbar.classList.remove("nav-hidden");
+        }
+        lastY = y;
+      }, { passive: true });
+
+      /* ── Subtle parallax ── */
+      if (!reduced) {
+        var items = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+        var ticking = false;
+        function update() {
+          var vh = window.innerHeight;
+          items.forEach(function (el) {
+            var speed = parseFloat(el.getAttribute("data-parallax")) || 0.05;
+            var r = el.getBoundingClientRect();
+            var offset = (r.top + r.height / 2 - vh / 2) * -speed;
+            el.style.transform = "translate3d(0," + offset.toFixed(1) + "px,0)";
+          });
+          ticking = false;
+        }
+        window.addEventListener("scroll", function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        window.addEventListener("resize", update, { passive: true });
+        update();
+      }
+
+      /* ── Contact overlay ── */
+      var overlay = document.getElementById("contact-overlay");
+      var closeBtn = document.getElementById("contact-overlay-close");
+      var cta = document.getElementById("contact-cta");
+      function openOverlay(e) { if (e) e.preventDefault(); overlay.classList.add("open"); document.body.style.overflow = "hidden"; }
+      function closeOverlay() { overlay.classList.remove("open"); document.body.style.overflow = ""; }
+      if (cta) cta.addEventListener("click", openOverlay);
+      if (closeBtn) closeBtn.addEventListener("click", closeOverlay);
+      overlay.addEventListener("click", function (e) { if (e.target === overlay) closeOverlay(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && overlay.classList.contains("open")) closeOverlay(); });
+
+      /* ── Custom cursor ── */
+      var ring = document.getElementById("cursor-ring");
+      var dot = document.getElementById("cursor-dot");
+      if (ring && dot && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX; my = e.clientY;
+          dot.style.transform = "translate3d(" + mx + "px," + my + "px,0) translate(-50%,-50%)";
+          ring.style.opacity = "1"; dot.style.opacity = "1";
+        });
+        (function loop() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+          el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+        });
+      } else if (ring && dot) {
+        ring.style.display = "none"; dot.style.display = "none";
+      }
+    })();
+  </script>
 </body>
 </html>
