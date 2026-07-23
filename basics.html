@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" class="js-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
+  <title>Basics: Logic, Sets & Functions &mdash; Muktadir Somio</title>
+  <meta name="description" content="Foundations of logic, proofs, sets, and functions, built for statistics." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', "Georgia", "serif"],
+            sans: ["Inter", "system-ui", "sans-serif"],
+          },
+          colors: {
+            cream: "#F9F8F6",
+            ink: "#1C1C1C",
+            espresso: "#6F6A63",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --cream: #f9f8f6;
+      --espresso: #6f6a63;
+      --hairline: rgba(28, 28, 28, 0.14);
+      --card: rgba(255, 255, 255, 0.45);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark {
+      --ink: #f2efe9;
+      --cream: #161412;
+      --espresso: #a39c92;
+      --hairline: rgba(242, 239, 233, 0.16);
+      --card: rgba(38, 34, 28, 0.4);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; overflow-x: hidden; }
+    ::selection { background: rgba(28, 28, 28, 0.08); }
+    .dark ::selection { background: rgba(242, 239, 233, 0.14); }
+
+    html.js-loading main, html.js-loading nav { opacity: 0; }
+    html:not(.js-loading) main, html:not(.js-loading) nav {
+      opacity: 1; transition: opacity 0.6s var(--ease);
+    }
+
+    #navbar { transform: translateX(-50%); transition: transform 0.5s var(--ease); }
+    #navbar.nav-hidden { transform: translate(-50%, -160%); }
+
+    .bg-grid::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+      background-size: 88px 88px; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+      mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+    }
+
+    .ulink { position: relative; color: var(--ink); transition: color 0.4s var(--ease); }
+    .ulink::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease);
+    }
+    .ulink:hover { color: var(--espresso); }
+    .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .prose-block p { margin-top: 1.2rem; }
+    .prose-block p:first-child { margin-top: 0; }
+    .prose-block h3 { margin-top: 2.4rem; margin-bottom: 0.9rem; }
+    .prose-block h3:first-child { margin-top: 0; }
+    .prose-block ul { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.3rem; }
+    .prose-block li { margin-top: 0.55rem; list-style: disc; }
+    .prose-block li::marker { color: var(--espresso); }
+
+    .term { font-style: italic; font-family: "Playfair Display", Georgia, serif; color: var(--ink); }
+    .dark .term { color: #F2EFE9; }
+
+    .box {
+      border: 1px solid var(--hairline);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      margin: 1.6rem 0;
+    }
+
+    table.truth {
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      width: 100%;
+      max-width: 480px;
+      font-size: 0.95rem;
+    }
+    table.truth th, table.truth td {
+      border: 1px solid var(--hairline);
+      padding: 0.5rem 0.85rem;
+      text-align: center;
+    }
+    table.truth th {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    .toc a { display: block; padding: 0.55rem 0; border-top: 1px solid var(--hairline); }
+    .toc a:first-child { border-top: none; }
+
+    figure.diagram { margin: 1.8rem 0; text-align: center; }
+    figure.diagram svg { max-width: 100%; height: auto; }
+    figure.diagram figcaption { margin-top: 0.75rem; font-size: 0.85rem; color: var(--espresso); font-style: italic; font-family: "Playfair Display", Georgia, serif; }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor-ring {
+        position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1.5px solid var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 999999;
+        transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease);
+      }
+      .cursor-dot {
+        position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 1000000;
+      }
+      .cursor-ring.hover { width: 54px; height: 54px; background: rgba(28,28,28,0.06); }
+      .dark .cursor-ring.hover { background: rgba(242,239,233,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-grid">
+  <div id="preloader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-cream dark:bg-[#161412]">
+    <div class="w-44 h-[2px] bg-black/10 dark:bg-white/10 overflow-hidden rounded-full">
+      <div id="preloader-bar" class="h-full w-0 bg-ink dark:bg-[#F2EFE9]"></div>
+    </div>
+  </div>
+
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <nav id="navbar" class="fixed top-[calc(1rem+env(safe-area-inset-top))] left-1/2 z-[1000] w-[min(calc(100%-2rem),1180px)] h-14 flex items-center rounded-full border border-[var(--hairline)] backdrop-blur-xl bg-cream/70 dark:bg-[#161412]/70 shadow-[0_18px_40px_-24px_rgba(28,28,28,0.4)] dark:shadow-[0_18px_45px_-22px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center justify-between w-full px-5">
+      <a href="courses.html" class="font-serif italic text-[0.95rem] text-ink dark:text-[#F2EFE9] ulink">&larr; Coursework</a>
+      <button id="theme-toggle" aria-label="Toggle theme" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-[760px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
+
+    <header class="text-center">
+      <span class="block font-sans text-[0.74rem] tracking-[0.4em] uppercase text-espresso dark:text-[#A39C92] mb-5">208 &middot; Basics</span>
+      <h1 class="font-serif font-medium text-[clamp(2.2rem,6vw,3.6rem)] leading-[1.05] tracking-tight text-ink dark:text-[#F2EFE9]">Logic, Sets &amp; Functions</h1>
+      <p class="mt-6 mx-auto max-w-[54ch] font-light text-[clamp(1rem,0.4vw+0.95rem,1.15rem)] leading-relaxed text-espresso dark:text-[#A39C92]">The vocabulary of rigorous argument, the objects it argues about, and the maps between those objects. Three pieces that build directly on each other.</p>
+    </header>
+
+    <nav class="box toc mt-[clamp(3rem,6vw,4.5rem)] font-light text-[1rem]" aria-label="Table of contents">
+      <a href="#logic" class="ulink">1. Logic and proofs</a>
+      <a href="#sets" class="ulink">2. Sets</a>
+      <a href="#functions" class="ulink">3. Functions</a>
+    </nav>
+
+    <!-- 1. LOGIC AND PROOFS -->
+    <section id="logic" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">1. Logic and proofs</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Logic is the machinery of reasoning correctly. Before proving anything, you need a stable vocabulary for what counts as true, what follows from what, and what makes an argument valid rather than merely persuasive.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.1 Statements and truth values</h3>
+        <p>A <span class="term">statement</span> (or proposition) is a declarative sentence that is definitively true or false, never both and never neither. "7 is prime" is a statement. "The sample mean is an unbiased estimator of the population mean" is a statement, and a true one under simple random sampling. "Please pass the salt" is not a statement, it carries no truth value. "This sentence is false" is excluded from formal logic entirely, since assigning it either value produces a contradiction. Statements are usually written with lowercase letters like $p$, $q$, $r$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.2 Connectives</h3>
+        <p>Statements combine through connectives, and each has a precise meaning that often differs from everyday English.</p>
+        <ul>
+          <li><span class="term">Negation</span> $\neg p$ flips the truth value of $p$.</li>
+          <li><span class="term">Conjunction</span> $p \wedge q$ ("and") is true only when both are true.</li>
+          <li><span class="term">Disjunction</span> $p \vee q$ ("or") is true when at least one is true, including both. This is the inclusive or. Everyday English often means the exclusive version, "coffee or tea" usually implies not both, but logic's default $\vee$ allows both.</li>
+          <li><span class="term">Implication</span> $p \to q$ ("if $p$ then $q$") is false only when $p$ is true and $q$ is false. If $p$ is false, the implication is automatically true, regardless of $q$. This is the part that trips people up: "if it rains, I bring an umbrella" is not violated on a dry day whether or not I carry one. A false antecedent makes the whole conditional vacuously true, and that single fact underwrites several proof techniques below.</li>
+          <li><span class="term">Biconditional</span> $p \leftrightarrow q$ ("$p$ if and only if $q$") is true exactly when both sides match, both true or both false.</li>
+        </ul>
+
+        <table class="truth" aria-label="Truth table for the standard connectives">
+          <thead>
+            <tr><th>$p$</th><th>$q$</th><th>$p \wedge q$</th><th>$p \vee q$</th><th>$p \to q$</th><th>$p \leftrightarrow q$</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.3 Necessary and sufficient conditions</h3>
+        <p>"$p$ is sufficient for $q$" means $p$ guarantees $q$, written $p \to q$. "$p$ is necessary for $q$" means $q$ cannot happen without $p$, written $q \to p$, equivalently $\neg p \to \neg q$. A real-life example: passing the exam is necessary for graduating, since you cannot graduate without it, but it is not sufficient, since other requirements remain. In statistics, a large sample size is often necessary for a reliable estimate but not sufficient on its own; you also need randomness and low bias in how the sample was collected.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.4 Converse, inverse, contrapositive</h3>
+        <p>Given the implication $p \to q$, three related statements can be formed.</p>
+        <ul>
+          <li><span class="term">Converse</span>: $q \to p$. Not logically equivalent to the original. "If it rains, the ground is wet" does not mean "if the ground is wet, it rained," since a hose could have wet it.</li>
+          <li><span class="term">Inverse</span>: $\neg p \to \neg q$. Also not equivalent.</li>
+          <li><span class="term">Contrapositive</span>: $\neg q \to \neg p$. This one <em>is</em> logically equivalent to $p \to q$, always. That equivalence is the backbone of proof by contrapositive, useful whenever proving the forward direction is awkward but reasoning from the negation of the conclusion is clean.</li>
+        </ul>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.5 Quantifiers</h3>
+        <p>The <span class="term">universal quantifier</span> $\forall x$ ("for all $x$") asserts a property holds across an entire domain: $\forall x \in \mathbb{R},\ x^2 \geq 0$. One counterexample kills such a claim. The <span class="term">existential quantifier</span> $\exists x$ ("there exists an $x$") asserts at least one instance exists: $\exists x \in \mathbb{N},\ x$ is even and prime, true because $x=2$ works. One example proves it.</p>
+        <p>Negating a quantified statement flips the quantifier and negates what follows: $\neg(\forall x,\ P(x))$ becomes $\exists x,\ \neg P(x)$, and $\neg(\exists x,\ P(x))$ becomes $\forall x,\ \neg P(x)$. "Not all students failed" becomes "at least one student passed," not "all students passed." Negating a universal claim gives an existential counterexample, not the opposite universal, and this is one of the most common errors when reading proofs.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.6 Proof techniques</h3>
+        <p><span class="term">Direct proof.</span> Assume $p$, chain logical steps forward, arrive at $q$.</p>
+        <p><span class="term">Proof by contrapositive.</span> Instead of proving $p \to q$ directly, prove $\neg q \to \neg p$, valid because of the equivalence noted above. Classic example: to prove "if $n^2$ is even, then $n$ is even," it is easier to prove "if $n$ is odd, then $n^2$ is odd." Write $n = 2k+1$, so $n^2 = 4k^2 + 4k + 1 = 2(2k^2+2k)+1$, which is odd by construction.</p>
+        <p><span class="term">Proof by contradiction.</span> Assume $p$ and $\neg q$ simultaneously, derive a logical impossibility, conclude the assumption was wrong. Euclid's proof that infinitely many primes exist works this way: assume only finitely many primes $p_1, \dots, p_n$ exist, form $N = p_1 p_2 \cdots p_n + 1$. $N$ is not divisible by any $p_i$ (each division leaves remainder 1), so either $N$ is prime itself or has a prime factor outside the list, contradicting the assumption that the list was complete.</p>
+        <p><span class="term">Proof by induction.</span> For claims about all natural numbers: prove the base case ($n=1$), then prove that if the claim holds for $n$, it holds for $n+1$. This is domino logic, each step knocks over the next indefinitely.</p>
+        <p><span class="term">Counterexample.</span> To disprove a universal claim, one example suffices, and this is usually the fastest tool available. Before attempting to prove a claim, it is often worth spending a moment hunting for a counterexample.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.7 Axioms, theorems, lemmas, corollaries</h3>
+        <p>An <span class="term">axiom</span> is a starting assumption accepted without proof, such as "through any two points there is exactly one line." A <span class="term">theorem</span> is a proven result of real significance. A <span class="term">lemma</span> is a smaller proven result used as a stepping stone toward a larger theorem. A <span class="term">corollary</span> is a result that follows almost immediately from a theorem, with little additional work.</p>
+
+        <div class="box">
+          <p class="!mt-0">In inference, a hypothesis test is essentially proof by contradiction dressed in probability. You assume the null hypothesis, which plays the role of $\neg q$, and if the observed data would be absurdly unlikely under that assumption, you reject it. This is not a direct proof that the alternative is true, it is the same contradiction structure, just probabilistic rather than certain. That asymmetry is exactly why you "fail to reject" a null hypothesis rather than "accept" it: failing to find a contradiction is not the same as proving the assumption correct, echoing the necessary and sufficient distinction from 1.3.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SETS -->
+    <section id="sets" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">2. Sets</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Where logic gives you a language for reasoning, sets give you the objects to reason about. Nearly every structure in statistics, from a sample space to a support, is a set.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.1 What is a set</h3>
+        <p>A <span class="term">set</span> is an unordered collection of distinct objects, called its elements. Sets are usually named with capital letters, and $x \in A$ means $x$ is an element of $A$, while $x \notin A$ means it is not. A set can be described by listing its elements, $A = \{1, 2, 3\}$, or through set-builder notation, described next. Order and repetition do not matter: $\{1,2,3\} = \{3,2,1\} = \{1,1,2,3\}$, since duplicates collapse. Two sets are equal exactly when they contain the same elements.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.2 Set-builder notation</h3>
+        <p>Set-builder notation defines a set by a property rather than a listing: $A = \{x : P(x)\}$, read "the set of all $x$ such that $P(x)$ holds." For example, $\{x \in \mathbb{R} : x^2 < 4\} = (-2, 2)$, the open interval. This notation is where logic and sets meet directly, $P(x)$ is a statement in the sense of Section 1, and membership in $A$ is just that statement evaluating to true.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.3 Special sets</h3>
+        <p>A handful of sets recur constantly: the empty set $\emptyset$ (contains nothing), the naturals $\mathbb{N}$, the integers $\mathbb{Z}$, the rationals $\mathbb{Q}$, the reals $\mathbb{R}$, and the complex numbers $\mathbb{C}$. Each is nested inside the next: $\mathbb{N} \subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{R} \subseteq \mathbb{C}$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.4 Subsets and power sets</h3>
+        <p>$A \subseteq B$ means every element of $A$ is also in $B$; $A \subsetneq B$ additionally requires $A \neq B$, a proper subset. A subtle but important fact: $\emptyset \subseteq B$ for every set $B$, since the defining condition "for every $x \in \emptyset$, $x \in B$" is an implication with a false antecedent (there is no such $x$), making it vacuously true, a direct callback to 1.2. The <span class="term">power set</span> $\mathcal{P}(A)$ is the set of all subsets of $A$, and if $|A| = n$ then $|\mathcal{P}(A)| = 2^n$. For $A = \{1, 2\}$, $\mathcal{P}(A) = \{\emptyset, \{1\}, \{2\}, \{1,2\}\}$, four subsets.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.5 Set operations and De Morgan's laws</h3>
+        <p>Given sets $A$ and $B$ inside a universal set $U$:</p>
+        <ul>
+          <li><span class="term">Union</span> $A \cup B = \{x : x \in A \text{ or } x \in B\}$.</li>
+          <li><span class="term">Intersection</span> $A \cap B = \{x : x \in A \text{ and } x \in B\}$.</li>
+          <li><span class="term">Difference</span> $A \setminus B = \{x : x \in A \text{ and } x \notin B\}$.</li>
+          <li><span class="term">Complement</span> $A^c = \{x \in U : x \notin A\}$.</li>
+        </ul>
+        <p>These map exactly onto the connectives from 1.2, union to $\vee$, intersection to $\wedge$, complement to $\neg$. That correspondence produces <span class="term">De Morgan's laws</span> for sets:</p>
+        <p>$$(A \cup B)^c = A^c \cap B^c \qquad (A \cap B)^c = A^c \cup B^c$$</p>
+        <p>which are the direct translation of $\neg(p \vee q) \equiv \neg p \wedge \neg q$ and $\neg(p \wedge q) \equiv \neg p \vee \neg q$.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="venn-title">
+            <title id="venn-title">Venn diagram of two overlapping sets A and B</title>
+            <circle cx="150" cy="110" r="82" fill="var(--ink)" fill-opacity="0.06" stroke="var(--ink)" stroke-width="1.3"/>
+            <circle cx="222" cy="110" r="82" fill="var(--ink)" fill-opacity="0.06" stroke="var(--ink)" stroke-width="1.3"/>
+            <text x="108" y="65" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="var(--ink)">A</text>
+            <text x="252" y="65" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="var(--ink)">B</text>
+            <text x="186" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">A &#8745; B</text>
+          </svg>
+          <figcaption>A &#8746; B is everything shaded, A &#8745; B is the overlap alone, A \ B is the left crescent.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.6 Cartesian products</h3>
+        <p>The <span class="term">Cartesian product</span> $A \times B = \{(a, b) : a \in A,\ b \in B\}$ is the set of all ordered pairs drawn from $A$ and $B$. Rolling two dice has sample space $\{1,\dots,6\} \times \{1,\dots,6\}$, 36 equally likely outcomes. Cartesian products are the raw material out of which relations and functions, Section 3, are built.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.7 Cardinality</h3>
+        <p>$|A|$ denotes the size of a set. Finite sets have a definite count. Infinite sets split further: $\mathbb{N}$, $\mathbb{Z}$, and $\mathbb{Q}$ are <span class="term">countably infinite</span>, meaning their elements can in principle be listed $1, 2, 3, \dots$ without missing any. $\mathbb{R}$ is <span class="term">uncountable</span>, a strictly larger kind of infinity, provable through Cantor's diagonal argument. This distinction is exactly why discrete random variables (countable support) use probability mass functions while continuous random variables (uncountable support, typically an interval of $\mathbb{R}$) require probability density functions instead.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.8 Sets in probability</h3>
+        <p>A sample space $\Omega$ is a set of all possible outcomes, and an event is a subset of $\Omega$. "$A$ or $B$ occurs" is the event $A \cup B$; "$A$ and $B$ both occur" is $A \cap B$; "$A$ does not occur" is $A^c$. Two events are <span class="term">mutually exclusive</span> when $A \cap B = \emptyset$. Every rule from 2.5, including De Morgan's laws, applies directly to computing probabilities of compound events.</p>
+      </div>
+    </section>
+
+    <!-- 3. FUNCTIONS -->
+    <section id="functions" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">3. Functions</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">A function is a controlled way of getting from one set to another. Once sets are in place, functions describe how they relate.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.1 Relations and functions</h3>
+        <p>A <span class="term">relation</span> from $A$ to $B$ is any subset of $A \times B$, any collection of pairings, no restrictions. A <span class="term">function</span> $f: A \to B$ is a special relation obeying two rules: every $a \in A$ must be paired with something (totality), and each $a$ can be paired with only one element of $B$ (well-definedness). "Is a square root of," from non-negative reals to reals, is a relation but not a function, since 4 pairs with both 2 and $-2$. $f(x) = x^2$ is a function, since every input produces exactly one output.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fn-title">
+            <title id="fn-title">Diagram of a function mapping domain A to codomain B</title>
+            <rect x="30" y="30" width="110" height="140" rx="14" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
+            <rect x="220" y="30" width="110" height="140" rx="14" fill="none" stroke="var(--ink)" stroke-width="1.3"/>
+            <text x="85" y="20" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="16" fill="var(--ink)">A</text>
+            <text x="275" y="20" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="16" fill="var(--ink)">B</text>
+            <circle cx="85" cy="65" r="4" fill="var(--ink)"/>
+            <circle cx="85" cy="105" r="4" fill="var(--ink)"/>
+            <circle cx="85" cy="145" r="4" fill="var(--ink)"/>
+            <circle cx="275" cy="55" r="4" fill="var(--ink)"/>
+            <circle cx="275" cy="100" r="4" fill="var(--ink)"/>
+            <circle cx="275" cy="145" r="4" fill="var(--espresso)"/>
+            <line x1="89" y1="65" x2="271" y2="55" stroke="var(--espresso)" stroke-width="1.2"/>
+            <line x1="89" y1="105" x2="271" y2="100" stroke="var(--espresso)" stroke-width="1.2"/>
+            <line x1="89" y1="145" x2="271" y2="100" stroke="var(--espresso)" stroke-width="1.2"/>
+          </svg>
+          <figcaption>Every point in A sends exactly one arrow out. The bottom-right point in B receives none, so it lies in the codomain but not the range.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.2 Domain, codomain, range</h3>
+        <p>The <span class="term">domain</span> is the set a function is defined on, $A$. The <span class="term">codomain</span> is the declared target set, $B$. The <span class="term">range</span> (or image) is the actual set of outputs produced, $\{f(a) : a \in A\} \subseteq B$, and it can be a proper subset of the codomain. For $f: \mathbb{R} \to \mathbb{R}$, $f(x) = x^2$, the codomain is all of $\mathbb{R}$, but the range is only $[0, \infty)$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.3 Injective, surjective, bijective</h3>
+        <p><span class="term">Injective</span> (one-to-one): distinct inputs give distinct outputs, formally $f(a_1) = f(a_2) \Rightarrow a_1 = a_2$. $f(x) = 2x + 1$ on $\mathbb{R}$ is injective. $f(x) = x^2$ on $\mathbb{R}$ is not, since $f(-2) = f(2)$.</p>
+        <p><span class="term">Surjective</span> (onto): every element of the codomain is actually hit, meaning range equals codomain. $f(x) = x^3 : \mathbb{R} \to \mathbb{R}$ is surjective. $f(x) = x^2 : \mathbb{R} \to \mathbb{R}$ is not, since negative numbers are never reached.</p>
+        <p><span class="term">Bijective</span>: both injective and surjective at once, a perfect one-to-one correspondence between $A$ and $B$. Bijections are the formal tool for comparing the size of infinite sets, two sets have the same cardinality exactly when a bijection exists between them.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.4 Composition</h3>
+        <p>Given $f: A \to B$ and $g: B \to C$, the composite $(g \circ f)(x) = g(f(x))$ applies $f$ first, then $g$. Order matters, $g \circ f$ and $f \circ g$ are generally different, and the composite is only well-defined when the range of the inner function fits inside the domain of the outer one.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.5 Inverse functions</h3>
+        <p>A function $f: A \to B$ has an inverse $f^{-1}: B \to A$ exactly when $f$ is bijective, satisfying $f^{-1}(f(x)) = x$ for all $x \in A$ and $f(f^{-1}(y)) = y$ for all $y \in B$. Without both injectivity and surjectivity, no consistent inverse can be defined.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.6 Functions in statistics</h3>
+        <div class="box">
+          <p class="!mt-0">This is the payoff. A <span class="term">random variable</span> is, formally, nothing more than a function $X : \Omega \to \mathbb{R}$ mapping outcomes in a sample space to real numbers. Once that clicks, several ideas from your coursework fall into place at once: the <span class="term">support</span> of $X$ is just its range, "$X$ is injective" is exactly the condition needed for a clean change-of-variables in transformation problems, and computing $P(X \in S)$ for some set $S \subseteq \mathbb{R}$ is really asking for the size, under the underlying probability measure, of the preimage $X^{-1}(S) \subseteq \Omega$. An <span class="term">estimator</span>, such as the sample mean $\bar{X}$, is likewise a function of the data, mapping a sample to a single real number, an estimate. Every property you prove about an estimator, unbiasedness, consistency, efficiency, is a statement about a function.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    });
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+      var root = document.documentElement;
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      var saved = localStorage.getItem("theme");
+      var initial = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      applyTheme(initial);
+      function applyTheme(t) { root.classList.toggle("dark", t === "dark"); }
+      var toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var next = root.classList.contains("dark") ? "light" : "dark";
+          localStorage.setItem("theme", next);
+          applyTheme(next);
+        });
+      }
+
+      var preloader = document.getElementById("preloader");
+      var bar = document.getElementById("preloader-bar");
+      function reveal() {
+        if (preloader) preloader.style.display = "none";
+        root.classList.remove("js-loading");
+      }
+      window.addEventListener("load", function () {
+        if (reduced) { reveal(); return; }
+        if (bar) {
+          bar.style.transition = "width 0.5s cubic-bezier(0.22,1,0.36,1)";
+          requestAnimationFrame(function () { bar.style.width = "100%"; });
+        }
+        setTimeout(function () {
+          if (preloader) {
+            preloader.style.transition = "opacity 0.4s ease";
+            preloader.style.opacity = "0";
+            setTimeout(reveal, 400);
+          } else { reveal(); }
+        }, 550);
+      });
+      setTimeout(function () { if (root.classList.contains("js-loading")) reveal(); }, 2500);
+
+      var navbar = document.getElementById("navbar");
+      var lastY = window.scrollY;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY;
+        if (y > 100) {
+          if (y > lastY) navbar.classList.add("nav-hidden");
+          else navbar.classList.remove("nav-hidden");
+        } else {
+          navbar.classList.remove("nav-hidden");
+        }
+        lastY = y;
+      }, { passive: true });
+
+      var ring = document.getElementById("cursor-ring");
+      var dot = document.getElementById("cursor-dot");
+      if (ring && dot && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX; my = e.clientY;
+          dot.style.transform = "translate3d(" + mx + "px," + my + "px,0) translate(-50%,-50%)";
+          ring.style.opacity = "1"; dot.style.opacity = "1";
+        });
+        (function loop() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+          el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+        });
+      } else if (ring && dot) {
+        ring.style.display = "none"; dot.style.display = "none";
+      }
+    })();
+  </script>
+</body>
+</html>
