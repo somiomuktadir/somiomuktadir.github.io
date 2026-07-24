@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="js-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
+  <title>Basics: Design and Analysis of Experiments-I &mdash; Muktadir Somio</title>
+  <meta name="description" content="Why experiments need to be designed at all, the strategies and principles behind that design, and how they show up in real research." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', "Georgia", "serif"],
+            sans: ["Inter", "system-ui", "sans-serif"],
+          },
+          colors: {
+            cream: "#F9F8F6",
+            ink: "#1C1C1C",
+            espresso: "#6F6A63",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --cream: #f9f8f6;
+      --espresso: #6f6a63;
+      --hairline: rgba(28, 28, 28, 0.14);
+      --card: rgba(255, 255, 255, 0.45);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark {
+      --ink: #f2efe9;
+      --cream: #161412;
+      --espresso: #a39c92;
+      --hairline: rgba(242, 239, 233, 0.16);
+      --card: rgba(38, 34, 28, 0.4);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; overflow-x: hidden; }
+    ::selection { background: rgba(28, 28, 28, 0.08); }
+    .dark ::selection { background: rgba(242, 239, 233, 0.14); }
+
+    html.js-loading main, html.js-loading nav { opacity: 0; }
+    html:not(.js-loading) main, html:not(.js-loading) nav {
+      opacity: 1; transition: opacity 0.6s var(--ease);
+    }
+
+    #navbar { transform: translateX(-50%); transition: transform 0.5s var(--ease); }
+    #navbar.nav-hidden { transform: translate(-50%, -160%); }
+
+    .bg-grid::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+      background-size: 88px 88px; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+      mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+    }
+
+    .ulink { position: relative; color: var(--ink); transition: color 0.4s var(--ease); }
+    .ulink::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease);
+    }
+    .ulink:hover { color: var(--espresso); }
+    .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .prose-block p { margin-top: 1.2rem; }
+    .prose-block p:first-child { margin-top: 0; }
+    .prose-block h3 { margin-top: 2.4rem; margin-bottom: 0.9rem; }
+    .prose-block h3:first-child { margin-top: 0; }
+    .prose-block ul { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.3rem; }
+    .prose-block li { margin-top: 0.55rem; list-style: disc; }
+    .prose-block li::marker { color: var(--espresso); }
+
+    .term { font-style: italic; font-family: "Playfair Display", Georgia, serif; color: var(--ink); }
+    .dark .term { color: #F2EFE9; }
+
+    .box {
+      border: 1px solid var(--hairline);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      margin: 1.6rem 0;
+    }
+
+    table.truth {
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      width: 100%;
+      max-width: 560px;
+      font-size: 0.95rem;
+    }
+    table.truth th, table.truth td {
+      border: 1px solid var(--hairline);
+      padding: 0.5rem 0.85rem;
+      text-align: center;
+    }
+    table.truth th {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    .toc a { display: block; padding: 0.55rem 0; border-top: 1px solid var(--hairline); }
+    .toc a:first-child { border-top: none; }
+
+    figure.diagram { margin: 1.8rem 0; text-align: center; }
+    figure.diagram svg { max-width: 100%; height: auto; }
+    figure.diagram figcaption { margin-top: 0.75rem; font-size: 0.85rem; color: var(--espresso); font-style: italic; font-family: "Playfair Display", Georgia, serif; }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor-ring {
+        position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1.5px solid var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 999999;
+        transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease);
+      }
+      .cursor-dot {
+        position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 1000000;
+      }
+      .cursor-ring.hover { width: 54px; height: 54px; background: rgba(28,28,28,0.06); }
+      .dark .cursor-ring.hover { background: rgba(242,239,233,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-grid">
+  <div id="preloader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-cream dark:bg-[#161412]">
+    <div class="w-44 h-[2px] bg-black/10 dark:bg-white/10 overflow-hidden rounded-full">
+      <div id="preloader-bar" class="h-full w-0 bg-ink dark:bg-[#F2EFE9]"></div>
+    </div>
+  </div>
+
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <nav id="navbar" class="fixed top-[calc(1rem+env(safe-area-inset-top))] left-1/2 z-[1000] w-[min(calc(100%-2rem),1180px)] h-14 flex items-center rounded-full border border-[var(--hairline)] backdrop-blur-xl bg-cream/70 dark:bg-[#161412]/70 shadow-[0_18px_40px_-24px_rgba(28,28,28,0.4)] dark:shadow-[0_18px_45px_-22px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center justify-between w-full px-5">
+      <a href="courses.html" class="font-serif italic text-[0.95rem] text-ink dark:text-[#F2EFE9] ulink">&larr; Coursework</a>
+      <button id="theme-toggle" aria-label="Toggle theme" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-[760px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
+
+    <header class="text-center">
+      <span class="block font-sans text-[0.74rem] tracking-[0.4em] uppercase text-espresso dark:text-[#A39C92] mb-5">Design and Analysis of Experiments-I &middot; Basics</span>
+      <h1 class="font-serif font-medium text-[clamp(2.2rem,6vw,3.6rem)] leading-[1.05] tracking-tight text-ink dark:text-[#F2EFE9]">Basics</h1>
+    </header>
+
+    <nav class="box toc mt-[clamp(3rem,6vw,4.5rem)] font-light text-[1rem]" aria-label="Table of contents">
+      <a href="#intro" class="ulink">1. Preliminary introduction</a>
+      <a href="#strategy" class="ulink">2. Strategy and role of experimentation</a>
+      <a href="#examples" class="ulink">3. Some typical examples of experimental design</a>
+      <a href="#principles" class="ulink">4. Basic principles</a>
+      <a href="#guidelines" class="ulink">5. Guidelines for designing experiments</a>
+    </nav>
+
+    <!-- 1. PRELIMINARY INTRODUCTION -->
+    <section id="intro" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">1. Preliminary introduction</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Almost every interesting scientific question is a question about cause and effect. Does the fertilizer raise the yield? Does the new teaching method raise test scores? An experiment is simply the most disciplined way humans have found to answer that kind of question honestly, and this section is about why "disciplined" needs to mean something very specific.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.1 What an experiment actually is</h3>
+        <p>An <span class="term">experiment</span> is a study where the investigator deliberately changes one or more conditions, called <span class="term">factors</span> or <span class="term">treatments</span>, and observes what happens to some outcome of interest, called the <span class="term">response</span>. This is the feature that separates it from an <span class="term">observational study</span>, where the investigator only watches and records, without imposing anything. If you compare the blood pressure of people who already smoke against people who already don't, that is observational: smoking status was never under your control, so any difference you see could be caused by smoking, or by something else entirely that also happens to differ between smokers and non-smokers, income, diet, stress, occupation. If instead you take a group of otherwise similar volunteers and assign, by your own decision, who gets a treatment and who doesn't, that is an experiment, and the assignment itself is what lets you eventually claim causation rather than mere association.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.2 Why "just try it and see" is not enough</h3>
+        <p>Suppose a farmer applies a new fertilizer to one field this year and compares the yield to last year's yield from the same field, using the old fertilizer. If yield goes up, has the fertilizer been proven better? No, because the year changed too, rainfall changed, temperature changed, soil condition drifted, and possibly the farmer's own care and attention changed along with everything else. Any of these could explain the higher yield, fertilizer included, and the data cannot tell them apart. This confusion of effects is called <span class="term">confounding</span>, and it is the single problem that the entire subject of experimental design exists to defeat. A well-designed experiment is, at bottom, an arrangement built specifically so that confounding cannot happen, or so that its effect can be measured and subtracted out.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.3 The basic vocabulary</h3>
+        <p>A small, fixed vocabulary recurs throughout this course, and getting it precise now saves confusion later:</p>
+        <ul>
+          <li><span class="term">Experimental unit:</span> the smallest physical entity to which a treatment is applied, a plot of land, a patient, a batch of material, a classroom.</li>
+          <li><span class="term">Treatment:</span> the specific condition, level, or combination of conditions applied to a unit, a particular fertilizer dose, a particular drug, a particular teaching method.</li>
+          <li><span class="term">Factor:</span> a variable the experimenter deliberately varies across treatments, such as fertilizer type, or dosage level.</li>
+          <li><span class="term">Response (or yield):</span> the measured outcome used to judge the treatments, crop weight, blood pressure, test score.</li>
+          <li><span class="term">Experimental error:</span> the variation in response among units that received the exact same treatment, coming from every uncontrolled source, soil fertility, patient biology, measurement imprecision, that is not the treatment itself.</li>
+        </ul>
+        <p>That last term, experimental error, is the quiet foundation of the whole subject. It is not a mistake in the everyday sense, no one did anything wrong, it is simply the natural, irreducible noise present whenever real units are measured. Design of experiments is, more than anything else, a set of techniques for controlling and separating that noise from the signal you actually care about.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="signal-title">
+            <title id="signal-title">Diagram showing observed response split into treatment effect and experimental error</title>
+            <rect x="220" y="20" width="180" height="55" rx="12" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="310" y="53" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="15" fill="var(--ink)">Observed response</text>
+            <line x1="310" y1="75" x2="150" y2="150" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowE)"/>
+            <line x1="310" y1="75" x2="470" y2="150" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowE)"/>
+            <rect x="60" y="150" width="180" height="70" rx="12" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="150" y="180" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="15" fill="var(--ink)">Treatment effect</text>
+            <text x="150" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">the signal</text>
+            <rect x="380" y="150" width="180" height="70" rx="12" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="470" y="180" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="15" fill="var(--ink)">Experimental error</text>
+            <text x="470" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">the noise</text>
+            <defs>
+              <marker id="arrowE" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="var(--espresso)"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>Every response you measure is a mixture of the thing you're testing for and everything you aren't. Design decides how cleanly the two can be pulled apart afterward.</figcaption>
+        </figure>
+
+        <div class="box">
+          <p class="!mt-0">One more distinction worth fixing early: <span class="term">design of experiments</span> and <span class="term">analysis of experiments</span> are two halves of the same decision, made at two different times. Design happens before data is collected, it decides which units get which treatments and in what arrangement. Analysis happens after, it decides how the collected numbers get turned into a conclusion, almost always through a technique called <span class="term">Analysis of Variance (ANOVA)</span>, covered later in this course. The two are inseparable because a bad design cannot be rescued by clever analysis afterward, if confounding was baked into the layout, no formula run afterward can undo it. Good design is what earns the right to trust the analysis that follows it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. STRATEGY AND ROLE OF EXPERIMENTATION -->
+    <section id="strategy" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">2. Strategy and role of experimentation</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Before choosing any specific layout, an experimenter has to decide, more broadly, what role the experiment is meant to play, and what strategy will get it there. This section is about that layer of thinking, one step above the mechanics.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.1 One factor at a time, and why it fails</h3>
+        <p>A tempting, intuitive strategy is to vary one factor while holding everything else fixed, get an answer, then move to the next factor with the first one now fixed at its apparent best level. This is the <span class="term">one-factor-at-a-time (OFAT)</span> approach, and it has two serious weaknesses. First, it wastes experimental runs: to study $k$ factors at even two levels each properly would ideally compare all $2^k$ combinations, but OFAT typically uses far fewer runs and still cannot see most of that space. Second, and more damaging, it cannot detect <span class="term">interaction</span>, the situation where the effect of one factor depends on the level of another. If a fertilizer works well only when irrigation is also high, an OFAT study that fixes irrigation at its "best" level before testing fertilizer might miss the fertilizer effect entirely, or badly misjudge it, because it never tests the two factors jointly across their full range.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.2 Factorial thinking as the strategic answer</h3>
+        <p>The strategic alternative is <span class="term">factorial experimentation</span>: varying all factors of interest together, across all combinations of their levels, in a single coordinated experiment, rather than one factor's worth of runs at a time. This is not merely more thorough, it is structurally more efficient. A factorial experiment estimates every factor's main effect using the entire dataset, not just the runs dedicated to that one factor, and it is the only strategy that can estimate interactions at all. This idea, credited largely to Ronald Fisher's agricultural work at Rothamsted in the 1920s, is why factorial design, not OFAT, became the default strategy across agriculture, industry, and clinical research.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.3 The role of experimentation in establishing cause</h3>
+        <p>The deepest role an experiment plays is bridging the gap between correlation and causation, the gap that observational data alone cannot cross. Consider a well-known real case: for decades, observational studies repeatedly found that women taking hormone replacement therapy (HRT) after menopause had lower rates of heart disease than women who did not. This suggested HRT was protective. When the Women's Health Initiative ran a large randomized experiment in the late 1990s and early 2000s, deliberately assigning HRT or a placebo to otherwise similar women, it found the opposite: HRT slightly increased cardiovascular risk in the studied population. The likely explanation is that in the observational data, healthier, wealthier, more health-conscious women were simply more likely to be prescribed HRT in the first place, a confound no amount of statistical adjustment fully removed. Only the experiment, by removing the freedom to self-select or be selected into treatment, could settle the question.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.4 Sequential strategy: screening before refining</h3>
+        <p>In practice, especially in industrial and product research, experimentation is rarely a single, one-shot event. A common strategic sequence starts with a <span class="term">screening experiment</span> involving many factors at just two levels each, to cheaply identify which few factors actually matter, followed by a smaller, more detailed follow-up experiment that studies only those important factors in depth, often to find their optimal settings. This sequential strategy trades a small risk of missing a subtle effect in the screening stage for a large saving in total experimental cost, since studying every factor in full depth from the very beginning would usually be prohibitively expensive.</p>
+
+        <div class="box">
+          <p class="!mt-0">The strategic thread running through this section is a single trade-off: information gained per experimental run, against cost and time spent running it. OFAT is cheap per factor but poor at extracting interaction information. Full factorial designs extract the most information but grow expensive fast, since the number of runs in a full $2^k$ factorial doubles with every additional factor. Screening-then-refining is the compromise most real research settles on. Section 4's principles, replication, randomization, and blocking, are exactly the tools that make each of these strategies actually trustworthy once chosen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SOME TYPICAL EXAMPLES OF EXPERIMENTAL DESIGN -->
+    <section id="examples" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">3. Some typical examples of experimental design</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Abstract principles land better once they're seen doing actual work. This section walks through several classic, real-world designs, each solving a different practical obstacle.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.1 Completely Randomized Design (CRD): James Lind and scurvy, 1747</h3>
+        <p>One of the earliest recorded controlled experiments in medicine is James Lind's 1747 shipboard trial aboard HMS Salisbury. Lind took twelve sailors already sick with scurvy, gave them all the same diet otherwise, and divided them into six pairs, each pair receiving a different candidate treatment: cider, sulfuric acid drops, vinegar, seawater, a spice paste, or two oranges and a lemon. Every sailor had an equal, unrestricted chance of ending up in any pair, this is the essence of a <span class="term">Completely Randomized Design</span>, where treatments are assigned to units with no other restriction or grouping at all. The pair receiving citrus recovered dramatically faster than every other pair. Because assignment carried no other structure to confuse the comparison, the citrus effect stood out clearly, decades before vitamin C was even discovered as the mechanism.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.2 Randomized Complete Block Design (RCBD): Fisher's Rothamsted fertilizer trials</h3>
+        <p>Ronald Fisher, working at the Rothamsted Experimental Station in England in the 1920s, faced a different problem: agricultural fields are never uniform, soil fertility, drainage, and sunlight vary across a field, and that variation alone can create yield differences unrelated to any fertilizer. Fisher's solution was to first divide the field into <span class="term">blocks</span>, smaller sub-areas chosen to be as internally uniform as possible, and only then randomize the fertilizer treatments within each block. This is a <span class="term">Randomized Complete Block Design</span>, and it isolates the field's natural variability into the "block" category, so it no longer contaminates the fertilizer comparison. A modern, everyday parallel: a clinical drug trial run across three different hospitals will often treat "hospital" as a block, since patient populations and care practices differ by hospital, letting the drug effect be judged after that hospital-to-hospital variation is set aside.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.3 Latin Square Design: controlling two sources of variation at once</h3>
+        <p>Sometimes there are two separate sources of unwanted variation to control simultaneously, not just one. A classic case: testing four different tire tread designs, where both the specific car used and the specific wheel position (front-left, front-right, rear-left, rear-right) can affect wear, independent of tread design. A <span class="term">Latin Square Design</span> arranges treatments in a grid so that each treatment appears exactly once in every row and exactly once in every column, rows representing one nuisance factor (car), columns the other (wheel position). This way, both sources of variation are accounted for using far fewer runs than a full factorial covering all three factors would need, at the cost of assuming the two nuisance factors don't interact with each other or with the treatment.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="latin-title">
+            <title id="latin-title">A 4x4 Latin square showing tread designs A, B, C, D arranged so each appears once per row and column</title>
+            <g font-family="Inter, sans-serif" font-size="16" fill="var(--ink)" text-anchor="middle">
+              <rect x="60" y="20" width="380" height="160" fill="none" stroke="var(--hairline)" stroke-width="1.3"/>
+              <line x1="155" y1="20" x2="155" y2="180" stroke="var(--hairline)" stroke-width="1"/>
+              <line x1="250" y1="20" x2="250" y2="180" stroke="var(--hairline)" stroke-width="1"/>
+              <line x1="345" y1="20" x2="345" y2="180" stroke="var(--hairline)" stroke-width="1"/>
+              <line x1="60" y1="60" x2="440" y2="60" stroke="var(--hairline)" stroke-width="1"/>
+              <line x1="60" y1="100" x2="440" y2="100" stroke="var(--hairline)" stroke-width="1"/>
+              <line x1="60" y1="140" x2="440" y2="140" stroke="var(--hairline)" stroke-width="1"/>
+              <text x="107" y="45">A</text><text x="202" y="45">B</text><text x="297" y="45">C</text><text x="392" y="45">D</text>
+              <text x="107" y="85">B</text><text x="202" y="85">C</text><text x="297" y="85">D</text><text x="392" y="85">A</text>
+              <text x="107" y="125">C</text><text x="202" y="125">D</text><text x="297" y="125">A</text><text x="392" y="125">B</text>
+              <text x="107" y="165">D</text><text x="202" y="165">A</text><text x="297" y="165">B</text><text x="392" y="165">C</text>
+            </g>
+            <text x="250" y="205" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--espresso)">rows = car &middot; columns = wheel position &middot; letters = tread design</text>
+          </svg>
+          <figcaption>Each tread design (A-D) appears exactly once per car and once per wheel position, so both nuisance factors are balanced out automatically.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.4 Factorial Design: the classic 2&#178; industrial example</h3>
+        <p>A chemical engineer wants to know how reaction temperature and catalyst concentration jointly affect yield. A <span class="term">2&#178; factorial design</span> tests both factors at two levels each, low and high, in all four combinations: (low temp, low catalyst), (low temp, high catalyst), (high temp, low catalyst), (high temp, high catalyst). Suppose yield is high only when both temperature and catalyst are set high together, but unremarkable when only one is raised. An OFAT approach, having fixed catalyst at some average level while testing temperature, would likely never notice this, because the effect only appears in combination. The factorial layout, by covering every combination, catches the interaction directly, which is precisely the strategic advantage described in Section 2.2.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.5 Randomized Controlled Trial (RCT): the modern medical standard</h3>
+        <p>Modern drug trials, such as the Phase III trials that preceded COVID-19 vaccine approvals in 2020, combine several of the ideas above into what is now the accepted gold standard: a <span class="term">Randomized Controlled Trial</span>. Volunteers are randomly assigned to receive either the vaccine or a placebo (randomization, as in Lind's trial), neither participants nor the assessing clinicians know who received which (called <span class="term">blinding</span>, added to prevent expectation from biasing the recorded outcome), and the trial includes tens of thousands of participants specifically so the treatment effect can be distinguished from ordinary person-to-person variation with high statistical confidence. Every element traces back to a principle covered in Section 4.</p>
+
+        <div class="box">
+          <p class="!mt-0">Notice the throughline across all five examples: each design is a response to a specific practical obstacle, unwanted variation from the field in Rothamsted, two nuisance factors at once with the tires, an interaction that OFAT would miss with the catalyst, and the need for objectivity in a clinical trial. No single design is universally "best," the right choice is always a judgment about which obstacle is actually present in front of you, which is exactly the decision Section 5's guidelines are built to help you make.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BASIC PRINCIPLES -->
+    <section id="principles" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">4. Basic principles</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Underneath every design in Section 3 sit exactly three statistical principles. Learn these three properly and you can understand, or invent, almost any design this course will cover.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.1 Randomization</h3>
+        <p><span class="term">Randomization</span> means assigning treatments to experimental units using a chance mechanism, a coin flip, a random number table, not by the experimenter's own judgment or convenience. Its purpose is to make sure that any factor the experimenter did not think to control, an unmeasured, possibly unknown source of variation, is on average spread equally across all treatment groups, rather than concentrated in one of them. If, in Lind's trial, the healthiest-looking sailors had been quietly steered toward the citrus pair, any recovery difference could no longer be trusted as evidence about citrus itself. Randomization also has a second, less obvious statistical function: it is what justifies treating the resulting experimental error as following a known probability distribution, which is the mathematical basis every significance test in ANOVA rests on. Without randomization, a p-value from that test has no honest interpretation at all.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.2 Replication</h3>
+        <p><span class="term">Replication</span> means applying each treatment to more than one experimental unit. It does two distinct jobs at once. First, it allows the experimenter to actually estimate the size of experimental error, since with only one unit per treatment there is no way to know how much of a difference between two treatments is due to the treatment versus ordinary unit-to-unit variability, there is simply nothing to compare within a group. Second, replication increases <span class="term">precision</span>: averaging over more units shrinks the standard error of the treatment mean, following the familiar $\sigma / \sqrt{n}$ relationship, so a treatment effect of a given true size becomes easier to detect reliably as replication increases. This is exactly why the vaccine trials in Section 3.5 used tens of thousands of participants rather than a dozen, a real effect that is modest in size can be statistically invisible in a small sample and unmistakably clear in a large one.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.3 Local control (blocking)</h3>
+        <p><span class="term">Local control</span>, most often achieved through <span class="term">blocking</span>, means deliberately grouping experimental units into blocks that are as internally similar as possible with respect to some known nuisance source of variation, and then randomizing treatments only within each block, as Fisher did with field position in Section 3.2. The logic is that any known, identifiable source of unwanted variation should be removed from the comparison in advance, by grouping, rather than left for randomization to merely average out. Randomization handles the unknown nuisance factors; blocking handles the known ones directly and more efficiently. A useful rule of thumb: block on anything you can measure or identify in advance that you expect to affect the response but is not itself a factor of interest, age group in a drug trial, machine operator in a factory trial, field position in an agricultural trial.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pillars-title">
+            <title id="pillars-title">Three pillars diagram of randomization, replication, and local control supporting valid experimental conclusions</title>
+            <rect x="230" y="15" width="180" height="45" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="320" y="43" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="14" fill="var(--ink)">Valid conclusions</text>
+            <line x1="320" y1="60" x2="100" y2="130" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="320" y1="60" x2="320" y2="130" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="320" y1="60" x2="540" y2="130" stroke="var(--espresso)" stroke-width="1.3"/>
+            <rect x="20" y="130" width="160" height="60" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="100" y="155" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Randomization</text>
+            <text x="100" y="173" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">handles the unknown</text>
+            <rect x="240" y="130" width="160" height="60" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="320" y="155" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Replication</text>
+            <text x="320" y="173" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">measures the noise</text>
+            <rect x="460" y="130" width="160" height="60" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="540" y="155" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Local control</text>
+            <text x="540" y="173" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">handles the known</text>
+          </svg>
+          <figcaption>Each principle does a distinct statistical job; none can substitute for another, which is why all three appear, in some form, in almost every design worth trusting.</figcaption>
+        </figure>
+
+        <div class="box">
+          <p class="!mt-0">These three principles map directly onto the sum of squares decomposition that ANOVA performs later in this course: total variation in the response gets split into a part explained by treatments, a part explained by blocks (if any), and a leftover part called <em>error</em>. Randomization is what makes that leftover part a fair, unbiased estimate of pure noise rather than hidden confounding. Replication is what makes that leftover part estimable at all. Blocking is what shrinks that leftover part by pulling a known nuisance source out of it beforehand. Every design in Section 3 is just a different way of arranging these three ideas to fit the obstacle at hand.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. GUIDELINES FOR DESIGNING EXPERIMENTS -->
+    <section id="guidelines" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">5. Guidelines for designing experiments</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Turning principle into practice takes a checklist, not just an idea. This section lays out the sequence a working experimenter actually goes through, roughly in the order the decisions need to be made.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.1 Define the objective precisely, before anything else</h3>
+        <p>A surprising number of failed experiments trace back to a vague starting question. "Does the new teaching method help?" is not yet answerable, help compared to what, measured how, for whom? A workable objective looks more like: "does Method B raise the average final exam score of tenth-grade students, compared to the current Method A, by an amount large enough to matter practically?" Every later decision, which factors to include, how many units are needed, what counts as the response, follows directly from how precisely this first question is stated.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.2 Identify all relevant factors and their levels</h3>
+        <p>List every factor plausibly relevant to the response, not just the one under primary investigation, and decide, for each, whether it will be a <span class="term">treatment factor</span> (deliberately varied because you want to know its effect) or a <span class="term">nuisance factor</span> (not of direct interest, but likely to affect the response anyway, and therefore a candidate for blocking under 4.3). In the tire example from 3.3, tread design was the treatment factor, while car and wheel position were nuisance factors identified and controlled through blocking rather than ignored.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.3 Choose the experimental unit and define the response precisely</h3>
+        <p>Decide exactly what the experimental unit is, a single plant, an entire plot, one patient, one batch, since this determines what replication actually means and how many independent observations you truly have. It also determines a subtler pitfall: measuring the same unit five times is not five replications, it is one replication measured five times, and treating it as five independent pieces of evidence artificially inflates apparent precision, a mistake called <span class="term">pseudoreplication</span>. The response itself should be defined so it can be measured the same, objective way for every unit, exam score in points, yield in kilograms, recovery in days, not something left to subjective judgment that could vary rater-to-rater.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.4 Apply the three basic principles deliberately</h3>
+        <p>With units, treatments, and nuisance factors identified, apply Section 4's principles as concrete design choices rather than afterthoughts: randomize the actual assignment of treatments to units using a genuine chance mechanism, decide on a replication count large enough to detect the effect size that matters practically, and block on every identified nuisance factor that can feasibly be grouped in advance. This step is where the abstract design (CRD, RCBD, Latin square, factorial) actually gets chosen, driven by which nuisance factors exist and how many need to be controlled simultaneously.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.5 Decide sample size before collecting any data</h3>
+        <p>How many replications are enough is not a guess, it is a calculation, called a <span class="term">power analysis</span>, based on the smallest effect size considered practically meaningful, the expected variability of the response, and the desired probability of detecting a real effect if one exists. Deciding this in advance matters enormously: an experimenter who collects data first and only later decides "that seems like enough" risks running an underpowered study that genuinely cannot detect a real effect, then wrongly concluding the treatment does nothing, when the truth is simply that too few units were used to tell.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.6 Plan the analysis before running the experiment</h3>
+        <p>The statistical analysis, typically an ANOVA matched to whatever design was chosen in 5.4, should be decided and written down before a single data point is collected, not improvised afterward to fit whatever pattern the data happens to show. Choosing the analysis method after seeing the results, sometimes called <span class="term">p-hacking</span> when done to chase a significant result, invalidates the very probability guarantees that randomization in Section 4.1 was supposed to provide. A good rule: if you cannot already state which statistical test you will run on the eventual data, the design is not yet finished.</p>
+
+        <div class="box">
+          <p class="!mt-0">Laid end to end, these six guidelines are really one instruction repeated in different clothes: decide everything you can decide before data collection begins, objective, factors, units, design, sample size, and analysis method, so that nothing is left to be rationalized after the numbers are already in front of you. This is precisely the discipline that separates a designed experiment from the fertilizer farmer's guesswork in Section 1.2, and it is the discipline this entire course will keep sharpening, design by design, all the way through to the ANOVA calculations that turn a well-designed layout into a trustworthy conclusion.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    });
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+      var root = document.documentElement;
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      var saved = localStorage.getItem("theme");
+      var initial = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      applyTheme(initial);
+      function applyTheme(t) { root.classList.toggle("dark", t === "dark"); }
+      var toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var next = root.classList.contains("dark") ? "light" : "dark";
+          localStorage.setItem("theme", next);
+          applyTheme(next);
+        });
+      }
+
+      var preloader = document.getElementById("preloader");
+      var bar = document.getElementById("preloader-bar");
+      function reveal() {
+        if (preloader) preloader.style.display = "none";
+        root.classList.remove("js-loading");
+      }
+      window.addEventListener("load", function () {
+        if (reduced) { reveal(); return; }
+        if (bar) {
+          bar.style.transition = "width 0.5s cubic-bezier(0.22,1,0.36,1)";
+          requestAnimationFrame(function () { bar.style.width = "100%"; });
+        }
+        setTimeout(function () {
+          if (preloader) {
+            preloader.style.transition = "opacity 0.4s ease";
+            preloader.style.opacity = "0";
+            setTimeout(reveal, 400);
+          } else { reveal(); }
+        }, 550);
+      });
+      setTimeout(function () { if (root.classList.contains("js-loading")) reveal(); }, 2500);
+
+      var navbar = document.getElementById("navbar");
+      var lastY = window.scrollY;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY;
+        if (y > 100) {
+          if (y > lastY) navbar.classList.add("nav-hidden");
+          else navbar.classList.remove("nav-hidden");
+        } else {
+          navbar.classList.remove("nav-hidden");
+        }
+        lastY = y;
+      }, { passive: true });
+
+      var ring = document.getElementById("cursor-ring");
+      var dot = document.getElementById("cursor-dot");
+      if (ring && dot && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX; my = e.clientY;
+          dot.style.transform = "translate3d(" + mx + "px," + my + "px,0) translate(-50%,-50%)";
+          ring.style.opacity = "1"; dot.style.opacity = "1";
+        });
+        (function loop() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+          el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+        });
+      } else if (ring && dot) {
+        ring.style.display = "none"; dot.style.display = "none";
+      }
+    })();
+  </script>
+</body>
+</html>

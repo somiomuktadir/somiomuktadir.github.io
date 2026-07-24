@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" class="js-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
+  <title>Basics: Probability &amp; Distributions &mdash; Muktadir Somio</title>
+  <meta name="description" content="Probability from first principles: rules, trees, Bayes, combinatorics, and the distributions built on top of them." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', "Georgia", "serif"],
+            sans: ["Inter", "system-ui", "sans-serif"],
+          },
+          colors: {
+            cream: "#F9F8F6",
+            ink: "#1C1C1C",
+            espresso: "#6F6A63",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --cream: #f9f8f6;
+      --espresso: #6f6a63;
+      --hairline: rgba(28, 28, 28, 0.14);
+      --card: rgba(255, 255, 255, 0.45);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark {
+      --ink: #f2efe9;
+      --cream: #161412;
+      --espresso: #a39c92;
+      --hairline: rgba(242, 239, 233, 0.16);
+      --card: rgba(38, 34, 28, 0.4);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; overflow-x: hidden; }
+    ::selection { background: rgba(28, 28, 28, 0.08); }
+    .dark ::selection { background: rgba(242, 239, 233, 0.14); }
+
+    html.js-loading main, html.js-loading nav { opacity: 0; }
+    html:not(.js-loading) main, html:not(.js-loading) nav {
+      opacity: 1; transition: opacity 0.6s var(--ease);
+    }
+
+    #navbar { transform: translateX(-50%); transition: transform 0.5s var(--ease); }
+    #navbar.nav-hidden { transform: translate(-50%, -160%); }
+
+    .bg-grid::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+      background-size: 88px 88px; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+      mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+    }
+
+    .ulink { position: relative; color: var(--ink); transition: color 0.4s var(--ease); }
+    .ulink::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease);
+    }
+    .ulink:hover { color: var(--espresso); }
+    .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .prose-block p { margin-top: 1.2rem; }
+    .prose-block p:first-child { margin-top: 0; }
+    .prose-block h3 { margin-top: 2.4rem; margin-bottom: 0.9rem; }
+    .prose-block h3:first-child { margin-top: 0; }
+    .prose-block h4 { margin-top: 1.8rem; margin-bottom: 0.7rem; }
+    .prose-block ul { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.3rem; }
+    .prose-block li { margin-top: 0.55rem; list-style: disc; }
+    .prose-block li::marker { color: var(--espresso); }
+    .prose-block ol { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.3rem; }
+    .prose-block ol li { list-style: decimal; }
+
+    .term { font-style: italic; font-family: "Playfair Display", Georgia, serif; color: var(--ink); }
+    .dark .term { color: #F2EFE9; }
+
+    .box {
+      border: 1px solid var(--hairline);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      margin: 1.6rem 0;
+    }
+
+    table.truth {
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      width: 100%;
+      max-width: 560px;
+      font-size: 0.95rem;
+    }
+    table.truth th, table.truth td {
+      border: 1px solid var(--hairline);
+      padding: 0.5rem 0.85rem;
+      text-align: center;
+    }
+    table.truth th {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    table.truth.wide { max-width: 100%; font-size: 0.9rem; }
+    table.truth.wide td { text-align: left; }
+    table.truth.wide th { text-align: left; }
+
+    .toc a { display: block; padding: 0.55rem 0; border-top: 1px solid var(--hairline); }
+    .toc a:first-child { border-top: none; }
+
+    figure.diagram { margin: 1.8rem 0; text-align: center; }
+    figure.diagram svg { max-width: 100%; height: auto; }
+    figure.diagram figcaption { margin-top: 0.75rem; font-size: 0.85rem; color: var(--espresso); font-style: italic; font-family: "Playfair Display", Georgia, serif; }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor-ring {
+        position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1.5px solid var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 999999;
+        transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease);
+      }
+      .cursor-dot {
+        position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 1000000;
+      }
+      .cursor-ring.hover { width: 54px; height: 54px; background: rgba(28,28,28,0.06); }
+      .dark .cursor-ring.hover { background: rgba(242,239,233,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-grid">
+  <div id="preloader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-cream dark:bg-[#161412]">
+    <div class="w-44 h-[2px] bg-black/10 dark:bg-white/10 overflow-hidden rounded-full">
+      <div id="preloader-bar" class="h-full w-0 bg-ink dark:bg-[#F2EFE9]"></div>
+    </div>
+  </div>
+
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <nav id="navbar" class="fixed top-[calc(1rem+env(safe-area-inset-top))] left-1/2 z-[1000] w-[min(calc(100%-2rem),1180px)] h-14 flex items-center rounded-full border border-[var(--hairline)] backdrop-blur-xl bg-cream/70 dark:bg-[#161412]/70 shadow-[0_18px_40px_-24px_rgba(28,28,28,0.4)] dark:shadow-[0_18px_45px_-22px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center justify-between w-full px-5">
+      <a href="courses.html" class="font-serif italic text-[0.95rem] text-ink dark:text-[#F2EFE9] ulink">&larr; Coursework</a>
+      <button id="theme-toggle" aria-label="Toggle theme" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-[760px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
+
+    <header class="text-center">
+      <span class="block font-sans text-[0.74rem] tracking-[0.4em] uppercase text-espresso dark:text-[#A39C92] mb-5">Probability &amp; Distributions &middot; Basics</span>
+      <h1 class="font-serif font-medium text-[clamp(2.2rem,6vw,3.6rem)] leading-[1.05] tracking-tight text-ink dark:text-[#F2EFE9]">Uncertainty, Made Countable</h1>
+    </header>
+
+    <nav class="box toc mt-[clamp(3rem,6vw,4.5rem)] font-light text-[1rem]" aria-label="Table of contents">
+      <a href="#basics" class="ulink">1. Basics of probability</a>
+      <a href="#trees" class="ulink">2. Tree diagrams</a>
+      <a href="#bayes" class="ulink">3. Conditional probability and Bayes' rule</a>
+      <a href="#combinatorics" class="ulink">4. Basic combinatorics</a>
+      <a href="#probdist" class="ulink">5. Probability distributions: the basic definition</a>
+      <a href="#sampdist" class="ulink">6. Sampling distributions, and how they differ</a>
+      <a href="#distributions" class="ulink">7. Common distributions: definitions and pmf/pdf</a>
+    </nav>
+
+    <!-- 1. BASICS OF PROBABILITY -->
+    <section id="basics" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">1. Basics of probability</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Probability is the mathematics of uncertainty, a way of assigning precise numbers to how likely something is, so that "likely" stops being a feeling and starts being something you can calculate with. Everything later in this page, trees, Bayes' rule, distributions, is built from the small set of rules in this section.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.1 Experiments, outcomes, and sample spaces</h3>
+        <p>A <span class="term">random experiment</span> is any process whose exact result cannot be predicted in advance, but whose set of possible results is known: flipping a coin, rolling a die, drawing a card, measuring tomorrow's rainfall. Each individual possible result is an <span class="term">outcome</span>, and the complete set of all outcomes is the <span class="term">sample space</span>, written $S$. Rolling a single six-sided die gives $S = \{1, 2, 3, 4, 5, 6\}$, a <span class="term">discrete</span> sample space, since it's a countable, listable set. Measuring the exact height of a randomly chosen adult gives a <span class="term">continuous</span> sample space, an entire interval of real numbers, since height can in principle take any value in a range. This discrete-versus-continuous distinction resurfaces constantly, it is exactly what will later separate a probability mass function from a probability density function in Section 7.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.2 Events</h3>
+        <p>An <span class="term">event</span> is any subset of the sample space, any collection of outcomes you've decided to group together and ask about. Rolling a die, the event "even number" is the subset $\{2, 4, 6\}$. Events are what probability actually gets assigned to, not usually single outcomes. This matters because it lets ordinary set operations become probability tools directly: the event "$A$ or $B$" is the set union $A \cup B$, "$A$ and $B$" is the intersection $A \cap B$, and "not $A$" is the complement $A^c$. Two events are called <span class="term">mutually exclusive</span> (or disjoint) if they share no outcomes at all, $A \cap B = \emptyset$, rolling "even" and rolling "odd" on the same die cannot both happen on the same roll.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.3 The three axioms probability must obey</h3>
+        <p>Formally, a <span class="term">probability</span> is any function $P$ that assigns a real number to every event in the sample space, subject to exactly three rules, first laid out rigorously by Andrey Kolmogorov in 1933:</p>
+        <ol>
+          <li>$P(A) \geq 0$ for every event $A$, probability is never negative.</li>
+          <li>$P(S) = 1$, the probability that <em>something</em> in the sample space happens is certainty itself.</li>
+          <li>If $A_1, A_2, A_3, \ldots$ are mutually exclusive, then $P(A_1 \cup A_2 \cup A_3 \cup \cdots) = P(A_1) + P(A_2) + P(A_3) + \cdots$, probabilities of non-overlapping events simply add.</li>
+        </ol>
+        <p>Every other rule in probability, however elaborate it looks, is a consequence that can be derived from just these three. This is worth sitting with: probability is not a grab-bag of separate formulas to memorize, it is one small axiom system with everything else built on top.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.4 Two ways to actually get a number: classical and frequentist probability</h3>
+        <p>The axioms say what a valid probability must satisfy, but not where the actual number comes from in practice. Two common approaches supply it. The <span class="term">classical</span> approach applies when every outcome in $S$ is equally likely, then $P(A) = \frac{|A|}{|S|}$, the count of outcomes favorable to $A$ divided by the total count of outcomes, exactly why a fair die gives $P(\text{rolling a 4}) = \frac{1}{6}$. The <span class="term">frequentist (empirical)</span> approach applies when outcomes aren't equally likely, or can't be reasoned about combinatorially at all, an unfair coin, whether it rains tomorrow, and instead estimates $P(A)$ as the proportion of times $A$ occurs across a very large number of repetitions of the experiment, formally $P(A) = \lim_{n \to \infty} \frac{\text{number of times } A \text{ occurs}}{n}$. A pharmaceutical trial recording that a drug caused side effects in 340 out of 10,000 patients is using this frequentist idea directly, estimating $P(\text{side effect}) \approx 0.034$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.5 Basic rules that follow from the axioms</h3>
+        <p>A handful of immediately useful rules fall directly out of Section 1.3's three axioms:</p>
+        <ul>
+          <li><span class="term">Complement rule:</span> $P(A^c) = 1 - P(A)$. If the probability a flight is on time is $0.82$, the probability it's delayed is $0.18$, no separate calculation needed.</li>
+          <li><span class="term">Addition rule (general):</span> $P(A \cup B) = P(A) + P(B) - P(A \cap B)$. The subtraction corrects for double-counting outcomes that belong to both $A$ and $B$. If $60\%$ of students take Statistics, $45\%$ take Economics, and $25\%$ take both, the share taking at least one is $0.60 + 0.45 - 0.25 = 0.80$.</li>
+          <li><span class="term">Addition rule (mutually exclusive case):</span> if $A \cap B = \emptyset$, the correction term vanishes and $P(A \cup B) = P(A) + P(B)$ exactly, this is Axiom 3 itself, restated for two events.</li>
+        </ul>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="venn-title">
+            <title id="venn-title">Venn diagram of two overlapping events A and B inside sample space S</title>
+            <rect x="20" y="20" width="520" height="220" rx="14" fill="none" stroke="var(--hairline)" stroke-width="1.3"/>
+            <text x="40" y="45" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="15" fill="var(--espresso)">S</text>
+            <circle cx="230" cy="140" r="95" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <circle cx="340" cy="140" r="95" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="170" y="140" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="var(--ink)">A</text>
+            <text x="400" y="140" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="20" fill="var(--ink)">B</text>
+            <text x="285" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">A &#8745; B</text>
+          </svg>
+          <figcaption>P(A &#8746; B) counts every outcome in either circle once; without subtracting the overlap A &#8745; B, it would be counted twice.</figcaption>
+        </figure>
+
+        <div class="box">
+          <p class="!mt-0">Keep one running example in mind for the rest of this page: a factory produces items on two machines, Machine I makes 60% of items and Machine II makes 40%. Machine I produces defective items 2% of the time; Machine II, being older, produces defective items 5% of the time. Every later section, trees, Bayes, distributions, will return to variations on this exact scenario, because it's simple enough to compute by hand and rich enough to illustrate every rule that follows.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TREE DIAGRAMS -->
+    <section id="trees" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">2. Tree diagrams</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Once an experiment involves more than one stage, which machine, then defective or not, keeping every probability straight in your head stops being realistic. A tree diagram is simply a picture that makes multi-stage probability arithmetic impossible to get wrong.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.1 What a tree diagram represents</h3>
+        <p>A <span class="term">tree diagram</span> represents a sequence of random stages as branches: the first stage's possible outcomes fan out from a single starting point, and each of those branches then fans out again into the next stage's possible outcomes, and so on. Every branch is labeled with the probability of that step, given everything already decided along the path leading to it. This "given everything so far" clause is the entire reason trees work smoothly with conditional probabilities, covered formally in Section 3, a tree diagram is really conditional probability made visual.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.2 The multiplication rule along a branch</h3>
+        <p>To find the probability of following one complete path through the tree, from the start to a specific final leaf, multiply the probabilities along every branch of that path. This is the <span class="term">multiplication rule</span>: $P(A \cap B) = P(A) \cdot P(B \mid A)$, the probability of both $A$ and $B$ happening equals the probability of $A$, times the probability of $B$ given that $A$ already happened. Applying this to the factory example from Section 1.5: the path "Machine I, then defective" multiplies $P(\text{Machine I}) = 0.60$ by $P(\text{defective} \mid \text{Machine I}) = 0.02$, giving $0.60 \times 0.02 = 0.012$.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tree-title">
+            <title id="tree-title">Tree diagram of the factory example with two machines branching into defective or not defective</title>
+            <circle cx="60" cy="160" r="5" fill="var(--ink)"/>
+            <line x1="60" y1="160" x2="230" y2="70" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="60" y1="160" x2="230" y2="250" stroke="var(--espresso)" stroke-width="1.3"/>
+            <text x="145" y="100" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">0.60</text>
+            <text x="145" y="230" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">0.40</text>
+            <circle cx="230" cy="70" r="4" fill="var(--ink)"/>
+            <circle cx="230" cy="250" r="4" fill="var(--ink)"/>
+            <text x="230" y="50" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Machine I</text>
+            <text x="230" y="275" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Machine II</text>
+            <line x1="230" y1="70" x2="440" y2="25" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="230" y1="70" x2="440" y2="95" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="230" y1="250" x2="440" y2="205" stroke="var(--espresso)" stroke-width="1.3"/>
+            <line x1="230" y1="250" x2="440" y2="295" stroke="var(--espresso)" stroke-width="1.3"/>
+            <text x="330" y="35" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">0.02</text>
+            <text x="330" y="90" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">0.98</text>
+            <text x="330" y="215" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">0.05</text>
+            <text x="330" y="290" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">0.95</text>
+            <text x="450" y="20" font-family="Inter, sans-serif" font-size="12" fill="var(--ink)">Defective &#183; 0.012</text>
+            <text x="450" y="100" font-family="Inter, sans-serif" font-size="12" fill="var(--ink)">OK &#183; 0.588</text>
+            <text x="450" y="200" font-family="Inter, sans-serif" font-size="12" fill="var(--ink)">Defective &#183; 0.020</text>
+            <text x="450" y="300" font-family="Inter, sans-serif" font-size="12" fill="var(--ink)">OK &#183; 0.380</text>
+          </svg>
+          <figcaption>Multiply along each path to get that leaf's joint probability; the four leaf probabilities sum to exactly 1, as they must.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.3 The addition rule across branches: the law of total probability</h3>
+        <p>Once every leaf's probability is computed, finding the overall probability of an event that can happen via more than one path, "defective," regardless of which machine, is just addition across every leaf that qualifies, since different machines are mutually exclusive paths (Section 1.3's third axiom applies directly). Here, $P(\text{defective}) = 0.012 + 0.020 = 0.032$. Written generally, for machines (or any partition) $M_1, \ldots, M_k$, this is the <span class="term">law of total probability</span>: $$P(A) = \sum_{i=1}^{k} P(M_i) \, P(A \mid M_i)$$ A tree diagram is nothing more than this formula, drawn so you never have to hold the sum in your head.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.4 Why trees are worth drawing even when they're "simple"</h3>
+        <p>It's tempting to skip drawing a tree once a problem feels short enough to compute directly, but the tree earns its keep precisely by preventing a specific, common error: quietly using an unconditional probability where a conditional one belongs, or vice versa. Medical screening is the textbook case: if a rare disease affects $1\%$ of a population, and a test correctly detects it $95\%$ of the time in genuinely sick people, it is very tempting to assume a positive test means a $95\%$ chance of being sick. A tree with branches for "sick / not sick" followed by "test positive / test negative" makes visible exactly why that assumption is wrong, and by how much, which is precisely the calculation Bayes' rule in Section 3 formalizes.</p>
+
+        <div class="box">
+          <p class="!mt-0">Two formulas, and two formulas only, run the entire tree: multiply along a path (Section 2.2), add across paths leading to the same final event (Section 2.3). Every "compute this multi-stage probability" question in this course reduces to correctly identifying which branches to multiply and which leaves to add, and a tree diagram is simply the tool that makes that identification visual instead of error-prone.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CONDITIONAL PROBABILITY AND BAYES' RULE -->
+    <section id="bayes" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">3. Conditional probability and Bayes' rule</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Section 2 used conditional probabilities freely, on tree branches, without ever defining the idea precisely. This section defines it properly, and then uses that definition to derive the single most useful formula in applied probability: how to reverse the direction of a conditional statement.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.1 Defining conditional probability</h3>
+        <p>The <span class="term">conditional probability</span> of event $A$ given that event $B$ has occurred, written $P(A \mid B)$, is defined as: $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \quad \text{provided } P(B) > 0$$ Intuitively, learning that $B$ occurred shrinks the relevant sample space down from the whole of $S$ to just $B$, and $P(A \mid B)$ asks what fraction of that smaller space $B$ is also occupied by $A$. In the factory example, $P(\text{defective} \mid \text{Machine I}) = 0.02$ was given directly as a fact about Machine I's output; this definition is what justifies treating it as a genuine probability, computed within the restricted world where Machine I is the source.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.2 Independence, as a special case</h3>
+        <p>Two events $A$ and $B$ are <span class="term">independent</span> if learning that one occurred changes nothing about the probability of the other: $P(A \mid B) = P(A)$. Substituting this into the definition above and rearranging gives the equivalent, more commonly used test: $A$ and $B$ are independent if and only if $P(A \cap B) = P(A) \cdot P(B)$. Independence is not a property most events have by default, it must either be assumed based on the physical setup (two separate coin flips are independent because one coin has no way of affecting the other) or checked directly against data. Confusing independence with mutual exclusivity, covered in Section 1.2, is a common and serious error: mutually exclusive events are in fact about as far from independent as possible, since if $A$ occurring makes $B$ impossible, learning $A$ occurred is maximally informative about $B$, not uninformative.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.3 Deriving Bayes' rule</h3>
+        <p>The multiplication rule from Section 2.2 can be written two equivalent ways, since $P(A \cap B) = P(B \cap A)$ always: $$P(A \mid B) \, P(B) = P(A \cap B) = P(B \mid A) \, P(A)$$ Dividing through by $P(B)$ gives <span class="term">Bayes' rule</span>, named after Thomas Bayes, whose work on the idea was published posthumously in 1763: $$P(A \mid B) = \frac{P(B \mid A)\, P(A)}{P(B)}$$ The entire point of this formula is that it lets you flip the direction of conditioning: if you know $P(B \mid A)$ but actually want $P(A \mid B)$, Bayes' rule gets you there, provided you also know $P(A)$ and $P(B)$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.4 Expanding the denominator with the law of total probability</h3>
+        <p>The denominator $P(B)$ is rarely given directly, but Section 2.3's law of total probability supplies it: if $A$ and $A^c$ partition the sample space, $P(B) = P(B \mid A)\,P(A) + P(B \mid A^c)\,P(A^c)$. Substituting this into Bayes' rule gives the full working form used in practice: $$P(A \mid B) = \frac{P(B \mid A)\, P(A)}{P(B \mid A)\,P(A) + P(B \mid A^c)\,P(A^c)}$$ This is exactly what makes Bayes' rule computable from the same tree-diagram quantities covered in Section 2: the numerator is one leaf of the tree, and the denominator is the sum of every leaf reaching outcome $B$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.5 A full worked example: reversing the factory tree</h3>
+        <p>Continue the factory example. Suppose an item is picked at random and found to be defective. What is the probability it came from Machine II? This is exactly the reversal problem: Section 2 gave $P(\text{defective} \mid \text{Machine II})$, but the question now asks for $P(\text{Machine II} \mid \text{defective})$. Applying Bayes' rule using the leaf values already computed in Section 2.2 and 2.3: $$P(\text{Machine II} \mid \text{defective}) = \frac{P(\text{defective} \mid \text{Machine II})\, P(\text{Machine II})}{P(\text{defective})} = \frac{0.05 \times 0.40}{0.032} = \frac{0.020}{0.032} = 0.625$$ Even though Machine II only produces $40\%$ of all items, it accounts for $62.5\%$ of the defective ones, because its defect rate is more than double Machine I's. This gap between a machine's overall output share and its share of the defects is exactly the kind of fact Bayes' rule surfaces cleanly and simple intuition tends to miss.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.6 Why medical and legal reasoning misfires without this</h3>
+        <p>Return to the medical screening scenario from Section 2.4: a disease with $1\%$ prevalence, a test that is $95\%$ accurate for genuinely sick people (this is $P(\text{positive} \mid \text{sick}) = 0.95$), and suppose the test also gives a false positive $5\%$ of the time in healthy people ($P(\text{positive} \mid \text{healthy}) = 0.05$). Bayes' rule gives $$P(\text{sick} \mid \text{positive}) = \frac{0.95 \times 0.01}{0.95 \times 0.01 + 0.05 \times 0.99} = \frac{0.0095}{0.0095 + 0.0495} \approx 0.161$$ A positive result on a "95% accurate" test corresponds to only about a $16\%$ chance of actually being sick, because the disease is rare enough that false positives among the large healthy majority outnumber true positives among the small sick minority. This exact reasoning error, called the <span class="term">base rate fallacy</span>, has real documented consequences in courtroom testimony and clinical decision-making, which is precisely why Bayes' rule is treated as essential rather than optional in applied statistics.</p>
+
+        <div class="box">
+          <p class="!mt-0">The general pattern worth keeping: whenever a problem gives you $P(\text{evidence} \mid \text{cause})$ but asks for $P(\text{cause} \mid \text{evidence})$, that is a Bayes' rule problem, full stop. The prevalence or base rate, $P(\text{cause})$, is not a minor detail, Section 3.6 shows it can single-handedly overturn the intuitive answer. This reversal of conditioning direction is also the conceptual seed of an entire branch of statistics, Bayesian inference, where "cause" becomes an unknown parameter and "evidence" becomes observed data, a connection this course will return to once distributions from Section 7 are in hand.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BASIC COMBINATORICS -->
+    <section id="combinatorics" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">4. Basic combinatorics</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Section 1.4's classical approach needs a way to count outcomes, $\frac{|A|}{|S|}$, and counting by hand stops being feasible almost immediately. Combinatorics is the toolkit for counting arrangements and selections without listing every single one out.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.1 The multiplication principle</h3>
+        <p>The <span class="term">multiplication principle</span> is the foundation everything else in this section is built from: if one task can be done in $m$ ways, and a second, independent task can then be done in $n$ ways, the two together can be done in $m \times n$ ways. Choosing an outfit from 4 shirts and 3 pairs of trousers gives $4 \times 3 = 12$ possible outfits, and this extends to any number of stages, choosing a shirt, trousers, and one of 2 pairs of shoes gives $4 \times 3 \times 2 = 24$ outfits. This is precisely why a fair coin flipped 3 times has $2 \times 2 \times 2 = 8$ equally likely outcomes in its sample space, each flip is a stage, each stage has 2 ways to go.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.2 Factorials, and arranging everything</h3>
+        <p>The number of ways to arrange $n$ distinct objects in a row, a <span class="term">permutation</span> of all of them, is $n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$, read "$n$ factorial." This follows directly from the multiplication principle: there are $n$ choices for the first position, then $n-1$ remaining choices for the second, and so on down to exactly 1 choice for the last. Five runners finishing a race can cross the line in $5! = 120$ different possible orders. By convention, $0! = 1$, which will matter for the combination formula below.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.3 Permutations: order matters, selecting a subset</h3>
+        <p>A <span class="term">permutation</span> more generally is an ordered selection of $r$ objects out of $n$ distinct available objects, and the count is: $$P(n, r) = \frac{n!}{(n-r)!}$$ This is again the multiplication principle: $n$ choices for the first slot, $n-1$ for the second, down to $n - r + 1$ for the $r$-th, and the factorial ratio is just a compact way to write that shrinking product. If a committee of 8 people needs to elect a president, vice-president, and secretary, three distinct roles where who gets which role matters, the count is $P(8, 3) = \frac{8!}{5!} = 8 \times 7 \times 6 = 336$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.4 Combinations: order doesn't matter</h3>
+        <p>A <span class="term">combination</span> counts selections of $r$ objects out of $n$ where order is irrelevant, only which objects end up chosen. Since each unordered group of $r$ objects corresponds to exactly $r!$ different orderings that a permutation would count separately, the combination count is the permutation count divided out by that overcounting: $$\binom{n}{r} = \frac{P(n,r)}{r!} = \frac{n!}{r!\,(n-r)!}$$ read "$n$ choose $r$." If the same 8-person committee instead needs to select 3 people for an unranked subcommittee, where no role distinguishes them, the count drops to $\binom{8}{3} = \frac{8!}{3!\,5!} = 56$, far fewer than the 336 from Section 4.3, since every group of 3 people was being counted $3! = 6$ times over in the permutation version.</p>
+
+        <table class="truth wide">
+          <tr><th></th><th>Order matters</th><th>Order doesn't matter</th></tr>
+          <tr><td><strong>Choosing $r$ from $n$</strong></td><td>$P(n,r) = \dfrac{n!}{(n-r)!}$</td><td>$\binom{n}{r} = \dfrac{n!}{r!(n-r)!}$</td></tr>
+          <tr><td><strong>Committee example</strong></td><td>President, VP, secretary from 8 &rarr; 336</td><td>Unranked subcommittee of 3 from 8 &rarr; 56</td></tr>
+        </table>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.5 Connecting combinatorics back to probability</h3>
+        <p>These counting tools plug directly into Section 1.4's classical probability formula $P(A) = \frac{|A|}{|S|}$. A classic case: a standard deck has 52 cards, and a 5-card poker hand is drawn. The total sample space size is $|S| = \binom{52}{5} = 2{,}598{,}960$, since a hand is an unordered selection. The number of hands that are exactly "four of a kind" (four cards of one rank, plus one other card) is $13 \times \binom{4}{4} \times 48 = 624$, choosing which of the 13 ranks supplies the four matching cards, then which of the 48 remaining cards is the fifth. So $P(\text{four of a kind}) = \frac{624}{2{,}598{,}960} \approx 0.00024$, a number that would be effectively impossible to get right by simply listing hands out.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">4.6 Combinations reappear later as binomial coefficients</h3>
+        <p>Keep $\binom{n}{r}$ in mind specifically, it resurfaces by name in Section 7 as the <span class="term">binomial coefficient</span> inside the binomial distribution's probability mass function, where it counts the number of distinct ways $r$ successes can be arranged among $n$ trials. Every distribution built on "count the number of successes out of $n$ tries" leans on this exact combinatorial idea, which is the main reason this section exists between conditional probability and distributions rather than being treated as an unrelated side topic.</p>
+
+        <div class="box">
+          <p class="!mt-0">One diagnostic question separates almost every combinatorics problem correctly: does swapping the order of two selected items create a genuinely different outcome? If yes (assigning distinct roles, forming a sequence, a race finishing order), use permutations. If no (forming an unranked group, a hand of cards, a subcommittee), use combinations. Getting this one question right before reaching for a formula prevents the overwhelming majority of combinatorics mistakes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PROBABILITY DISTRIBUTIONS: THE BASIC DEFINITION -->
+    <section id="probdist" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">5. Probability distributions: the basic definition</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Every rule so far has applied to individual events. A probability distribution is what results from applying those same rules systematically to every possible value a random quantity could take, giving a complete map of its uncertainty rather than one answer at a time.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.1 Random variables</h3>
+        <p>A <span class="term">random variable</span> is a function that assigns a number to every outcome in a sample space. It is a function in the strict mathematical sense, a rule, not itself random in the sense of being unpredictable magic, the randomness lives in which outcome from $S$ actually occurs. Rolling two dice, $S$ contains 36 equally likely outcome pairs like $(3, 5)$, and the random variable $X = $ "sum of the two dice" assigns the number 8 to every outcome pair that sums to 8, such as $(3,5)$, $(4,4)$, $(5,3)$, $(2,6)$, and $(6,2)$. A random variable is called <span class="term">discrete</span> if it can take only a countable list of values (like the dice sum, which can only be 2 through 12), and <span class="term">continuous</span> if it can take any value in an interval (like a person's exact height), directly mirroring the sample space distinction drawn in Section 1.1.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.2 What a probability distribution is</h3>
+        <p>A <span class="term">probability distribution</span> is the complete assignment of probabilities to every possible value (or range of values) a random variable can take. For the two-dice sum $X$, the distribution is the full table: $P(X=2) = \frac{1}{36}$, $P(X=3) = \frac{2}{36}$, up through $P(X=7) = \frac{6}{36}$ (the most common sum), back down to $P(X=12) = \frac{1}{36}$. This table is not a list of separate facts to memorize case by case, it is one object, the distribution, and once you have it, any probability question about $X$ can be answered by reading values off it or summing across it.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.3 Two required properties, inherited directly from the axioms</h3>
+        <p>Because a probability distribution is just probability applied to every value of $X$ at once, it must obey exactly the same non-negativity and total-1 requirements as any probability, from Section 1.3's axioms: every individual probability must be $\geq 0$, and the probabilities across every possible value must sum (discrete case) or integrate (continuous case) to exactly 1. Checking the dice example, $\frac{1}{36}+\frac{2}{36}+\frac{3}{36}+\frac{4}{36}+\frac{5}{36}+\frac{6}{36}+\frac{5}{36}+\frac{4}{36}+\frac{3}{36}+\frac{2}{36}+\frac{1}{36} = \frac{36}{36}=1$ confirms this.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.4 Summarizing a distribution: expectation and variance</h3>
+        <p>Rather than always working with the entire table or curve, two single numbers usually summarize a distribution well enough for most decisions. The <span class="term">expected value</span> (or mean) is the probability-weighted average of every possible value: $$E[X] = \sum_{x} x \, P(X=x)$$ for a discrete variable, or the analogous integral for a continuous one. It represents the long-run average result if the random experiment were repeated indefinitely, not necessarily a value $X$ can even take, $E[X]$ for a single fair die roll works out to $3.5$, a value the die itself never actually shows. The <span class="term">variance</span> measures the average squared spread of $X$ around that mean: $$\text{Var}(X) = E\big[(X-E[X])^2\big] = E[X^2] - \big(E[X]\big)^2$$ and its square root, the <span class="term">standard deviation</span>, brings the units back to match $X$ itself, making it more directly interpretable, "give or take how much."</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.5 The discrete case: probability mass function (pmf)</h3>
+        <p>For a discrete random variable, the function giving the probability of each individual value is called the <span class="term">probability mass function</span>, or <span class="term">pmf</span>, written $p(x) = P(X=x)$. It is directly readable and directly interpretable, "mass" sitting exactly at each possible value, none in between, because there is no "in between" for a discrete variable, only the finite or countably infinite list of values it can actually take.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.6 The continuous case: probability density function (pdf)</h3>
+        <p>For a continuous random variable, asking $P(X = x)$ for one exact value is a technical dead end, since there are infinitely many possible values in any interval, the probability of hitting any single exact one is mathematically 0 (measuring someone's height as exactly $170.000000\ldots$ cm forever has probability zero, even though heights near 170 cm are common). Instead, a continuous distribution is described by a <span class="term">probability density function</span>, or <span class="term">pdf</span>, written $f(x)$, where probability is obtained only by integrating $f$ over a range: $$P(a \leq X \leq b) = \int_a^b f(x)\,dx$$ The value $f(x)$ itself is a <em>density</em>, probability per unit length, not a probability, which is exactly why $f(x)$ is allowed to exceed 1 at some points, unlike a pmf's $p(x)$, which can never exceed 1. What is required, matching the discrete case, is that $f(x) \geq 0$ everywhere and $\int_{-\infty}^{\infty} f(x)\,dx = 1$.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pmfpdf-title">
+            <title id="pmfpdf-title">Side by side comparison of a discrete pmf as bars and a continuous pdf as a smooth curve</title>
+            <text x="150" y="25" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="14" fill="var(--ink)">pmf (discrete)</text>
+            <line x1="50" y1="200" x2="270" y2="200" stroke="var(--hairline)" stroke-width="1.2"/>
+            <rect x="60" y="150" width="20" height="50" fill="var(--espresso)" opacity="0.55"/>
+            <rect x="95" y="120" width="20" height="80" fill="var(--espresso)" opacity="0.65"/>
+            <rect x="130" y="90" width="20" height="110" fill="var(--espresso)" opacity="0.8"/>
+            <rect x="165" y="120" width="20" height="80" fill="var(--espresso)" opacity="0.65"/>
+            <rect x="200" y="150" width="20" height="50" fill="var(--espresso)" opacity="0.55"/>
+            <text x="470" y="25" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="14" fill="var(--ink)">pdf (continuous)</text>
+            <line x1="350" y1="200" x2="590" y2="200" stroke="var(--hairline)" stroke-width="1.2"/>
+            <path d="M 355 200 Q 410 40 470 40 Q 530 40 585 200" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+            <path d="M 430 200 L 430 100 Q 445 60 470 55 Q 495 60 505 100 L 505 200 Z" fill="var(--espresso)" opacity="0.35" stroke="none"/>
+            <text x="467" y="230" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--espresso)">shaded area = P(a &#8804; X &#8804; b)</text>
+          </svg>
+          <figcaption>A pmf's bar heights ARE probabilities; a pdf's curve height is only a density, probability is the area underneath a stretch of it.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">5.7 The cumulative distribution function (CDF)</h3>
+        <p>One more function applies to both the discrete and continuous case identically: the <span class="term">cumulative distribution function</span>, or <span class="term">CDF</span>, $F(x) = P(X \leq x)$, the probability of being at or below a given value. For a discrete variable, $F(x) = \sum_{t \leq x} p(t)$, summing the pmf up to that point; for a continuous one, $F(x) = \int_{-\infty}^x f(t)\,dt$, integrating the pdf up to that point. The CDF is always non-decreasing and climbs from 0 (far left) to 1 (far right), and it is often the more practically useful object, since real questions are usually phrased as "at most" or "at least," answered directly from $F$, rather than "exactly," which for continuous variables cannot be answered at all per Section 5.6.</p>
+
+        <div class="box">
+          <p class="!mt-0">Everything in Section 7 is built from just two ingredients laid down here: a pmf or pdf, describing the shape of the uncertainty, and the pair $E[X]$, $\text{Var}(X)$, summarizing it in two numbers. When Section 7 asks you to verify that a formula "is a valid pmf" or "is a valid pdf," it is asking you to check exactly the two properties from Section 5.3, non-negativity and summing or integrating to 1, nothing more exotic than that.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SAMPLING DISTRIBUTIONS, AND HOW THEY DIFFER -->
+    <section id="sampdist" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">6. Sampling distributions, and how they differ</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Section 5 described the distribution of a single random variable, one measurement, one dice roll, one patient. This section is about what happens once you take an entire <em>sample</em> of such measurements and compute a summary from it, because that summary is itself random, and therefore has its own distribution, one layer removed from the original.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.1 Populations, samples, and statistics</h3>
+        <p>A <span class="term">population</span> is the entire group of individuals or measurements someone actually wants to know about, every adult in a country, every unit ever produced by a factory. A <span class="term">sample</span> is a subset of the population actually observed, since measuring the whole population is usually impossible or too costly. A <span class="term">statistic</span> is any number computed purely from the sample, without using unknown population facts, the sample mean $\bar{X}$, the sample proportion $\hat{p}$, the sample variance $S^2$. The critical thing to notice is that a statistic changes value from sample to sample: measure a different random sample of 50 people's heights, and you'll get a different $\bar{X}$, even though it's estimating the exact same fixed population mean each time.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.2 The core definition: a sampling distribution</h3>
+        <p>A <span class="term">sampling distribution</span> is the probability distribution of a statistic, considered across every possible sample of a given size that could be drawn from the population. It answers the question: if you repeated "draw a sample of size $n$, compute $\bar{X}$" over and over, what pattern of values would $\bar{X}$ itself follow? This is a distribution one full level of abstraction above Section 5's distributions, Section 5 distributed individual measurements; a sampling distribution distributes a summary computed from many measurements at once.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.3 The critical distinction, stated directly</h3>
+        <p>This is the point most easily blurred, so it's worth stating with total precision. The distribution of a single random variable $X$ (Section 5) describes how one individual measurement varies: one height, one exam score, one item's weight. A sampling distribution describes how a statistic computed from an entire sample of $n$ such measurements varies, if that whole sampling process were repeated. The individual heights of 50 randomly chosen people vary a lot, some short, some tall, described by the population's own distribution. But the sample mean height $\bar{X}$ of 50 people varies far less from sample to sample than individual heights vary from person to person, because extreme individuals tend to get averaged out against more typical ones within a sample. Both statements are true and are not in conflict, they describe different random quantities entirely, an individual value versus a computed summary.</p>
+
+        <table class="truth wide">
+          <tr><th></th><th>Distribution of X (Section 5)</th><th>Sampling distribution of a statistic</th></tr>
+          <tr><td><strong>What varies</strong></td><td>one individual measurement</td><td>a summary computed from $n$ measurements</td></tr>
+          <tr><td><strong>Source of randomness</strong></td><td>which single outcome occurs</td><td>which entire sample gets drawn</td></tr>
+          <tr><td><strong>Typical spread</strong></td><td>the population's own natural variability</td><td>shrinks as sample size $n$ grows</td></tr>
+          <tr><td><strong>Example</strong></td><td>one person's height</td><td>the average height of 50 people</td></tr>
+        </table>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.4 The Central Limit Theorem: why this matters so much</h3>
+        <p>The reason sampling distributions receive this much attention is a single remarkable result, the <span class="term">Central Limit Theorem (CLT)</span>: for a large enough sample size $n$, the sampling distribution of the sample mean $\bar{X}$ is approximately Normal, $$\bar{X} \; \dot\sim \; N\!\left(\mu, \frac{\sigma^2}{n}\right)$$ regardless of what shape the original population distribution has, whether it's Normal, skewed, or anything else with a finite variance. This is genuinely surprising: individual exam scores, say, could follow a lopsided, non-Normal distribution across a whole student population, yet the average score of a class of 40 students, drawn from that same lopsided population, will follow an approximately bell-shaped distribution regardless. The practical consequence is enormous: it justifies using Normal-distribution-based methods, confidence intervals, hypothesis tests, on sample means even when nothing is known or assumed about the shape of the underlying population.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="clt-title">
+            <title id="clt-title">Diagram showing a skewed population distribution feeding into an approximately normal sampling distribution of the mean</title>
+            <text x="150" y="25" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="14" fill="var(--ink)">Population (any shape)</text>
+            <line x1="40" y1="180" x2="270" y2="180" stroke="var(--hairline)" stroke-width="1.2"/>
+            <path d="M 40 180 Q 60 60 100 90 Q 150 130 200 160 Q 240 175 270 180" fill="none" stroke="var(--espresso)" stroke-width="1.5"/>
+            <text x="470" y="25" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="14" fill="var(--ink)">Sampling distribution of X&#772; (n large)</text>
+            <line x1="350" y1="180" x2="600" y2="180" stroke="var(--hairline)" stroke-width="1.2"/>
+            <path d="M 355 180 Q 420 40 475 40 Q 530 40 595 180" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+            <line x1="305" y1="120" x2="335" y2="120" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowClt)"/>
+            <text x="320" y="105" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">n &#8593;</text>
+            <defs><marker id="arrowClt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--espresso)"/></marker></defs>
+          </svg>
+          <figcaption>No matter how skewed the original population is, averaging over a large enough sample pulls the sampling distribution of X&#772; toward a Normal shape.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.5 The standard error: a sampling distribution's own standard deviation</h3>
+        <p>The standard deviation of a sampling distribution is given its own name, the <span class="term">standard error</span>, precisely to keep it distinguishable from the population's own standard deviation, which describes individual-measurement spread rather than statistic spread. For the sample mean, the standard error is $\sigma_{\bar{X}} = \frac{\sigma}{\sqrt{n}}$, directly visible in the CLT formula above. This single expression explains a fact used constantly in applied statistics: quadrupling the sample size only halves the standard error, since it shrinks with $\sqrt{n}$, not $n$ itself, which is exactly why the Women's Health Initiative-style clinical trials referenced in the source materials for this course use tens of thousands of participants rather than a few dozen, detecting a modest true effect reliably requires beating down the standard error a great deal.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">6.6 The sampling distribution of a proportion</h3>
+        <p>The same logic applies beyond the mean. If $\hat{p}$ is the sample proportion of "successes" out of $n$ independent trials (covered formally as the binomial setting in Section 7.2), its sampling distribution is also approximately Normal for large $n$: $$\hat{p} \; \dot\sim \; N\!\left(p, \frac{p(1-p)}{n}\right)$$ A pre-election poll reporting "52%, with a margin of error of 3 points" is directly reading this sampling distribution: the reported margin of error is built from $\hat{p}$'s standard error, $\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$, not from any variability in a single voter's opinion.</p>
+
+        <div class="box">
+          <p class="!mt-0">Keep the layering straight, since this is the idea most often flattened by mistake: Section 5 was about the distribution one random variable naturally has. This section is about the distribution a statistic acquires purely from the act of repeated sampling, an entirely separate source of randomness. Section 7 mostly returns to Section 5's layer, individual variables, but every distribution introduced there is also, eventually, a building block for some sampling distribution, the binomial in 7.2 underlies the sampling distribution of a proportion in 6.6, and the Normal in 7.6 is both a population model in its own right and the limiting shape the CLT produces regardless of where you started.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. COMMON DISTRIBUTIONS -->
+    <section id="distributions" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">7. Common distributions: definitions and pmf/pdf</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">A handful of distributions recur across almost every applied field, because a handful of underlying random mechanisms recur constantly. This section derives each one from a physical setup, rather than presenting formulas to be memorized without a reason behind them.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.1 Bernoulli distribution: one yes/no trial</h3>
+        <p>The simplest possible random variable models a single trial with exactly two outcomes, success (coded 1) or failure (coded 0), a single coin flip, one patient responding or not responding to a drug, one item being defective or not. If $p$ is the probability of success, the <span class="term">Bernoulli distribution</span> has pmf: $$p(x) = p^x (1-p)^{1-x}, \quad x \in \{0, 1\}$$ Checking this is a valid pmf per Section 5.3: $p(1) = p$ and $p(0) = 1-p$, both non-negative provided $0 \leq p \leq 1$, and they sum to $p + (1-p) = 1$. Its mean is $E[X] = 0 \cdot(1-p) + 1\cdot p = p$, and its variance works out to $\text{Var}(X) = p(1-p)$, both derived directly from Section 5.4's definitions. This distribution is rarely used alone, its real importance is as the single building block for the next distribution.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.2 Binomial distribution: counting successes across n trials</h3>
+        <p>The <span class="term">binomial distribution</span> models the total number of successes $X$ across $n$ independent, identical Bernoulli trials, each with the same success probability $p$, the number of heads in 10 coin flips, the number of defective items in a batch of 50 drawn independently. To derive its pmf, first fix one specific arrangement of exactly $x$ successes and $n-x$ failures in a particular order, by independence, the multiplication rule from Section 2.2 gives that specific sequence probability $p^x(1-p)^{n-x}$. But many different orderings give exactly $x$ successes, and Section 4.4's combinatorics supplies exactly how many: $\binom{n}{x}$, choosing which $x$ of the $n$ trial-slots are the successes. Multiplying gives the full pmf: $$p(x) = \binom{n}{x} p^x (1-p)^{n-x}, \quad x = 0, 1, 2, \ldots, n$$ Its mean is $E[X] = np$ and its variance is $\text{Var}(X) = np(1-p)$, both scaling up the single-trial Bernoulli values by $n$ trials, matching intuition, flip 10 fair coins and you expect $10 \times 0.5 = 5$ heads.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.3 Worked example: the factory's daily defect count</h3>
+        <p>Return once more to the running factory example. Suppose 20 items are drawn independently from Machine I's output in a day, each with defect probability $p = 0.02$ from Section 1.5. Let $X$ be the number of defective items among the 20. Then $X$ follows a Binomial$(n=20, p=0.02)$ distribution, and the probability of finding exactly 2 defective items is $$P(X=2) = \binom{20}{2}(0.02)^2(0.98)^{18} = 190 \times 0.0004 \times 0.694 \approx 0.0528$$ The expected number of defective items in a day's batch of 20 is $E[X] = 20 \times 0.02 = 0.4$, useful for planning quality-control staffing without ever needing to inspect a full batch by exhaustive counting.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.4 Poisson distribution: counting rare events over an interval</h3>
+        <p>The <span class="term">Poisson distribution</span> models the count of events occurring in a fixed interval of time or space, when those events happen independently and at a constant average rate $\lambda$: the number of customers arriving at a shop per hour, the number of typos per page, the number of earthquakes per year in a region. It can be derived as a limiting case of the binomial: imagine splitting the interval into an enormous number $n$ of tiny sub-intervals so small that each can contain at most one event, each with success probability $p = \lambda/n$. Taking the binomial pmf from Section 7.2 and letting $n \to \infty$ while $np = \lambda$ stays fixed produces: $$p(x) = \frac{e^{-\lambda}\lambda^x}{x!}, \quad x = 0, 1, 2, \ldots$$ Both the mean and the variance of a Poisson distribution equal $\lambda$ itself, $E[X] = \text{Var}(X) = \lambda$, a distinctive signature: if a real count dataset has a sample mean and sample variance that are roughly equal, that is evidence in favor of a Poisson model. If a call center receives an average of $\lambda = 4$ calls per minute, the probability of receiving exactly 6 calls in a given minute is $P(X=6) = \frac{e^{-4}4^6}{6!} \approx 0.1042$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.5 Geometric distribution: waiting for the first success</h3>
+        <p>The <span class="term">geometric distribution</span> models the number of independent Bernoulli trials needed to get the first success, how many times you flip a coin until the first head, how many items are inspected until the first defective one is found. For $X$ = trial number of the first success, the event "$X = x$" requires $x-1$ consecutive failures followed by exactly one success, and by the multiplication rule (Section 2.2) applied to independent trials: $$p(x) = (1-p)^{x-1}p, \quad x = 1, 2, 3, \ldots$$ Its mean is $E[X] = \frac{1}{p}$, an intuitive result, if defects occur $2\%$ of the time, you expect to inspect $\frac{1}{0.02} = 50$ items on average before finding the first defective one. Its variance is $\text{Var}(X) = \frac{1-p}{p^2}$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.6 Uniform distribution: total ignorance within a range</h3>
+        <p>The <span class="term">continuous Uniform distribution</span> models a variable equally likely to fall anywhere in an interval $[a,b]$, with no value more likely than any other, the exact arrival time of a bus known only to run "sometime between 2:00 and 2:20," a rounding error known only to lie somewhere within $\pm 0.5$ units. Since the density must be flat over $[a,b]$ and Section 5.6 requires it to integrate to exactly 1 over that interval, the height must be $\frac{1}{b-a}$: $$f(x) = \frac{1}{b-a}, \quad a \leq x \leq b$$ verified directly: $\int_a^b \frac{1}{b-a}\,dx = \frac{1}{b-a}(b-a) = 1$. Its mean is $E[X] = \frac{a+b}{2}$, the interval's midpoint, exactly as intuition demands for a perfectly flat density, and its variance is $\text{Var}(X) = \frac{(b-a)^2}{12}$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.7 Exponential distribution: waiting time in continuous time</h3>
+        <p>Where the geometric distribution (Section 7.5) measures waiting time in discrete trial counts, the <span class="term">exponential distribution</span> measures waiting time on a continuous clock until an event occurs, given events happen at a constant average rate $\lambda$ per unit time, the same rate parameter driving the Poisson distribution in Section 7.4, in fact the two are directly linked: if the count of events per unit time is Poisson$(\lambda)$, the waiting time between consecutive events is Exponential$(\lambda)$. Its pdf is: $$f(x) = \lambda e^{-\lambda x}, \quad x \geq 0$$ confirmed valid since $\int_0^\infty \lambda e^{-\lambda x}\,dx = \big[-e^{-\lambda x}\big]_0^\infty = 0-(-1) = 1$. Its mean is $E[X] = \frac{1}{\lambda}$, and remarkably its variance is $\text{Var}(X) = \frac{1}{\lambda^2}$, meaning its standard deviation equals its mean exactly. If a machine component fails at an average rate of $\lambda = 0.5$ failures per year, the expected time until failure is $\frac{1}{0.5}=2$ years, and the probability it survives beyond 3 years is $P(X>3) = \int_3^\infty 0.5e^{-0.5x}\,dx = e^{-1.5}\approx 0.223$.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">7.8 Normal distribution: the limiting shape from Section 6</h3>
+        <p>The <span class="term">Normal (Gaussian) distribution</span> is the single most important continuous distribution, both because many naturally occurring measurements, height, measurement error, blood pressure, cluster symmetrically around a mean in roughly this bell shape, and because of Section 6.4's Central Limit Theorem, which guarantees that sample means converge to this exact shape regardless of the population they came from. Parametrized by its mean $\mu$ and variance $\sigma^2$, its pdf is: $$f(x) = \frac{1}{\sigma\sqrt{2\pi}}\, e^{-\frac{(x-\mu)^2}{2\sigma^2}}, \quad -\infty < x < \infty$$ The exponent's $-(x-\mu)^2$ term guarantees the curve peaks exactly at $x=\mu$ and falls off symmetrically on both sides, while the $\sigma\sqrt{2\pi}$ constant out front is precisely the scaling factor needed to make the total area under the curve integrate to 1, as Section 5.6 requires. Unlike every other distribution in this section, $E[X]=\mu$ and $\text{Var}(X)=\sigma^2$ are not derived results, they are literally the two parameters the distribution is defined in terms of. The special case $\mu=0, \sigma=1$ is the <span class="term">standard Normal distribution</span>, denoted $Z$, and any Normal variable can be converted to it via $Z = \frac{X-\mu}{\sigma}$, which is exactly the transformation that lets a single table of $Z$-values answer probability questions for a Normal distribution with any mean and variance at all.</p>
+
+        <table class="truth wide">
+          <tr><th>Distribution</th><th>Type</th><th>pmf / pdf</th><th>Mean</th><th>Variance</th></tr>
+          <tr><td>Bernoulli($p$)</td><td>discrete</td><td>$p^x(1-p)^{1-x}$</td><td>$p$</td><td>$p(1-p)$</td></tr>
+          <tr><td>Binomial($n,p$)</td><td>discrete</td><td>$\binom{n}{x}p^x(1-p)^{n-x}$</td><td>$np$</td><td>$np(1-p)$</td></tr>
+          <tr><td>Poisson($\lambda$)</td><td>discrete</td><td>$\dfrac{e^{-\lambda}\lambda^x}{x!}$</td><td>$\lambda$</td><td>$\lambda$</td></tr>
+          <tr><td>Geometric($p$)</td><td>discrete</td><td>$(1-p)^{x-1}p$</td><td>$1/p$</td><td>$(1-p)/p^2$</td></tr>
+          <tr><td>Uniform($a,b$)</td><td>continuous</td><td>$1/(b-a)$</td><td>$(a+b)/2$</td><td>$(b-a)^2/12$</td></tr>
+          <tr><td>Exponential($\lambda$)</td><td>continuous</td><td>$\lambda e^{-\lambda x}$</td><td>$1/\lambda$</td><td>$1/\lambda^2$</td></tr>
+          <tr><td>Normal($\mu,\sigma^2$)</td><td>continuous</td><td>$\frac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/2\sigma^2}$</td><td>$\mu$</td><td>$\sigma^2$</td></tr>
+        </table>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="family-title">
+            <title id="family-title">Diagram showing how Bernoulli, binomial, Poisson, geometric, and exponential distributions connect to each other</title>
+            <rect x="20" y="80" width="130" height="55" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="85" y="112" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Bernoulli</text>
+            <line x1="150" y1="107" x2="230" y2="107" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowF)"/>
+            <text x="190" y="97" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">n trials</text>
+            <rect x="235" y="80" width="130" height="55" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="300" y="112" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Binomial</text>
+            <line x1="365" y1="107" x2="445" y2="107" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowF)"/>
+            <text x="405" y="97" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">n&#8594;&#8734;, np=&#955;</text>
+            <rect x="450" y="80" width="130" height="55" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="515" y="112" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Poisson</text>
+            <rect x="20" y="160" width="130" height="55" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="85" y="192" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Geometric</text>
+            <text x="85" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">discrete waiting time</text>
+            <rect x="450" y="160" width="130" height="55" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <text x="515" y="192" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="13" fill="var(--ink)">Exponential</text>
+            <text x="515" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--espresso)">continuous waiting time</text>
+            <line x1="515" y1="135" x2="515" y2="158" stroke="var(--espresso)" stroke-width="1.3" marker-end="url(#arrowF)"/>
+            <defs><marker id="arrowF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--espresso)"/></marker></defs>
+          </svg>
+          <figcaption>None of these distributions are independent inventions, each is a direct consequence of the setup one step to its left.</figcaption>
+        </figure>
+
+        <div class="box">
+          <p class="!mt-0">Notice the thread running through every derivation in this section: not one distribution was pulled out of nowhere. The Bernoulli models one trial; the binomial counts many independent copies of it using Section 4's combinatorics; the Poisson is the binomial's own limit as trials multiply and shrink; the geometric and exponential both measure waiting time for the first success, discretely and continuously; and the Normal is both a natural model in its own right and, via Section 6.4's Central Limit Theorem, the destination every sample mean converges toward regardless of where it started. Choosing the "right" distribution for a real problem is rarely a guess, it is a direct match between the physical mechanism generating the data and the derivation that produced the formula.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    });
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+      var root = document.documentElement;
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      var saved = localStorage.getItem("theme");
+      var initial = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      applyTheme(initial);
+      function applyTheme(t) { root.classList.toggle("dark", t === "dark"); }
+      var toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var next = root.classList.contains("dark") ? "light" : "dark";
+          localStorage.setItem("theme", next);
+          applyTheme(next);
+        });
+      }
+
+      var preloader = document.getElementById("preloader");
+      var bar = document.getElementById("preloader-bar");
+      function reveal() {
+        if (preloader) preloader.style.display = "none";
+        root.classList.remove("js-loading");
+      }
+      window.addEventListener("load", function () {
+        if (reduced) { reveal(); return; }
+        if (bar) {
+          bar.style.transition = "width 0.5s cubic-bezier(0.22,1,0.36,1)";
+          requestAnimationFrame(function () { bar.style.width = "100%"; });
+        }
+        setTimeout(function () {
+          if (preloader) {
+            preloader.style.transition = "opacity 0.4s ease";
+            preloader.style.opacity = "0";
+            setTimeout(reveal, 400);
+          } else { reveal(); }
+        }, 550);
+      });
+      setTimeout(function () { if (root.classList.contains("js-loading")) reveal(); }, 2500);
+
+      var navbar = document.getElementById("navbar");
+      var lastY = window.scrollY;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY;
+        if (y > 100) {
+          if (y > lastY) navbar.classList.add("nav-hidden");
+          else navbar.classList.remove("nav-hidden");
+        } else {
+          navbar.classList.remove("nav-hidden");
+        }
+        lastY = y;
+      }, { passive: true });
+
+      var ring = document.getElementById("cursor-ring");
+      var dot = document.getElementById("cursor-dot");
+      if (ring && dot && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX; my = e.clientY;
+          dot.style.transform = "translate3d(" + mx + "px," + my + "px,0) translate(-50%,-50%)";
+          ring.style.opacity = "1"; dot.style.opacity = "1";
+        });
+        (function loop() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+          el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+        });
+      } else if (ring && dot) {
+        ring.style.display = "none"; dot.style.display = "none";
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="js-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F9F8F6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161412" media="(prefers-color-scheme: dark)" />
+  <title>Basics: Sampling Theory &mdash; Muktadir Somio</title>
+  <meta name="description" content="Sampling concepts, design, inclusion probability, weights, estimator precision, and sample size determination, worked with math." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', "Georgia", "serif"],
+            sans: ["Inter", "system-ui", "sans-serif"],
+          },
+          colors: {
+            cream: "#F9F8F6",
+            ink: "#1C1C1C",
+            espresso: "#6F6A63",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --cream: #f9f8f6;
+      --espresso: #6f6a63;
+      --hairline: rgba(28, 28, 28, 0.14);
+      --card: rgba(255, 255, 255, 0.45);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark {
+      --ink: #f2efe9;
+      --cream: #161412;
+      --espresso: #a39c92;
+      --hairline: rgba(242, 239, 233, 0.16);
+      --card: rgba(38, 34, 28, 0.4);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; overflow-x: hidden; }
+    ::selection { background: rgba(28, 28, 28, 0.08); }
+    .dark ::selection { background: rgba(242, 239, 233, 0.14); }
+
+    html.js-loading main, html.js-loading nav { opacity: 0; }
+    html:not(.js-loading) main, html:not(.js-loading) nav {
+      opacity: 1; transition: opacity 0.6s var(--ease);
+    }
+
+    #navbar { transform: translateX(-50%); transition: transform 0.5s var(--ease); }
+    #navbar.nav-hidden { transform: translate(-50%, -160%); }
+
+    .bg-grid::after {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+      background-size: 88px 88px; opacity: 0.5;
+      -webkit-mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+      mask-image: radial-gradient(circle at 50% 18%, rgba(0,0,0,0.5), transparent 88%);
+    }
+
+    .ulink { position: relative; color: var(--ink); transition: color 0.4s var(--ease); }
+    .ulink::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease);
+    }
+    .ulink:hover { color: var(--espresso); }
+    .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .prose-block p { margin-top: 1.2rem; }
+    .prose-block p:first-child { margin-top: 0; }
+    .prose-block h3 { margin-top: 2.4rem; margin-bottom: 0.9rem; }
+    .prose-block h3:first-child { margin-top: 0; }
+    .prose-block ul { margin-top: 1rem; margin-bottom: 1rem; padding-left: 1.3rem; }
+    .prose-block li { margin-top: 0.55rem; list-style: disc; }
+    .prose-block li::marker { color: var(--espresso); }
+
+    .term { font-style: italic; font-family: "Playfair Display", Georgia, serif; color: var(--ink); }
+    .dark .term { color: #F2EFE9; }
+
+    .box {
+      border: 1px solid var(--hairline);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      margin: 1.6rem 0;
+    }
+
+    table.truth {
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      width: 100%;
+      max-width: 480px;
+      font-size: 0.95rem;
+    }
+    table.truth th, table.truth td {
+      border: 1px solid var(--hairline);
+      padding: 0.5rem 0.85rem;
+      text-align: center;
+    }
+    table.truth th {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    .toc a { display: block; padding: 0.55rem 0; border-top: 1px solid var(--hairline); }
+    .toc a:first-child { border-top: none; }
+
+    figure.diagram { margin: 1.8rem 0; text-align: center; }
+    figure.diagram svg { max-width: 100%; height: auto; }
+    figure.diagram figcaption { margin-top: 0.75rem; font-size: 0.85rem; color: var(--espresso); font-style: italic; font-family: "Playfair Display", Georgia, serif; }
+
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button { cursor: none; }
+      .cursor-ring {
+        position: fixed; top: 0; left: 0; width: 34px; height: 34px; border: 1.5px solid var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 999999;
+        transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease);
+      }
+      .cursor-dot {
+        position: fixed; top: 0; left: 0; width: 5px; height: 5px; background: var(--ink);
+        border-radius: 9999px; transform: translate3d(-50%, -50%, 0); pointer-events: none; z-index: 1000000;
+      }
+      .cursor-ring.hover { width: 54px; height: 54px; background: rgba(28,28,28,0.06); }
+      .dark .cursor-ring.hover { background: rgba(242,239,233,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-grid">
+  <div id="preloader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-cream dark:bg-[#161412]">
+    <div class="w-44 h-[2px] bg-black/10 dark:bg-white/10 overflow-hidden rounded-full">
+      <div id="preloader-bar" class="h-full w-0 bg-ink dark:bg-[#F2EFE9]"></div>
+    </div>
+  </div>
+
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <nav id="navbar" class="fixed top-[calc(1rem+env(safe-area-inset-top))] left-1/2 z-[1000] w-[min(calc(100%-2rem),1180px)] h-14 flex items-center rounded-full border border-[var(--hairline)] backdrop-blur-xl bg-cream/70 dark:bg-[#161412]/70 shadow-[0_18px_40px_-24px_rgba(28,28,28,0.4)] dark:shadow-[0_18px_45px_-22px_rgba(0,0,0,0.6)]">
+    <div class="flex items-center justify-between w-full px-5">
+      <a href="courses.html" class="font-serif italic text-[0.95rem] text-ink dark:text-[#F2EFE9] ulink">&larr; Coursework</a>
+      <button id="theme-toggle" aria-label="Toggle theme" class="w-10 h-10 flex items-center justify-center rounded-full transition hover:bg-black/5 dark:hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-[760px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
+  <main class="max-w-[760px] mx-auto px-8 pt-[clamp(8rem,14vw,11.5rem)] pb-[clamp(4.5rem,9vw,7.5rem)] relative z-10">
+
+    <header class="text-center">
+      <span class="block font-sans text-[0.74rem] tracking-[0.4em] uppercase text-espresso dark:text-[#A39C92] mb-5">Sampling Methods I &middot; Basics</span>
+      <h1 class="font-serif font-medium text-[clamp(2.2rem,6vw,3.6rem)] leading-[1.05] tracking-tight text-ink dark:text-[#F2EFE9]">Sampling</h1>
+    </header>
+
+    <nav class="box toc mt-[clamp(3rem,6vw,4.5rem)] font-light text-[1rem]" aria-label="Table of contents">
+      <a href="#concepts" class="ulink">1. Concepts, terminology, and design</a>
+      <a href="#execution" class="ulink">2. Selecting and executing a sample</a>
+      <a href="#precision" class="ulink">3. Precision, error, and sample size</a>
+    </nav>
+
+    <!-- 1. CONCEPTS, TERMINOLOGY, AND DESIGN -->
+    <section id="concepts" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">1. Concepts, terminology, and design</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">A sample is only useful if the path from sample to population is exact. That path starts with a small, fixed vocabulary, and every later formula in this page is built directly on top of it.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.1 Population, units, and the sampling frame</h3>
+        <p>The <span class="term">population</span> is the complete set of $N$ units a study wants to say something about. A <span class="term">sampling unit</span> is the object actually selected during sampling, a household, a school, a district, and can differ from the <span class="term">element</span>, the object actually measured: a household is a sampling unit, but each person inside it is an element. The <span class="term">sampling frame</span> is the physical list, map, or register from which units are drawn. A frame is rarely identical to the population: it can miss units that exist (undercoverage), include units that no longer exist (overcoverage), or list a unit more than once (duplication), and every one of these frame problems becomes an error in the final estimate no matter how carefully the sample itself is drawn.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.2 Parameter and statistic</h3>
+        <p>A <span class="term">parameter</span> is a fixed, usually unknown number describing the population: the population mean $\bar{Y} = \frac{1}{N}\sum_{i=1}^{N} Y_i$, the population total $Y = \sum_{i=1}^{N} Y_i$, the population proportion $P$. A <span class="term">statistic</span> is a quantity computed from the sample alone: the sample mean $\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i$, the sample proportion $p$. The parameter is a constant; the statistic is a random variable, since a different draw of $n$ units from the same population produces a different value. Everything in Section 3 is about describing the behaviour of that randomness.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.3 The role of sampling theory</h3>
+        <p>Sampling theory exists to answer one question honestly: how much can be trusted from a partial count. A full census removes the question entirely, since $n = N$ leaves nothing unobserved, but a census is often too slow, too costly, or physically impossible, testing every manufactured unit for strength destroys the stock being tested. Sampling theory supplies the machinery, built on probability, to draw a partial set of units and still make a defensible, quantified statement about the whole population, including exactly how far off that statement is likely to be. That last part, an honest, computable margin of error rather than a guess, is what separates sampling theory from simply looking at "some data" and is the direct reason your coursework treats a statistic as having a sampling distribution rather than a single fixed value.</p>
+        <p>The comparison also runs the other way: a rushed, poorly supervised census carries every source of non-sampling error discussed in 3.4 at full national scale, while a smaller, carefully executed sample survey can be more accurate overall even though it alone carries sampling error. Completeness is not the same thing as accuracy.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">1.4 Requirements of a good sampling design</h3>
+        <p>A sampling design earns trust by satisfying a short list of properties together, not any single one alone.</p>
+        <ul>
+          <li><span class="term">Representativeness.</span> The sample's structure should mirror the population's structure on the characteristics that matter for the study, so conclusions drawn from it generalise.</li>
+          <li><span class="term">Known, computable error.</span> The design must allow the sampling error of an estimate to be calculated from the sample itself, not merely assumed. As Section 2.2 makes precise, this in practice requires probability sampling.</li>
+          <li><span class="term">Adequate precision for the cost.</span> A design is judged against a budget, not in isolation. The goal is the smallest error achievable for the resources available, or equivalently the lowest cost for a required error, addressed directly in Section 3.5.</li>
+          <li><span class="term">Absence of bias.</span> Systematic distortion introduced by the frame, the selection procedure, or nonresponse should be minimised, since no amount of increased sample size corrects a biased procedure.</li>
+          <li><span class="term">Practical feasibility.</span> The design has to be executable in the field, with available time, staff, and logistics, and simple enough that fieldworkers apply it consistently without deviating from the plan.</li>
+        </ul>
+
+        <div class="box">
+          <p class="!mt-0">Hold onto the frame problem in 1.1 and the practicality requirement in 1.4 together. A mathematically elegant design applied to a bad frame, or executed by an untrained field team, produces an estimate whose formal standard error looks small while its actual error is large. The formulas from Section 3 describe sampling error only; they say nothing about frame or fieldwork problems, which is precisely why 3.4 treats sampling error and non-sampling error as two separate, additive sources rather than one.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SELECTING AND EXECUTING A SAMPLE -->
+    <section id="execution" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">2. Selecting and executing a sample</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">Once the concepts in Section 1 are fixed, a survey still has to be built and run. This section moves from planning to the actual mechanics of drawing units and weighting what comes back.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.1 Steps in a sample survey</h3>
+        <p>A sample survey moves through a fixed sequence, and skipping or reordering a step tends to reappear later as an error that looks like something else entirely.</p>
+        <ul>
+          <li><span class="term">Define the objective.</span> State exactly what is to be estimated, and for which population and reference period.</li>
+          <li><span class="term">Define the target population and units.</span> Fix what counts as a unit and an element, per 1.1.</li>
+          <li><span class="term">Construct or obtain the sampling frame.</span> Assess it for the coverage problems in 1.1 before drawing anything from it.</li>
+          <li><span class="term">Choose the sampling design.</span> Select among the designs in 2.2, guided by the requirements in 1.4 and the cost structure of the survey.</li>
+          <li><span class="term">Determine the sample size.</span> Fix $n$ against a target precision and budget, worked through in 3.5 and 3.6.</li>
+          <li><span class="term">Select the sample.</span> Apply the chosen design mechanically, without substituting units in the field for convenience.</li>
+          <li><span class="term">Design the instrument and collect data.</span> Build the questionnaire or measurement protocol and carry out fieldwork.</li>
+          <li><span class="term">Process data and compute estimates.</span> Apply the weights from 2.4 and compute the parameter estimates together with their standard errors.</li>
+          <li><span class="term">Report results with their margins of error.</span> An estimate without its precision attached is an incomplete answer to the objective stated in step one.</li>
+        </ul>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.2 Probability and non-probability sampling</h3>
+        <p>In <span class="term">probability sampling</span>, every unit in the frame has a known, nonzero probability of selection, fixed in advance by the design. Simple random sampling, systematic sampling, stratified sampling, and cluster or multi-stage sampling all belong to this family. Because the selection probabilities are known, the sampling error of an estimate can be computed directly from the sample, satisfying the second requirement in 1.4.</p>
+        <p>In <span class="term">non-probability sampling</span>, units are chosen by convenience, judgment, quota, or referral, and their selection probabilities are unknown or undefined. Convenience sampling (whoever is easiest to reach), purposive or judgment sampling (an expert hand-picks units believed to be typical), quota sampling (fill fixed category counts without random selection within them), and snowball sampling (existing respondents refer new ones) are the common forms. These designs can still be useful, cheap, fast, sometimes the only option when no frame exists, but the sampling error of an estimate from them cannot be computed in the way Section 3 describes, and selection bias cannot be ruled out by the design itself. That gap is exactly why 1.4 named computable error as a requirement rather than an option.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.3 Selection probability and inclusion probability</h3>
+        <p>The <span class="term">selection probability</span>, or draw-by-draw probability, is the probability a specific unit is chosen at one particular draw. Under simple random sampling without replacement (SRSWOR) from a population of size $N$, the first draw gives each unit probability $1/N$; a unit not drawn first has probability $1/(N-1)$ on the second draw, and so on, since the pool shrinks after each draw.</p>
+        <p>The <span class="term">inclusion probability</span> $\pi_i$ is the probability that unit $i$ ends up in the final sample of size $n$ at all, across every draw combined, and it is this quantity, not the single-draw probability, that estimation formulas actually use. For SRSWOR of size $n$ from $N$, every unit has the same inclusion probability:</p>
+        <p>$$\pi_i = \frac{n}{N}$$</p>
+        <p>Designs do not have to give every unit equal inclusion probability. In <span class="term">probability-proportional-to-size (PPS)</span> sampling, a unit's inclusion probability is set proportional to a known size measure, say a district's population or a school's enrolment, so that large, more influential units are more likely to enter the sample: $\pi_i \propto Z_i$ for a size measure $Z_i$. The <span class="term">second-order inclusion probability</span> $\pi_{ij}$, the probability that units $i$ and $j$ are both in the sample, is needed whenever the variance of an estimator has to account for the fact that draws are not independent, which is always true under sampling without replacement.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.4 Sampling weight</h3>
+        <p>The <span class="term">sampling weight</span> (or design weight) of unit $i$ is the inverse of its inclusion probability:</p>
+        <p>$$w_i = \frac{1}{\pi_i}$$</p>
+        <p>and it has a direct reading: $w_i$ is the number of population units that sampled unit $i$ stands in for. Under SRSWOR, $w_i = N/n$ for every unit, all sampled units represent the same number of population units. Under PPS, units with a higher inclusion probability get a smaller weight, correcting for having been oversampled on purpose. Population totals and means are then estimated by weighting each sampled observation before summing, the <span class="term">Horvitz-Thompson estimator</span>:</p>
+        <p>$$\hat{Y} = \sum_{i \in s} \frac{y_i}{\pi_i} = \sum_{i \in s} w_i\, y_i$$</p>
+        <p>where $s$ denotes the set of sampled units. In practice, design weights are rarely used exactly as computed, they are usually adjusted further for nonresponse (inflating the weight of respondents to stand in for similar non-respondents) and calibrated so weighted totals for known characteristics, such as age or region, match external, trusted figures, but both adjustments start from the design weight $w_i$ defined here.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">2.5 With and without replacement sampling</h3>
+        <p>Under <span class="term">sampling with replacement (WR)</span>, a selected unit is returned to the frame before the next draw, so it can be drawn again, and every draw is independent with the same probability $1/N$. Under <span class="term">sampling without replacement (WOR)</span>, a selected unit is removed from the frame, so it cannot repeat, and draws are no longer independent, later draws depend on which units are already gone.</p>
+        <p>The practical difference shows up in the variance of the sample mean. For a population variance $S^2 = \frac{1}{N-1}\sum_{i=1}^{N}(Y_i - \bar{Y})^2$,</p>
+        <p>$$V(\bar{y})_{WR} = \frac{S^2}{n} \qquad\qquad V(\bar{y})_{WOR} = \frac{S^2}{n}\left(1 - \frac{n}{N}\right)$$</p>
+        <p>The extra factor $\left(1 - \frac{n}{N}\right)$ is the <span class="term">finite population correction (fpc)</span>. It is always between 0 and 1 for $n < N$, so WOR gives a strictly smaller variance than WR for the same $n$, sampling without replacement is more efficient, because it never wastes a draw re-measuring a unit already known. As $n$ approaches $N$, the fpc approaches zero, correctly signalling that a near-complete sample carries almost no sampling uncertainty at all. When $N$ is very large relative to $n$, the fpc is close to 1 and the WR and WOR variances converge, which is why the correction is often dropped for large populations sampled at a small fraction.</p>
+      </div>
+    </section>
+
+    <!-- 3. PRECISION, ERROR, AND SAMPLE SIZE -->
+    <section id="precision" class="mt-[clamp(5rem,10vw,8rem)] pt-[clamp(2.5rem,5vw,4rem)] border-t border-[var(--hairline)]">
+      <h2 class="font-serif font-medium text-[clamp(1.7rem,4vw,2.4rem)] text-ink dark:text-[#F2EFE9]">3. Precision, error, and sample size</h2>
+      <p class="mt-4 font-light text-[1.02rem] leading-relaxed text-espresso dark:text-[#A39C92]">An estimate is incomplete without a statement of how much it can be trusted. This section defines that trust precisely, then uses it to decide how large a sample needs to be in the first place.</p>
+
+      <div class="prose-block mt-8 text-left font-light leading-[1.9] text-[1.02rem] text-ink dark:text-[#F2EFE9]">
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.1 Bias</h3>
+        <p>The <span class="term">bias</span> of an estimator $\hat{\theta}$ for a parameter $\theta$ is the gap between its average value over all possible samples and the true parameter:</p>
+        <p>$$B(\hat{\theta}) = E(\hat{\theta}) - \theta$$</p>
+        <p>An estimator is <span class="term">unbiased</span> when $B(\hat{\theta}) = 0$, meaning it is correct on average across repeated sampling, though any single sample's estimate can still land above or below $\theta$. The sample mean under SRSWOR is unbiased for the population mean, $E(\bar{y}) = \bar{Y}$. A common trap sits in the sample variance: dividing by $n$ instead of $n-1$, $\frac{1}{n}\sum (y_i - \bar{y})^2$, systematically underestimates the population variance, which is exactly why the unbiased sample variance uses $n-1$ in the denominator instead.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.2 Variance and precision</h3>
+        <p>The <span class="term">variance</span> of an estimator measures how much it would swing from one sample to the next:</p>
+        <p>$$V(\hat{\theta}) = E\big[(\hat{\theta} - E(\hat{\theta}))^2\big]$$</p>
+        <p><span class="term">Precision</span> is exactly this: how tightly repeated samples' estimates cluster around their own average. Precision is not the same as being close to the truth, an estimator can be highly precise, tightly clustered, while clustered around the wrong value if it is biased. Section 1.4's demand for adequate precision is a demand about variance specifically, and it is variance, through the standard error $\sqrt{V(\hat\theta)}$, that shrinks as sample size grows, which is the entire basis for Section 3.5.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="bv-title">
+            <title id="bv-title">Four targets showing combinations of low and high bias with low and high variance</title>
+            <text x="115" y="18" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">low variance</text>
+            <text x="345" y="18" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">high variance</text>
+            <text x="14" y="70" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">low bias</text>
+            <text x="14" y="200" font-family="Inter, sans-serif" font-size="12" fill="var(--espresso)">high bias</text>
+
+            <g stroke="var(--ink)" stroke-width="1" fill="none">
+              <circle cx="115" cy="80" r="44"/><circle cx="115" cy="80" r="28"/><circle cx="115" cy="80" r="12"/>
+              <circle cx="345" cy="80" r="44"/><circle cx="345" cy="80" r="28"/><circle cx="345" cy="80" r="12"/>
+              <circle cx="115" cy="210" r="44"/><circle cx="115" cy="210" r="28"/><circle cx="115" cy="210" r="12"/>
+              <circle cx="345" cy="210" r="44"/><circle cx="345" cy="210" r="28"/><circle cx="345" cy="210" r="12"/>
+            </g>
+
+            <g fill="var(--espresso)">
+              <circle cx="119" cy="76" r="2.6"/><circle cx="112" cy="83" r="2.6"/><circle cx="117" cy="85" r="2.6"/><circle cx="110" cy="77" r="2.6"/><circle cx="115" cy="80" r="2.6"/>
+              <circle cx="345" cy="55" r="2.6"/><circle cx="370" cy="90" r="2.6"/><circle cx="320" cy="100" r="2.6"/><circle cx="360" cy="65" r="2.6"/><circle cx="330" cy="75" r="2.6"/>
+              <circle cx="150" cy="180" r="2.6"/><circle cx="153" cy="185" r="2.6"/><circle cx="148" cy="190" r="2.6"/><circle cx="155" cy="182" r="2.6"/><circle cx="151" cy="188" r="2.6"/>
+              <circle cx="380" cy="170" r="2.6"/><circle cx="300" cy="230" r="2.6"/><circle cx="360" cy="240" r="2.6"/><circle cx="390" cy="215" r="2.6"/><circle cx="320" cy="180" r="2.6"/>
+            </g>
+          </svg>
+          <figcaption>Top-right: unbiased but imprecise, estimates scatter widely though centred on the truth on average. Bottom-left: biased but precise, tightly clustered around the wrong point. MSE penalises both departures at once.</figcaption>
+        </figure>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.3 Mean square error</h3>
+        <p>The <span class="term">mean square error (MSE)</span> combines both ideas into one number: the average squared distance between the estimator and the true parameter.</p>
+        <p>$$MSE(\hat{\theta}) = E\big[(\hat{\theta} - \theta)^2\big] = V(\hat{\theta}) + \big[B(\hat{\theta})\big]^2$$</p>
+        <p>For an unbiased estimator, $MSE = V(\hat{\theta})$, variance and MSE coincide. But a small, deliberate amount of bias can sometimes buy a large reduction in variance, and MSE is the quantity that judges whether that trade is worth it. A ratio estimator, which uses an auxiliary variable strongly correlated with the variable of interest, is a standard example: it carries a small bias in most designs, yet when the correlation is strong its variance can fall so much that its MSE beats that of the unbiased sample mean. Bias alone, and variance alone, both understate what MSE measures completely.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.4 Errors in a sample survey and a census</h3>
+        <p><span class="term">Sampling error</span> exists only because a partial set of units stands in for the whole population. It is exactly what $V(\hat\theta)$ in 3.2 quantifies, it shrinks as $n$ grows, and it vanishes entirely in a full census, where $n = N$ and the fpc from 2.5 collapses to zero.</p>
+        <p><span class="term">Non-sampling error</span> is everything else, and it affects a census just as much as a sample, often more, since a census has no sampling error to offset against its own execution problems. Its main sources are coverage error (the frame problem from 1.1), nonresponse (units that refuse or cannot be reached), measurement or response error (a question misunderstood, a respondent misremembering, an instrument miscalibrated), and processing error (mistakes in data entry, coding, or editing). Unlike sampling error, non-sampling error does not automatically shrink with a larger $n$; a bigger operation with more enumerators and more forms to process can, if not tightly supervised, accumulate more of it, not less. Total error is best understood as an approximate sum of the two, quantifiable sampling error plus largely unquantifiable non-sampling error:</p>
+        <p>$$MSE(\hat{\theta}) \approx \underbrace{V(\hat{\theta})}_{\text{sampling error}} + \underbrace{\text{coverage, nonresponse, measurement, processing error}}_{\text{non-sampling error}}$$</p>
+        <p>which is the direct source of the point raised in 1.3: a well-run sample survey, carrying only the first term, can have lower total error than a census whose second term has grown large through scale alone.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.5 Sample size determination: the basic case</h3>
+        <p>Fix a desired margin of error $d$ (also called the bound on the error of estimation) and a confidence level, giving a multiplier $z$ (for 95% confidence, $z = 1.96$). For estimating a population mean under SRSWOR with population variance $S^2$, the required sample size ignoring the finite population correction is:</p>
+        <p>$$n_0 = \frac{z^2 S^2}{d^2}$$</p>
+        <p>and, since a finite population cannot need more units sampled than it has, the fpc is folded back in as a downward adjustment:</p>
+        <p>$$n = \frac{n_0}{1 + \dfrac{n_0}{N}}$$</p>
+        <p>For a population proportion $P$, replace $S^2$ with $P(1-P)$:</p>
+        <p>$$n_0 = \frac{z^2\, P(1-P)}{d^2}$$</p>
+        <p>When $P$ is not known in advance, $P = 0.5$ is used, since $P(1-P)$ is maximised at $P=0.5$, giving the most conservative, largest possible required sample size.</p>
+        <p>Worked example. A survey wants to estimate a proportion to within $d = 0.03$ (three percentage points) at 95% confidence, with no prior estimate of $P$:</p>
+        <p>$$n_0 = \frac{(1.96)^2 (0.5)(0.5)}{(0.03)^2} = \frac{0.9604}{0.0009} \approx 1068$$</p>
+        <p>If the population is finite with $N = 5000$, the fpc brings this down to:</p>
+        <p>$$n = \frac{1068}{1 + \dfrac{1068}{5000}} = \frac{1068}{1.2136} \approx 880$$</p>
+        <p>A smaller, more concentrated population needs proportionally fewer sampled units for the same precision, exactly what the fpc is built to capture.</p>
+
+        <h3 class="font-serif font-medium text-[1.3rem]">3.6 Sample size determination: complex scenarios</h3>
+        <p>Real surveys rarely draw a plain SRS from one undivided population, and sample size formulas extend accordingly.</p>
+        <p><span class="term">Stratified allocation.</span> When the population is divided into $H$ strata of sizes $N_1, \dots, N_H$ with standard deviations $S_1, \dots, S_H$, and every unit costs the same to sample, <span class="term">Neyman allocation</span> distributes a fixed total sample size $n$ across strata to minimise overall variance:</p>
+        <p>$$n_h = n \cdot \frac{N_h S_h}{\sum_{h=1}^{H} N_h S_h}$$</p>
+        <p>Strata with more units or more internal variability receive a larger share of the sample, since that is where the most uncertainty is concentrated. When per-unit cost $c_h$ differs by stratum, this generalises to optimum allocation, which additionally sends fewer units to expensive-to-survey strata:</p>
+        <p>$$n_h \propto \frac{N_h S_h}{\sqrt{c_h}}$$</p>
+        <p><span class="term">Cluster and multi-stage designs.</span> Sampling intact clusters (villages, schools, city blocks) instead of individuals is cheaper to field but less efficient statistically, since units inside the same cluster tend to resemble each other. This inflation is captured by the <span class="term">design effect</span>:</p>
+        <p>$$DEFF = \frac{V(\hat{\theta})_{\text{complex design}}}{V(\hat{\theta})_{\text{SRS, same } n}} \approx 1 + (\bar{m}-1)\rho$$</p>
+        <p>where $\bar{m}$ is the average cluster size and $\rho$ is the intraclass correlation, how similar units within a cluster are to each other. A basic SRS-based sample size $n_{SRS}$ from 3.5 must then be inflated to $n_{complex} = n_{SRS} \times DEFF$ to reach the same precision under the actual design; equivalently, the effective sample size actually achieved is only $n_{eff} = n_{complex} / DEFF$.</p>
+        <p><span class="term">Nonresponse.</span> If a survey expects a response rate $r$ (for example $r = 0.8$), the fielded sample size must be inflated so that the number of completed responses still meets the target: $n' = n / r$.</p>
+        <p><span class="term">Multiple domains.</span> When a survey must produce reliable estimates not just nationally but for several sub-groups or regions separately, sample size is driven by whichever domain needs the largest $n$ for its own required precision, then summed across domains, not by the precision of the national total alone.</p>
+
+        <div class="box">
+          <p class="!mt-0">Every complex-scenario adjustment above does the same conceptual thing: it starts from the basic $n_0$ in 3.5 and multiplies or divides by a correction factor, $DEFF$ for clustering, $1/r$ for nonresponse, a stratum share for allocation, that accounts for one specific way real fieldwork departs from the clean SRSWOR assumptions used to derive $n_0$ in the first place. None of these factors change what precision, bias, or MSE mean; they change how large $n$ has to be to actually deliver the precision Section 1.4 demanded, under conditions a textbook formula alone does not see.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    });
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+      var root = document.documentElement;
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      var saved = localStorage.getItem("theme");
+      var initial = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      applyTheme(initial);
+      function applyTheme(t) { root.classList.toggle("dark", t === "dark"); }
+      var toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          var next = root.classList.contains("dark") ? "light" : "dark";
+          localStorage.setItem("theme", next);
+          applyTheme(next);
+        });
+      }
+
+      var preloader = document.getElementById("preloader");
+      var bar = document.getElementById("preloader-bar");
+      function reveal() {
+        if (preloader) preloader.style.display = "none";
+        root.classList.remove("js-loading");
+      }
+      window.addEventListener("load", function () {
+        if (reduced) { reveal(); return; }
+        if (bar) {
+          bar.style.transition = "width 0.5s cubic-bezier(0.22,1,0.36,1)";
+          requestAnimationFrame(function () { bar.style.width = "100%"; });
+        }
+        setTimeout(function () {
+          if (preloader) {
+            preloader.style.transition = "opacity 0.4s ease";
+            preloader.style.opacity = "0";
+            setTimeout(reveal, 400);
+          } else { reveal(); }
+        }, 550);
+      });
+      setTimeout(function () { if (root.classList.contains("js-loading")) reveal(); }, 2500);
+
+      var navbar = document.getElementById("navbar");
+      var lastY = window.scrollY;
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY;
+        if (y > 100) {
+          if (y > lastY) navbar.classList.add("nav-hidden");
+          else navbar.classList.remove("nav-hidden");
+        } else {
+          navbar.classList.remove("nav-hidden");
+        }
+        lastY = y;
+      }, { passive: true });
+
+      var ring = document.getElementById("cursor-ring");
+      var dot = document.getElementById("cursor-dot");
+      if (ring && dot && window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced) {
+        var mx = 0, my = 0, rx = 0, ry = 0;
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX; my = e.clientY;
+          dot.style.transform = "translate3d(" + mx + "px," + my + "px,0) translate(-50%,-50%)";
+          ring.style.opacity = "1"; dot.style.opacity = "1";
+        });
+        (function loop() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { ring.classList.add("hover"); });
+          el.addEventListener("mouseleave", function () { ring.classList.remove("hover"); });
+        });
+      } else if (ring && dot) {
+        ring.style.display = "none"; dot.style.display = "none";
+      }
+    })();
+  </script>
+</body>
+</html>
